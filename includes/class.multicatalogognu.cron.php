@@ -59,7 +59,7 @@ class cMulticatalogoGNUCron {
         
         try {
             // Actualizar Zecat
-            error_log('[MultiCatalogo Cron] Actualizando stock y precios Zecat...');
+            /*error_log('[MultiCatalogo Cron] Actualizando stock y precios Zecat...');
             self::update_zecat_silent();
             
             // Actualizar CDO
@@ -70,7 +70,7 @@ class cMulticatalogoGNUCron {
             error_log('[MultiCatalogo Cron] Actualizando stock y precios PromoImport...');
             self::update_promoimport_silent();
             
-            error_log('[MultiCatalogo Cron] Actualización de precios y stock completada');
+            error_log('[MultiCatalogo Cron] Actualización de precios y stock completada');*/
             
         } catch (Exception $e) {
             error_log('[MultiCatalogo Cron] Error al actualizar precios/stock: ' . $e->getMessage());
