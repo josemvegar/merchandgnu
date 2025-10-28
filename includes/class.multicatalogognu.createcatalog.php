@@ -787,6 +787,8 @@ public static function fcreateWooCommerceProductsFromZecatJsonGlobo() {
         wp_send_json_error('Permisos insuficientes.');
     }
 
+    $provider = isset($_POST['provider']) ? $_POST['provider'] : 'ZECAT';
+
     $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
     $tamano_lote = isset($_POST['tamano_lote']) ? intval($_POST['tamano_lote']) : 2;
 
@@ -807,18 +809,18 @@ public static function fcreateWooCommerceProductsFromZecatJsonGlobo() {
         $productsData = $productsData['data'];
     }
 
-    $zecatProducts = array_filter($productsData, function($product) {
-        return !isset($product['proveedor']) || $product['proveedor'] === 'ZECAT';
+    $productsFilter = array_filter($productsData, function($product) use ($provider) {
+        return !isset($product['proveedor']) || $product['proveedor'] === $provider;
     });
 
-    $zecatProducts = array_values($zecatProducts);
-    $total_productos = count($zecatProducts);
+    $productsFilter = array_values($productsFilter);
+    $total_productos = count($productsFilter);
     
     if ($total_productos === 0) {
-        wp_send_json_error('No se encontraron productos ZECAT para procesar.');
+        wp_send_json_error('No se encontraron productos '. $provider .' para procesar.');
     }
 
-    $productBatch = array_slice($zecatProducts, $offset, $tamano_lote);
+    $productBatch = array_slice($productsFilter, $offset, $tamano_lote);
     
     $creados = 0;
     $errors = [];
@@ -848,7 +850,7 @@ public static function fcreateWooCommerceProductsFromZecatJsonGlobo() {
     wp_send_json_success($response);
 }
 
-private static function createOrUpdateProductFromNormalizedData($productData) {
+public static function createOrUpdateProductFromNormalizedData($productData) {
     $sku = $productData['ID'];
     
     $existingProductId = wc_get_product_id_by_sku($sku);

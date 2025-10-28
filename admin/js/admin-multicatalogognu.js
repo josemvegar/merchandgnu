@@ -235,7 +235,8 @@ jQuery(document).ready(function () {
           action: fcreateWooCommerceProductsFromZecatJsonGlobo.action,
           offset: offset,
           tamano_lote: tamanoLote,
-          nonce: fcreateWooCommerceProductsFromZecatJsonGlobo.nonce
+          nonce: fcreateWooCommerceProductsFromZecatJsonGlobo.nonce,
+          provider: 'ZECAT'
         },
         beforeSend: function () {
           jQuery(".loadermerchan").show();

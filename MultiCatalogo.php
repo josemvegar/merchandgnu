@@ -99,8 +99,12 @@ function multicatalogognu_activate() {
         wp_schedule_event( time(), 'hourly', 'multicatalogo_hourly_update_json' );
     }
     
+    if ( ! wp_next_scheduled( 'multicatalogo_hourly_upload_products' ) ) {
+        wp_schedule_event( time(), 'thirty_minutes', 'multicatalogo_hourly_upload_products' );
+    }
+
     if ( ! wp_next_scheduled( 'multicatalogo_hourly_update_prices_stock' ) ) {
-        wp_schedule_event( time(), 'hourly', 'multicatalogo_hourly_update_prices_stock' );
+        wp_schedule_event( time(), 'thirty_minutes', 'multicatalogo_hourly_update_prices_stock' );
     }
 }
 
@@ -111,6 +115,9 @@ function multicatalogognu_deactivate() {
     // Eliminar los cron jobs programados
     $timestamp = wp_next_scheduled( 'multicatalogo_hourly_update_json' );
     wp_unschedule_event( $timestamp, 'multicatalogo_hourly_update_json' );
+
+    $timestamp = wp_next_scheduled( 'multicatalogo_hourly_upload_products' );
+    wp_unschedule_event( $timestamp, 'multicatalogo_hourly_upload_products' );
     
     $timestamp = wp_next_scheduled( 'multicatalogo_hourly_update_prices_stock' );
     wp_unschedule_event( $timestamp, 'multicatalogo_hourly_update_prices_stock' );

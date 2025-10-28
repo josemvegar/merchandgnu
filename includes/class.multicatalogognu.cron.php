@@ -19,6 +19,9 @@ class cMulticatalogoGNUCron {
         
         // Hook para actualizar precios y stock cada hora
         add_action('multicatalogo_hourly_update_prices_stock', array('cMulticatalogoGNUCron', 'update_all_prices_stock'));
+
+        // Hook para subir productos cada hora
+        add_action('multicatalogo_hourly_upload_products', array('cMulticatalogoGNUCron', 'upload_all_products'));
     }
 
     /**
@@ -48,6 +51,21 @@ class cMulticatalogoGNUCron {
             
         } catch (Exception $e) {
             error_log('[MultiCatalogo Cron] Error al actualizar JSON: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Subir nuevos productos
+     */
+    public static function upload_all_products() {
+        error_log('[MultiCatalogo Cron] Iniciando subida de productos - ' . current_time('mysql'));
+        
+        try {
+            error_log('[MultiCatalogo Cron] Subida de productos completada exitosamente');
+            self::upload_from_json("ZECAT");
+            
+        } catch (Exception $e) {
+            error_log('[MultiCatalogo Cron] Error al subir productos: ' . $e->getMessage());
         }
     }
 
@@ -374,6 +392,69 @@ class cMulticatalogoGNUCron {
         error_log("[MultiCatalogo Cron] PromoImport: $updated productos actualizados");
         return $updated;
     }
+
+    /**
+     * Subir productos de Zecat desde JSON (versión silenciosa para cron)
+     */
+    private static function upload_from_json($provider) {
+        // Ruta al archivo JSON normalizado
+        $filePathZecat = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
+
+        if (!file_exists($filePathZecat)) {
+            error_log('[MultiCatalogo Cron] Archivo JSON no encontrado: ' . $filePathZecat);
+            return false;
+        }
+
+        $jsonContent = file_get_contents($filePathZecat);
+        $productsData = json_decode($jsonContent, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            error_log('[MultiCatalogo Cron] Error al decodificar JSON: ' . json_last_error_msg());
+            return false;
+        }
+
+        // Acceder al array 'data' si existe
+        if (isset($productsData['data'])) {
+            $productsData = $productsData['data'];
+        }
+
+        // Filtrar solo productos del proveedor enviado
+        $productsFilter = array_filter($productsData, function($product) use ($provider) {
+            return isset($product['proveedor']) && $product['proveedor'] === $provider;
+        });
+
+        $productsFilter = array_values($productsFilter);
+        $total_productos = count($productsFilter);
+        
+        if ($total_productos === 0) {
+            error_log('[MultiCatalogo Cron] No se encontraron productos ZECAT para procesar.');
+            return false;
+        }
+
+        $creados = 0;
+        $errors = [];
+
+        foreach ($productsFilter as $productData) {
+            try {
+                $result = cMulticatalogoGNUCatalog::createOrUpdateProductFromNormalizedData($productData);
+                if ($result) {
+                    $creados++;
+                    error_log("✅ PRODUCTO CREADO: {$productData['ID']} - {$productData['nombre_del_producto']}");
+                }
+            } catch (Exception $e) {
+                $errors[] = "Error con producto {$productData['ID']}: " . $e->getMessage();
+                error_log("❌ ERROR: {$productData['ID']} - " . $e->getMessage());
+            }
+        }
+
+        // Log resumen final
+        if (!empty($errors)) {
+            error_log("[MultiCatalogo Cron] Proceso completado con errores. Creados: {$creados}/{$total_productos}. Errores: " . count($errors));
+        } else {
+            error_log("[MultiCatalogo Cron] Proceso completado exitosamente. Creados: {$creados}/{$total_productos}");
+        }
+    }
+
 }
 
 // Inicializar los hooks de cron
