@@ -84,20 +84,60 @@ class cMulticatalogoGNUCron {
         $filePathZecat = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/zecat_products.json';
         $filePathCDO = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/cdo_products.json';
         $filePathPromoImport = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/promoimport_products.json';
-    
+
         if (!file_exists($filePathZecat) || !file_exists($filePathCDO) || !file_exists($filePathPromoImport)) {
             error_log('[MultiCatalogo Cron] Uno o más archivos JSON no encontrados');
             return false;
         }
-    
+
         $productsZecat = json_decode(file_get_contents($filePathZecat), true);
         $productsCDO = json_decode(file_get_contents($filePathCDO), true);
         $productsPromo = json_decode(file_get_contents($filePathPromoImport), true);
-    
+
+        // Verificar errores de decodificación
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            error_log('[MultiCatalogo Cron] Error al decodificar los archivos JSON');
+            return false;
+        }
+
         $mergedProducts = [];
-    
-        // Zecat
+
+        // --- Zecat ---
         foreach ($productsZecat as $zecatProduct) {
+            $families = [];
+            $images = [];
+            $variableAttributes = [];
+            $infoAttributes = [];
+            $variations = [];
+
+            foreach ($zecatProduct['families'] as $family) {
+                $families[] = mb_convert_case(trim($family['description']), MB_CASE_TITLE, "UTF-8");
+            }
+            foreach ($zecatProduct['images'] as $image) {
+                $images[] = $image['image_url'];
+            }
+            foreach ($zecatProduct['products'] as $varAttr) {
+                if ($varAttr['size'] !== '' && $varAttr['color'] !== '') {
+                    $variableAttributes['Tamaño'][] = $varAttr['size'];
+                    $variableAttributes['Color'][] = $varAttr['color'];
+
+                    $added = ['Combinations' => ['Tamaño' => $varAttr['size'], 'Color' => $varAttr['color']], 'Stock' => $varAttr['stock'], 'Precio' => $zecatProduct['price']];
+                } else {
+                    $variableAttributes['Variante'][] = $varAttr['element_description_1'] . ' / ' . $varAttr['element_description_2'] . ' / ' . $varAttr['element_description_3'];
+
+                    $added = [ 
+                        'Combinations' => ['Variante' => $varAttr['element_description_1'] . ' / ' . $varAttr['element_description_2'] . ' / ' . $varAttr['element_description_3']], 
+                        'Stock' => $varAttr['stock'],
+                        'Precio' => $zecatProduct['price']
+                    ];
+                }
+
+                $variations[] = $added;
+            }
+            foreach ($zecatProduct['subattributes'] as $infoAttr) {
+                $infoAttributes[$infoAttr['attribute_name']] = trim($infoAttr['name']);
+            }
+
             $mergedProducts[] = [
                 'ID' => "zt0" . $zecatProduct['id'],
                 'sku_proveedor' => $zecatProduct['external_id'],
@@ -107,13 +147,24 @@ class cMulticatalogoGNUCron {
                 'image' => isset($zecatProduct['images'][0]['image_url'])
                     ? '<a href="' . $zecatProduct['images'][0]['image_url'] . '" target="_blank">Ver imagen</a>'
                     : '',
+                'galery' => $images,
                 'stock' => isset($zecatProduct['products'][0]['stock']) ? $zecatProduct['products'][0]['stock'] : 0,
-                'proveedor' => 'ZECAT'
+                'proveedor' => 'ZECAT',
+                'categorias' => $families,
+                'infoAttributes' => $infoAttributes,
+                'isVariable' => count($variableAttributes) > 0 ? true : false,
+                'variableAttributes' => $variableAttributes,
+                'variations' => $variations
             ];
         }
-    
-        // CDO
+
+        // --- CDO ---
         foreach ($productsCDO as $cdoProduct) {
+            $categories = [];
+            foreach ($cdoProduct['categories'] as $category) {
+                $categories[] = mb_convert_case(trim($category['name']), MB_CASE_TITLE, "UTF-8");
+            }
+
             $mergedProducts[] = [
                 'ID' => "ss0" . $cdoProduct['id'],
                 'sku_proveedor' => $cdoProduct['code'],
@@ -124,12 +175,18 @@ class cMulticatalogoGNUCron {
                     ? '<a href="' . $cdoProduct['variants'][0]['picture']['original'] . '" target="_blank">Ver imagen</a>'
                     : '',
                 'stock' => isset($cdoProduct['variants'][0]['stock_available']) ? $cdoProduct['variants'][0]['stock_available'] : 0,
-                'proveedor' => 'CDO'
+                'proveedor' => 'CDO',
+                'categorias' => $categories
             ];
         }
-    
-        // PromoImport
+
+        // --- PromoImport ---
         foreach ($productsPromo as $promoProduct) {
+            $categorias = [];
+            foreach ($promoProduct['categorias'] as $categoria) {
+                $categorias[] = mb_convert_case(trim($categoria['value']), MB_CASE_TITLE, "UTF-8");
+            }
+
             $mergedProducts[] = [
                 'ID' => "pi0" . $promoProduct['sku'],
                 'sku_proveedor' => $promoProduct['sku'],
@@ -140,15 +197,21 @@ class cMulticatalogoGNUCron {
                     ? '<a href="' . $promoProduct['fotoPrincipal'] . '" target="_blank">Ver imagen</a>'
                     : '',
                 'stock' => isset($promoProduct['atributos'][0]['stock']) ? intval($promoProduct['atributos'][0]['stock']) : 0,
-                'proveedor' => 'promoimport'
+                'proveedor' => 'promoimport',
+                'categorias' => $categorias
             ];
         }
-    
+
         $finalJson = [ 'data' => $mergedProducts ];
         $mergedFilePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
-        file_put_contents($mergedFilePath, json_encode($finalJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
         
-        return true;
+        if (file_put_contents($mergedFilePath, json_encode($finalJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE))) {
+            error_log('[MultiCatalogo Cron] Archivo JSON combinado creado con éxito. Productos: ' . count($mergedProducts));
+            return true;
+        } else {
+            error_log('[MultiCatalogo Cron] Error al guardar el archivo JSON combinado');
+            return false;
+        }
     }
 
     /**
