@@ -790,7 +790,6 @@ public static function fcreateWooCommerceProductsFromZecatJsonGlobo() {
     $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
     $tamano_lote = isset($_POST['tamano_lote']) ? intval($_POST['tamano_lote']) : 2;
 
-    // Ruta al archivo JSON normalizado
     $filePathZecat = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
 
     if (!file_exists($filePathZecat)) {
@@ -804,21 +803,17 @@ public static function fcreateWooCommerceProductsFromZecatJsonGlobo() {
         wp_send_json_error('Error al decodificar JSON: ' . json_last_error_msg());
     }
 
-    // ✅ CORRECCIÓN: Acceder al array 'data' si existe
     if (isset($productsData['data'])) {
         $productsData = $productsData['data'];
     }
 
-    // ✅ CORRECCIÓN: No filtrar por proveedor o hacerlo opcional
     $zecatProducts = array_filter($productsData, function($product) {
-        // Si no tiene proveedor o es ZECAT, incluirlo
         return !isset($product['proveedor']) || $product['proveedor'] === 'ZECAT';
     });
 
     $zecatProducts = array_values($zecatProducts);
     $total_productos = count($zecatProducts);
     
-    // ✅ CORRECCIÓN: Verificar que hay productos
     if ($total_productos === 0) {
         wp_send_json_error('No se encontraron productos ZECAT para procesar.');
     }
@@ -833,16 +828,19 @@ public static function fcreateWooCommerceProductsFromZecatJsonGlobo() {
             $result = self::createOrUpdateProductFromNormalizedData($productData);
             if ($result) {
                 $creados++;
+                // ✅ SOLO log cuando se crea exitosamente
+                error_log("✅ PRODUCTO CREADO: {$productData['ID']} - {$productData['nombre_del_producto']}");
             }
         } catch (Exception $e) {
             $errors[] = "Error con producto {$productData['ID']}: " . $e->getMessage();
-            error_log("Error creando producto {$productData['ID']}: " . $e->getMessage());
+            // ✅ SOLO log de errores reales
+            error_log("❌ ERROR: {$productData['ID']} - " . $e->getMessage());
         }
     }
 
     $response = [
         'total' => $total_productos,
-        'creados' => $creados,        // ✅ Coincide con JavaScript
+        'creados' => $creados,
         'offset' => $offset + $tamano_lote,
         'errors' => $errors
     ];
@@ -853,17 +851,12 @@ public static function fcreateWooCommerceProductsFromZecatJsonGlobo() {
 private static function createOrUpdateProductFromNormalizedData($productData) {
     $sku = $productData['ID'];
     
-    // Verificar si el producto ya existe
     $existingProductId = wc_get_product_id_by_sku($sku);
 
     if ($existingProductId) {
-        error_log("Producto ya existe, omitiendo: " . $sku);
         return false;
     }
 
-    error_log("Creando producto: " . $sku . " - " . $productData['nombre_del_producto']);
-
-    // Crear producto simple o variable según la estructura
     if (isset($productData['isVariable']) && $productData['isVariable'] === true) {
         return self::createVariableProduct($productData);
     } else {
@@ -874,18 +867,14 @@ private static function createOrUpdateProductFromNormalizedData($productData) {
 private static function createSimpleProduct($productData) {
     $product = new WC_Product_Simple();
     
-    // Configuración básica
     $product->set_name($productData['nombre_del_producto']);
     $product->set_description($productData['descripcion'] ?? '');
     $product->set_short_description($productData['descripcion'] ?? '');
     $product->set_sku($productData['ID']);
     $product->set_regular_price($productData['precio'] ?? 0);
-    
-    // Stock
     $product->set_manage_stock(true);
     $product->set_stock_quantity($productData['stock'] ?? 0);
     
-    // Atributos de información
     $attributes = self::createInfoAttributes($productData);
     if (!empty($attributes)) {
         $product->set_attributes($attributes);
@@ -893,7 +882,6 @@ private static function createSimpleProduct($productData) {
     
     $product_id = $product->save();
     
-    // ✅ CORRECCIÓN: Procesar categorías e imágenes DESPUÉS de guardar
     self::processProductTaxonomies($product_id, $productData);
     self::processProductImages($product_id, $productData);
     
@@ -903,7 +891,6 @@ private static function createSimpleProduct($productData) {
 private static function createVariableProduct($productData) {
     $product = new WC_Product_Variable();
     
-    // Configuración básica
     $product->set_name($productData['nombre_del_producto']);
     $product->set_description($productData['descripcion'] ?? '');
     $product->set_short_description($productData['descripcion'] ?? '');
@@ -912,30 +899,24 @@ private static function createVariableProduct($productData) {
     $product->set_manage_stock(false);
     $product->set_stock_status('instock');
     
-    // ✅ CORRECCIÓN: Crear atributos PRIMERO y guardar
     $attributes = self::createVariableAttributes($productData);
     if (!empty($attributes)) {
         $product->set_attributes($attributes);
     }
     
-    // Atributos de información
     $infoAttributes = self::createInfoAttributes($productData);
     if (!empty($infoAttributes)) {
         $allAttributes = array_merge($attributes ?? [], $infoAttributes);
         $product->set_attributes($allAttributes);
     }
     
-    // ✅ CORRECCIÓN: GUARDAR producto con atributos ANTES de crear variaciones
     $product_id = $product->save();
     
-    // Procesar categorías e imágenes
     self::processProductTaxonomies($product_id, $productData);
     self::processProductImages($product_id, $productData);
     
-    // ✅ CORRECCIÓN: Recargar producto para asegurar atributos
     $product = wc_get_product($product_id);
     
-    // Crear variaciones
     if (isset($productData['variations']) && is_array($productData['variations'])) {
         self::createProductVariations($product_id, $productData, $attributes);
     }
@@ -963,12 +944,9 @@ private static function createVariableAttributes($productData) {
             $attribute->set_visible(true);
             $attribute->set_variation(true);
             
-            // ✅ CORRECCIÓN: Usar solo sanitize_title sin 'pa_' para atributos personalizados
             $taxonomy = sanitize_title($attributeName);
             $attributes[$taxonomy] = $attribute;
             $position++;
-            
-            error_log("✅ Atributo variable creado: {$taxonomy} con valores: " . implode(', ', $cleanedValues));
         }
     }
     
@@ -986,7 +964,6 @@ private static function extractVariableAttributesFromCombinations($productData) 
                         if (!isset($variableAttributes[$attributeName])) {
                             $variableAttributes[$attributeName] = [];
                         }
-                        // ✅ CORRECCIÓN: Limpiar valor individual
                         $cleanedValue = str_replace('\\', '', $attributeValue);
                         if (!in_array($cleanedValue, $variableAttributes[$attributeName])) {
                             $variableAttributes[$attributeName][] = $cleanedValue;
@@ -1009,7 +986,6 @@ private static function createInfoAttributes($productData) {
             $attribute = new WC_Product_Attribute();
             $attribute->set_name($attributeName);
             
-            // ✅ CORRECCIÓN: Limpiar valor de \
             $cleanedValue = str_replace('\\', '', $attributeValue);
             $attribute->set_options([$cleanedValue]);
             
@@ -1029,8 +1005,6 @@ private static function createProductVariations($product_id, $productData, $pare
     $product = wc_get_product($product_id);
     $current_attributes = $product->get_attributes();
     
-    error_log("Atributos actuales del producto padre {$product_id}: " . print_r(array_keys($current_attributes), true));
-    
     foreach ($productData['variations'] as $index => $variationData) {
         $variation = new WC_Product_Variation();
         $variation->set_parent_id($product_id);
@@ -1039,27 +1013,19 @@ private static function createProductVariations($product_id, $productData, $pare
         
         if (isset($variationData['Combinations']) && is_array($variationData['Combinations'])) {
             foreach ($variationData['Combinations'] as $attributeName => $attributeValue) {
-                // ✅ CORRECCIÓN: Usar el nombre EXACTO del atributo del producto padre
-                $taxonomy = sanitize_title($attributeName); // "variante" en lugar de "pa_variante"
+                $taxonomy = sanitize_title($attributeName);
                 
-                // Verificar que el atributo existe en el producto padre
                 if (isset($current_attributes[$taxonomy])) {
                     $cleanedValue = str_replace('\\', '', $attributeValue);
                     $variationAttributes[$taxonomy] = $cleanedValue;
-                    error_log("✅ Asignando atributo: {$taxonomy} = {$cleanedValue}");
-                } else {
-                    error_log("⚠️ Atributo no encontrado en producto padre: {$taxonomy}. Disponibles: " . implode(', ', array_keys($current_attributes)));
                 }
             }
         }
-        
-        error_log("Variación {$index} - Atributos a asignar: " . print_r($variationAttributes, true));
         
         if (!empty($variationAttributes)) {
             $variation->set_attributes($variationAttributes);
         }
         
-        // Precio y stock
         $variation_price = $variationData['Precio'] ?? 0;
         $variation_stock = $variationData['Stock'] ?? 0;
         
@@ -1068,23 +1034,12 @@ private static function createProductVariations($product_id, $productData, $pare
         $variation->set_stock_quantity($variation_stock);
         $variation->set_stock_status($variation_stock > 0 ? 'instock' : 'outofstock');
         
-        // SKU único
         $variationSku = $productData['ID'] . '-var-' . ($index + 1);
         $variation->set_sku($variationSku);
         
-        $variation_id = $variation->save();
-        
-        if ($variation_id) {
-            // Verificar atributos guardados
-            $saved_variation = wc_get_product($variation_id);
-            $saved_attributes = $saved_variation->get_attributes();
-            error_log("✅ Variación {$variation_id} - Atributos guardados: " . print_r($saved_attributes, true));
-            
-            error_log("✅ Variación creada: {$variationSku} - ID: {$variation_id}");
-        }
+        $variation->save();
     }
     
-    // Sincronizar usando método moderno
     $product = wc_get_product($product_id);
     if ($product && $product->is_type('variable')) {
         $product->save();
@@ -1092,7 +1047,6 @@ private static function createProductVariations($product_id, $productData, $pare
 }
 
 private static function processProductTaxonomies($product_id, $productData) {
-    // Procesar categorías
     if (isset($productData['categorias']) && is_array($productData['categorias'])) {
         $category_slugs = [];
         
@@ -1101,53 +1055,30 @@ private static function processProductTaxonomies($product_id, $productData) {
             if (empty($cleanName)) continue;
             
             $slug = sanitize_title($cleanName);
-            
-            // Verificar si la categoría existe
             $term = term_exists($slug, 'product_cat');
             
             if (!$term) {
-                // Intentar buscar por nombre también
                 $term = get_term_by('name', $cleanName, 'product_cat');
                 if (!$term) {
-                    // Crear la categoría si no existe
                     $term = wp_insert_term($cleanName, 'product_cat', [
                         'slug' => $slug,
                         'description' => ''
                     ]);
-                    
-                    if (!is_wp_error($term)) {
-                        error_log("Categoría creada: {$cleanName} (Slug: {$slug})");
-                        $category_slugs[] = $slug;
-                    } else {
-                        error_log("Error creando categoría {$cleanName}: " . $term->get_error_message());
-                    }
                 } else {
-                    // La categoría existe por nombre, usar su slug
                     $category_slugs[] = $term->slug;
-                    error_log("Categoría encontrada por nombre: {$cleanName} (Slug: {$term->slug})");
                 }
             } else {
-                // La categoría existe por slug
                 $category_slugs[] = $slug;
-                error_log("Categoría encontrada por slug: {$cleanName} (Slug: {$slug})");
             }
         }
         
         if (!empty($category_slugs)) {
-            // ✅ CORRECCIÓN: Usar SLUGS en lugar de IDs
-            $result = wp_set_object_terms($product_id, $category_slugs, 'product_cat');
-            
-            if (!is_wp_error($result)) {
-                error_log("Categorías asignadas al producto {$product_id}: " . implode(', ', $category_slugs));
-            } else {
-                error_log("Error asignando categorías al producto {$product_id}: " . $result->get_error_message());
-            }
+            wp_set_object_terms($product_id, $category_slugs, 'product_cat');
         }
     }
 }
 
 private static function processProductImages($product_id, $productData) {
-    // ✅ CORRECCIÓN COMPLETA: Usar solo método nativo de WooCommerce
     if (isset($productData['galery']) && is_array($productData['galery']) && !empty($productData['galery'])) {
         $gallery_ids = [];
         
@@ -1155,34 +1086,22 @@ private static function processProductImages($product_id, $productData) {
             $image_id = self::uploadImageFromUrl($imageUrl);
             if ($image_id) {
                 $gallery_ids[] = $image_id;
-                error_log("Imagen subida: {$image_id} desde {$imageUrl}");
-            } else {
-                error_log("Error subiendo imagen: {$imageUrl}");
             }
         }
         
         if (!empty($gallery_ids)) {
             $product = wc_get_product($product_id);
             
-            // Primera imagen como imagen principal (destacada)
             $featured_image_id = $gallery_ids[0];
             $product->set_image_id($featured_image_id);
-            error_log("Imagen destacada asignada: {$featured_image_id}");
             
-            // Resto como galería
             if (count($gallery_ids) > 1) {
                 $gallery_image_ids = array_slice($gallery_ids, 1);
                 $product->set_gallery_image_ids($gallery_image_ids);
-                error_log("Galería asignada: " . count($gallery_image_ids) . " imágenes");
             }
             
             $product->save();
-            error_log("Imágenes asignadas correctamente al producto: {$product_id}");
-        } else {
-            error_log("No se pudieron subir imágenes para el producto: {$product_id}");
         }
-    } else {
-        error_log("No hay galería de imágenes para el producto: {$product_id}");
     }
 }
 
@@ -1192,38 +1111,31 @@ private static function uploadImageFromUrl($image_url) {
     require_once(ABSPATH . 'wp-admin/includes/media.php');
     
     try {
-        // Descargar imagen a temp directory
         $temp_file = download_url($image_url);
         
         if (is_wp_error($temp_file)) {
-            error_log("Error descargando imagen {$image_url}: " . $temp_file->get_error_message());
             return false;
         }
         
-        // Preparar array de archivo
         $file = array(
             'name' => basename($image_url),
-            'type' => 'image/jpeg', // Puedes detectar el tipo real si es necesario
+            'type' => 'image/jpeg',
             'tmp_name' => $temp_file,
             'error' => 0,
             'size' => filesize($temp_file),
         );
         
-        // Subir imagen
         $image_id = media_handle_sideload($file, 0);
         
-        // Limpiar archivo temporal
         @unlink($temp_file);
         
         if (is_wp_error($image_id)) {
-            error_log("Error subiendo imagen {$image_url}: " . $image_id->get_error_message());
             return false;
         }
         
         return $image_id;
         
     } catch (Exception $e) {
-        error_log("Excepción subiendo imagen {$image_url}: " . $e->getMessage());
         return false;
     }
 }
