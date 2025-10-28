@@ -5,7 +5,7 @@
  * Plugin Name: Multicatalogo Merchandising
  * Plugin URI:  https://josecortesia.cl
  * Description: Integración de proveedor externos para Woocommerce.
- * Version:     1.4.0
+ * Version:     2.0.0
  * Author:      Jose Cortesia
  * Author URI:  https://www.josecortesia.cl
  * License:     GPLv2 or later
@@ -15,7 +15,6 @@
  *
  */
 
-
 // Make sure we don't expose any info if called directly
 if ( !function_exists( 'add_action' ) ) {
     echo 'Hi there!  I\'m just a plugin, not much I can do when called directly.';
@@ -23,7 +22,6 @@ if ( !function_exists( 'add_action' ) ) {
 }
 
 if(!defined('ABSPATH')){die('-1');}
-
 
 //Variables de Entorno
 define( 'MUTICATALOGOGNU__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
@@ -36,14 +34,84 @@ require_once( MUTICATALOGOGNU__PLUGIN_DIR . '/includes/class.multicatalogognu.ad
 require_once( MUTICATALOGOGNU__PLUGIN_DIR . '/includes/class.multicatalogognu.createcatalog.php' );
 require_once( MUTICATALOGOGNU__PLUGIN_DIR . '/includes/class.multicatalogognu.stock.php' );
 require_once( MUTICATALOGOGNU__PLUGIN_DIR . '/includes/class.multicatalogognu.price.php' );
-
+require_once( MUTICATALOGOGNU__PLUGIN_DIR . '/includes/class.multicatalogognu.config.php' );
+require_once( MUTICATALOGOGNU__PLUGIN_DIR . '/includes/class.multicatalogognu.categories.php' );
+require_once( MUTICATALOGOGNU__PLUGIN_DIR . '/includes/class.multicatalogognu.cron.php' );
 
 add_action( 'init', array( 'cMultiCatalogoGNU', 'init' ) );
 
+// ==================== ACTIVACIÓN DEL PLUGIN ====================
+register_activation_hook( __FILE__, 'multicatalogognu_activate' );
 
+function multicatalogognu_activate() {
+    global $wpdb;
+    
+    // Crear tabla de configuración
+    $table_config = $wpdb->prefix . 'multicatalogo_config';
+    $charset_collate = $wpdb->get_charset_collate();
+    
+    $sql_config = "CREATE TABLE IF NOT EXISTS $table_config (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        config_key varchar(100) NOT NULL,
+        config_value text NOT NULL,
+        PRIMARY KEY  (id),
+        UNIQUE KEY config_key (config_key)
+    ) $charset_collate;";
+    
+    // Crear tabla de redirección de categorías
+    $table_categories = $wpdb->prefix . 'multicatalogo_category_mapping';
+    
+    $sql_categories = "CREATE TABLE IF NOT EXISTS $table_categories (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        provider varchar(50) NOT NULL,
+        original_category varchar(255) NOT NULL,
+        target_category varchar(255) NOT NULL,
+        created_at datetime DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY  (id),
+        UNIQUE KEY provider_category (provider, original_category)
+    ) $charset_collate;";
+    
+    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+    dbDelta( $sql_config );
+    dbDelta( $sql_categories );
+    
+    // Insertar configuración por defecto
+    $wpdb->insert(
+        $table_config,
+        array(
+            'config_key' => 'profit_margin_percentage',
+            'config_value' => '50'
+        ),
+        array('%s', '%s')
+    );
+    
+    $wpdb->insert(
+        $table_config,
+        array(
+            'config_key' => 'usd_to_clp_rate',
+            'config_value' => '950'
+        ),
+        array('%s', '%s')
+    );
+    
+    // Programar los cron jobs
+    if ( ! wp_next_scheduled( 'multicatalogo_hourly_update_json' ) ) {
+        wp_schedule_event( time(), 'hourly', 'multicatalogo_hourly_update_json' );
+    }
+    
+    if ( ! wp_next_scheduled( 'multicatalogo_hourly_update_prices_stock' ) ) {
+        wp_schedule_event( time(), 'hourly', 'multicatalogo_hourly_update_prices_stock' );
+    }
+}
 
+// ==================== DESACTIVACIÓN DEL PLUGIN ====================
+register_deactivation_hook( __FILE__, 'multicatalogognu_deactivate' );
 
-
-
-
-
+function multicatalogognu_deactivate() {
+    // Eliminar los cron jobs programados
+    $timestamp = wp_next_scheduled( 'multicatalogo_hourly_update_json' );
+    wp_unschedule_event( $timestamp, 'multicatalogo_hourly_update_json' );
+    
+    $timestamp = wp_next_scheduled( 'multicatalogo_hourly_update_prices_stock' );
+    wp_unschedule_event( $timestamp, 'multicatalogo_hourly_update_prices_stock' );
+}

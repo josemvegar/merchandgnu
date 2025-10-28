@@ -19,7 +19,7 @@ jQuery(document).ready( function () {
     ],
     "responsive": true,
     "ajax": {
-      "url": "/wp-admin/admin-ajax.php?action=datatables_endpoint_merchan",
+      "url": "/merchant/wp-admin/admin-ajax.php?action=datatables_endpoint_merchan",
       "dataSrc": "data"
     },
     "select": {

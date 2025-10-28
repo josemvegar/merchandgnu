@@ -1,0 +1,15 @@
+Ajustes de skus * PREGUNTAR SI SON CORRECTOS
+
+Publicación automática
+
+Implementación de aumento de precio original
+
+Actualización de precio y stock automática
+
+Publicación de productos con las variaciones y atributos
+    - Hacer que se publiquen con las imágenes.
+    - Hacer que los atributos se asignen bien.
+    - Hacer que el Ajax ejecute todo.
+
+
+Categorías según el doc enviado.

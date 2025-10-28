@@ -151,7 +151,7 @@ class cMulticatalogoGNUCatalog {
         ));
     }
     
-    public static function fcreateWooCommerceProductsFromZecatJsonGlobo() {
+    /*public static function fcreateWooCommerceProductsFromZecatJsonGlobo() {
         check_ajax_referer('publicar_zecat_nonce', 'nonce');
         
         if (!current_user_can('manage_options')) {
@@ -352,7 +352,7 @@ class cMulticatalogoGNUCatalog {
             'actualizados' => $actualizados,
             'offset' => $offset + $tamano_lote,
         ));
-    }
+    }*/
 
     public static function fcreateWooCommerceProductsFromCDOJsonGlobo() {
 
@@ -747,4 +747,385 @@ class cMulticatalogoGNUCatalog {
     }
         
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+public static function fcreateWooCommerceProductsFromZecatJsonGlobo() {
+    check_ajax_referer('publicar_zecat_nonce', 'nonce');
+    
+    if (!current_user_can('manage_options')) {
+        wp_send_json_error('Permisos insuficientes.');
+    }
+
+    $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
+    $tamano_lote = isset($_POST['tamano_lote']) ? intval($_POST['tamano_lote']) : 2;
+
+    // Ruta al archivo JSON normalizado
+    $filePathZecat = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
+
+    if (!file_exists($filePathZecat)) {
+        wp_send_json_error('Archivo JSON normalizado no encontrado.');
+    }
+
+    $jsonContent = file_get_contents($filePathZecat);
+    $productsData = json_decode($jsonContent, true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        wp_send_json_error('Error al decodificar JSON: ' . json_last_error_msg());
+    }
+
+    // ✅ CORRECCIÓN 1: Acceder al array 'data' si existe
+    if (isset($productsData['data'])) {
+        $productsData = $productsData['data'];
+    }
+
+    // ✅ CORRECCIÓN 2: No filtrar por proveedor o hacerlo opcional
+    $zecatProducts = array_filter($productsData, function($product) {
+        // Si no tiene proveedor o es ZECAT, incluirlo
+        return !isset($product['proveedor']) || $product['proveedor'] === 'ZECAT';
+    });
+
+    $zecatProducts = array_values($zecatProducts);
+    $total_productos = count($zecatProducts);
+    
+    // ✅ CORRECCIÓN 3: Verificar que hay productos
+    if ($total_productos === 0) {
+        wp_send_json_error('No se encontraron productos ZECAT para procesar.');
+    }
+
+    $productBatch = array_slice($zecatProducts, $offset, $tamano_lote);
+    
+    $creados = 0;
+    $errors = [];
+
+    foreach ($productBatch as $productData) {
+        try {
+            $result = self::createOrUpdateProductFromNormalizedData($productData);
+            if ($result) {
+                $creados++;
+            }
+        } catch (Exception $e) {
+            $errors[] = "Error con producto {$productData['ID']}: " . $e->getMessage();
+            error_log("Error creando producto {$productData['ID']}: " . $e->getMessage());
+        }
+    }
+
+    $response = [
+        'total' => $total_productos,
+        'creados' => $creados,
+        'offset' => $offset + $tamano_lote,
+        'errors' => $errors
+    ];
+
+    wp_send_json_success($response);
+}
+
+private static function createOrUpdateProductFromNormalizedData($productData) {
+    // ✅ CORRECCIÓN 4: Usar el mismo SKU que el original
+    $sku = $productData['ID']; // Esto es "zt0383" en tu ejemplo
+    
+    // Verificar si el producto ya existe
+    $existingProductId = wc_get_product_id_by_sku($sku);
+
+    if ($existingProductId) {
+        error_log("Producto ya existe, omitiendo: " . $sku);
+        return false; // Producto ya existe, omitir
+    }
+
+    error_log("Creando producto: " . $sku . " - " . $productData['nombre_del_producto']);
+
+    // Crear producto simple o variable según la estructura
+    if (isset($productData['isVariable']) && $productData['isVariable'] === true) {
+        return self::createVariableProduct($productData);
+    } else {
+        return self::createSimpleProduct($productData);
+    }
+}
+
+private static function createSimpleProduct($productData) {
+    $product = new WC_Product_Simple();
+    
+    // Configuración básica
+    $product->set_name($productData['nombre_del_producto']);
+    $product->set_description($productData['descripcion'] ?? '');
+    $product->set_short_description($productData['descripcion'] ?? '');
+    $product->set_sku($productData['ID']);
+    $product->set_regular_price($productData['precio'] ?? 0);
+    
+    // Stock
+    $product->set_manage_stock(true);
+    $product->set_stock_quantity($productData['stock'] ?? 0);
+    
+    // Atributos de información
+    $attributes = self::createInfoAttributes($productData);
+    if (!empty($attributes)) {
+        $product->set_attributes($attributes);
+    }
+    
+    $product_id = $product->save();
+    
+    // Procesar categorías e imágenes
+    self::processProductTaxonomies($product_id, $productData);
+    self::processProductImages($product_id, $productData);
+    
+    return $product_id;
+}
+
+private static function createVariableProduct($productData) {
+    $product = new WC_Product_Variable();
+    
+    // Configuración básica
+    $product->set_name($productData['nombre_del_producto']);
+    $product->set_description($productData['descripcion'] ?? '');
+    $product->set_short_description($productData['descripcion'] ?? '');
+    $product->set_sku($productData['ID']);
+    
+    // No establecer precio principal para productos variables
+    $product->set_regular_price(''); 
+    
+    // Stock management - el producto variable no gestiona stock directamente
+    $product->set_manage_stock(false);
+    
+    // Crear atributos para variaciones
+    $attributes = self::createVariableAttributes($productData);
+    if (!empty($attributes)) {
+        $product->set_attributes($attributes);
+    }
+    
+    // Atributos de información
+    $infoAttributes = self::createInfoAttributes($productData);
+    if (!empty($infoAttributes)) {
+        // Combinar atributos variables y de información
+        $allAttributes = array_merge($attributes, $infoAttributes);
+        $product->set_attributes($allAttributes);
+    }
+    
+    $product_id = $product->save();
+    
+    // Procesar categorías e imágenes
+    self::processProductTaxonomies($product_id, $productData);
+    self::processProductImages($product_id, $productData);
+    
+    // Crear variaciones
+    if (isset($productData['variations']) && is_array($productData['variations'])) {
+        self::createProductVariations($product_id, $productData);
+    }
+    
+    return $product_id;
+}
+
+private static function createVariableAttributes($productData) {
+    $attributes = [];
+    $position = 0;
+    
+    // Extraer atributos variables de las combinaciones
+    $variableAttributes = self::extractVariableAttributesFromCombinations($productData);
+    
+    foreach ($variableAttributes as $attributeName => $attributeValues) {
+        if (!empty($attributeValues)) {
+            $attribute = new WC_Product_Attribute();
+            $attribute->set_name($attributeName);
+            $attribute->set_options($attributeValues);
+            $attribute->set_position($position);
+            $attribute->set_visible(true);
+            $attribute->set_variation(true); // ¡IMPORTANTE: Esto lo hace variable!
+            
+            $attributes['pa_' . sanitize_title($attributeName)] = $attribute;
+            $position++;
+        }
+    }
+    
+    return $attributes;
+}
+
+private static function extractVariableAttributesFromCombinations($productData) {
+    $variableAttributes = [];
+    
+    if (isset($productData['variations']) && is_array($productData['variations'])) {
+        foreach ($productData['variations'] as $variation) {
+            if (isset($variation['Combinations']) && is_array($variation['Combinations'])) {
+                foreach ($variation['Combinations'] as $attributeName => $attributeValue) {
+                    if (!empty($attributeValue)) {
+                        if (!isset($variableAttributes[$attributeName])) {
+                            $variableAttributes[$attributeName] = [];
+                        }
+                        if (!in_array($attributeValue, $variableAttributes[$attributeName])) {
+                            $variableAttributes[$attributeName][] = $attributeValue;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    return $variableAttributes;
+}
+
+private static function createInfoAttributes($productData) {
+    $attributes = [];
+    $position = 100; // Posición alta para que aparezcan después de los atributos variables
+    
+    // Procesar infoAttributes para atributos de información (no variables)
+    if (isset($productData['infoAttributes']) && is_array($productData['infoAttributes'])) {
+        foreach ($productData['infoAttributes'] as $attributeName => $attributeValue) {
+            $attribute = new WC_Product_Attribute();
+            $attribute->set_name($attributeName);
+            $attribute->set_options([$attributeValue]);
+            $attribute->set_position($position);
+            $attribute->set_visible(true);
+            $attribute->set_variation(false); // No es variable
+            
+            $attributes['pa_' . sanitize_title($attributeName)] = $attribute;
+            $position++;
+        }
+    }
+    
+    return $attributes;
+}
+
+private static function createProductVariations($product_id, $productData) {
+    $product = wc_get_product($product_id);
+    
+    foreach ($productData['variations'] as $index => $variationData) {
+        $variation = new WC_Product_Variation();
+        $variation->set_parent_id($product_id);
+        
+        // Configurar atributos de la variación desde Combinations
+        $variationAttributes = [];
+        
+        if (isset($variationData['Combinations']) && is_array($variationData['Combinations'])) {
+            foreach ($variationData['Combinations'] as $attributeName => $attributeValue) {
+                $taxonomy = 'pa_' . sanitize_title($attributeName);
+                $variationAttributes[$taxonomy] = $attributeValue;
+            }
+        }
+        
+        $variation->set_attributes($variationAttributes);
+        
+        // Precio y stock
+        $variation->set_regular_price($variationData['Precio'] ?? 0);
+        $variation->set_manage_stock(true);
+        $variation->set_stock_quantity($variationData['Stock'] ?? 0);
+        
+        // SKU único para la variación
+        $variationSku = $productData['ID'] . '-var-' . ($index + 1);
+        $variation->set_sku($variationSku);
+        
+        $variation->save();
+    }
+}
+
+private static function processProductTaxonomies($product_id, $productData) {
+    // Procesar categorías
+    if (isset($productData['categorias']) && is_array($productData['categorias'])) {
+        $category_ids = [];
+        
+        foreach ($productData['categorias'] as $categoryName) {
+            $cleanName = trim($categoryName);
+            if (empty($cleanName)) continue;
+            
+            $term = term_exists($cleanName, 'product_cat');
+            
+            if (!$term) {
+                $term = wp_insert_term($cleanName, 'product_cat', [
+                    'slug' => sanitize_title($cleanName)
+                ]);
+            }
+            
+            if (!is_wp_error($term) && isset($term['term_id'])) {
+                $category_ids[] = $term['term_id'];
+            }
+        }
+        
+        if (!empty($category_ids)) {
+            wp_set_object_terms($product_id, $category_ids, 'product_cat');
+        }
+    }
+}
+
+private static function processProductImages($product_id, $productData) {
+    // Procesar imágenes si existe la función
+    if (method_exists('cMulticatalogoGNUCatalog', 'asignar_imagen_principal_y_galeria_zecat')) {
+        $images = [];
+        
+        // Extraer URLs de imágenes de la galería
+        if (isset($productData['galery']) && is_array($productData['galery'])) {
+            foreach ($productData['galery'] as $imageUrl) {
+                $images[] = ['image_url' => $imageUrl];
+            }
+        }
+        
+        if (!empty($images)) {
+            cMulticatalogoGNUCatalog::asignar_imagen_principal_y_galeria_zecat($product_id, $images);
+        }
+    }
+    
+    // Fallback: Si no hay función específica, usar método nativo de WooCommerce
+    elseif (isset($productData['galery']) && is_array($productData['galery']) && !empty($productData['galery'])) {
+        $gallery_ids = [];
+        
+        foreach ($productData['galery'] as $imageUrl) {
+            $image_id = self::uploadImageFromUrl($imageUrl);
+            if ($image_id) {
+                $gallery_ids[] = $image_id;
+            }
+        }
+        
+        if (!empty($gallery_ids)) {
+            // Primera imagen como imagen principal
+            $product = wc_get_product($product_id);
+            $product->set_image_id($gallery_ids[0]);
+            
+            // Resto como galería
+            if (count($gallery_ids) > 1) {
+                $product->set_gallery_image_ids(array_slice($gallery_ids, 1));
+            }
+            
+            $product->save();
+        }
+    }
+}
+
+private static function uploadImageFromUrl($image_url) {
+    // Función auxiliar para subir imágenes desde URL
+    require_once(ABSPATH . 'wp-admin/includes/image.php');
+    require_once(ABSPATH . 'wp-admin/includes/file.php');
+    require_once(ABSPATH . 'wp-admin/includes/media.php');
+    
+    $image_id = media_sideload_image($image_url, 0, '', 'id');
+    
+    return is_wp_error($image_id) ? false : $image_id;
+}
+
+
 }
