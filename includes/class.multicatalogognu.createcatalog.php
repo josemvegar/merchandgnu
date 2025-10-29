@@ -151,7 +151,7 @@ class cMulticatalogoGNUCatalog {
         ));
     }
     
-    /*public static function fcreateWooCommerceProductsFromZecatJsonGlobo() {
+    /*public static function fcreateWooCommerceProductsFromJsonGlobo() {
         check_ajax_referer('publicar_zecat_nonce', 'nonce');
         
         if (!current_user_can('manage_options')) {
@@ -780,7 +780,7 @@ class cMulticatalogoGNUCatalog {
 
 
 
-public static function fcreateWooCommerceProductsFromZecatJsonGlobo() {
+public static function fcreateWooCommerceProductsFromJsonGlobo() {
     check_ajax_referer('publicar_zecat_nonce', 'nonce');
     
     if (!current_user_can('manage_options')) {
@@ -988,8 +988,18 @@ private static function createInfoAttributes($productData) {
             $attribute = new WC_Product_Attribute();
             $attribute->set_name($attributeName);
             
-            $cleanedValue = str_replace('\\', '', $attributeValue);
-            $attribute->set_options([$cleanedValue]);
+            // ✅ ADAPTACIÓN: Manejar tanto strings como arrays
+            if (is_array($attributeValue)) {
+                // Si es array, usar todos los valores
+                $cleanedValues = array_map(function($value) {
+                    return str_replace('\\', '', $value);
+                }, $attributeValue);
+                $attribute->set_options($cleanedValues);
+            } else {
+                // Si es string, usar como único valor
+                $cleanedValue = str_replace('\\', '', $attributeValue);
+                $attribute->set_options([$cleanedValue]);
+            }
             
             $attribute->set_position($position);
             $attribute->set_visible(true);
@@ -1036,7 +1046,8 @@ private static function createProductVariations($product_id, $productData, $pare
         $variation->set_stock_quantity($variation_stock);
         $variation->set_stock_status($variation_stock > 0 ? 'instock' : 'outofstock');
         
-        $variationSku = $productData['ID'] . '-var-' . ($index + 1);
+        //$variationSku = $productData['ID'] . '-var-' . ($index + 1);
+        $variationSku = $variationData['sku'] ?? ($productData['ID'] . '-var-' . ($index + 1));
         $variation->set_sku($variationSku);
         
         $variation->save();
@@ -1081,29 +1092,61 @@ private static function processProductTaxonomies($product_id, $productData) {
 }
 
 private static function processProductImages($product_id, $productData) {
+    $gallery_ids = [];
+    
+    // 1. Procesar galería
     if (isset($productData['galery']) && is_array($productData['galery']) && !empty($productData['galery'])) {
-        $gallery_ids = [];
-        
         foreach ($productData['galery'] as $imageUrl) {
             $image_id = self::uploadImageFromUrl($imageUrl);
             if ($image_id) {
                 $gallery_ids[] = $image_id;
             }
         }
+    }
+
+    if (!empty($gallery_ids)) {
+        $product = wc_get_product($product_id);
         
-        if (!empty($gallery_ids)) {
-            $product = wc_get_product($product_id);
-            
-            $featured_image_id = $gallery_ids[0];
-            $product->set_image_id($featured_image_id);
-            
-            if (count($gallery_ids) > 1) {
-                $gallery_image_ids = array_slice($gallery_ids, 1);
-                $product->set_gallery_image_ids($gallery_image_ids);
-            }
-            
-            $product->save();
+        if (!$product) {
+            return;
         }
+
+        // 2. Determinar imagen destacada
+        $featured_image_id = null;
+        
+        if (isset($productData['image']) && !empty($productData['image'])) {
+            // Extraer URL del HTML <a href="URL">
+            preg_match('/href="([^"]*)"/', $productData['image'], $matches);
+            if (isset($matches[1])) {
+                $featured_url = $matches[1];
+                $featured_image_id = self::uploadImageFromUrl($featured_url);
+            }
+        }
+        
+        // Si no hay imagen destacada específica, usar primera de galería
+        if (!$featured_image_id && !empty($gallery_ids)) {
+            $featured_image_id = $gallery_ids[0];
+        }
+        
+        // 3. Asignar imagen destacada
+        if ($featured_image_id) {
+            $product->set_image_id($featured_image_id);
+        }
+        
+        // 4. Preparar galería (excluyendo la imagen destacada si está en la galería)
+        $gallery_for_product = $gallery_ids;
+        if ($featured_image_id && ($key = array_search($featured_image_id, $gallery_for_product)) !== false) {
+            unset($gallery_for_product[$key]);
+            $gallery_for_product = array_values($gallery_for_product);
+        }
+        
+        // 5. Asignar galería
+        if (!empty($gallery_for_product)) {
+            $product->set_gallery_image_ids($gallery_for_product);
+        }
+        
+        // 6. Guardar cambios
+        $product->save();
     }
 }
 
@@ -1112,24 +1155,118 @@ private static function uploadImageFromUrl($image_url) {
     require_once(ABSPATH . 'wp-admin/includes/file.php');
     require_once(ABSPATH . 'wp-admin/includes/media.php');
     
+    $temp_file = null;
+    
     try {
         $temp_file = download_url($image_url);
         
         if (is_wp_error($temp_file)) {
             return false;
         }
+
+        // Limpiar el nombre del archivo
+        $original_filename = basename(parse_url($image_url, PHP_URL_PATH));
         
+        // Remover parámetros de query si existen
+        if (strpos($original_filename, '?') !== false) {
+            $original_filename = strstr($original_filename, '?', true);
+        }
+        
+        // Decodificar URL
+        $decoded_filename = urldecode($original_filename);
+        
+        // Limpiar caracteres problemáticos pero mantener la extensión
+        $pathinfo = pathinfo($decoded_filename);
+        $clean_basename = preg_replace('/[^\w\s\-\.]/', '_', $pathinfo['filename']);
+        $clean_basename = preg_replace('/_+/', '_', $clean_basename);
+        $clean_filename = $clean_basename . '.' . ($pathinfo['extension'] ?? 'jpg');
+        
+        // Si el nombre queda vacío, usar uno genérico
+        if (empty($clean_basename)) {
+            $clean_filename = 'product_image_' . time() . '_' . rand(1000, 9999) . '.' . ($pathinfo['extension'] ?? 'jpg');
+        }
+
+        // Primer intento con nombre limpio
+        $image_id = self::sideloadImage($temp_file, $clean_filename, $image_url);
+        
+        if ($image_id) {
+            return $image_id;
+        }
+        
+        // Segundo intento con nombre simple
+        $simple_filename = 'product_image_' . time() . '_' . rand(1000, 9999) . '.' . ($pathinfo['extension'] ?? 'jpg');
+        $image_id = self::sideloadImage($temp_file, $simple_filename, $image_url, true);
+        
+        if ($image_id) {
+            return $image_id;
+        }
+        
+        return false;
+        
+    } catch (Exception $e) {
+        return false;
+    } finally {
+        // Limpiar archivo temporal siempre al final
+        if ($temp_file && file_exists($temp_file)) {
+            @unlink($temp_file);
+        }
+    }
+}
+
+// Método auxiliar para manejar la subida
+private static function sideloadImage($temp_file, $filename, $original_url, $is_fallback = false) {
+    if (!file_exists($temp_file)) {
+        return false;
+    }
+    
+    try {
+        $file_size = filesize($temp_file);
+        if ($file_size === false || $file_size == 0) {
+            return false;
+        }
+        
+        $file_type = wp_check_filetype($filename);
+        $mime_type = $file_type['type'] ?: 'image/jpeg';
+
         $file = array(
-            'name' => basename($image_url),
-            'type' => 'image/jpeg',
+            'name' => $filename,
+            'type' => $mime_type,
             'tmp_name' => $temp_file,
             'error' => 0,
-            'size' => filesize($temp_file),
+            'size' => $file_size,
         );
+
+        // Para el fallback, intentamos desactivar algunas verificaciones
+        if ($is_fallback) {
+            add_filter('wp_check_filetype_and_ext', function($types, $file, $filename, $mimes) {
+                // Forzar tipo JPEG si hay problemas de detección
+                if (empty($types['type']) || empty($types['ext'])) {
+                    $pathinfo = pathinfo($filename);
+                    $ext = strtolower($pathinfo['extension']);
+                    if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+                        return array(
+                            'ext' => $ext,
+                            'type' => 'image/' . ($ext === 'jpg' ? 'jpeg' : $ext),
+                            'proper_filename' => false
+                        );
+                    }
+                }
+                return $types;
+            }, 10, 4);
+        }
+
+        $overrides = array(
+            'test_form' => false,
+            'test_size' => true,
+            'test_upload' => true,
+        );
+
+        $image_id = media_handle_sideload($file, 0, '', $overrides);
         
-        $image_id = media_handle_sideload($file, 0);
-        
-        @unlink($temp_file);
+        // Remover filtro si se agregó
+        if ($is_fallback) {
+            remove_all_filters('wp_check_filetype_and_ext');
+        }
         
         if (is_wp_error($image_id)) {
             return false;

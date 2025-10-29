@@ -7,9 +7,11 @@ Implementación de aumento de precio original
 Actualización de precio y stock automática
 
 Publicación de productos con las variaciones y atributos
-    - Hacer que se publiquen con las imágenes.
-    - Hacer que los atributos se asignen bien.
-    - Hacer que el Ajax ejecute todo.
-
 
 Categorías según el doc enviado.
+
+Incluir los pesos y medidas en el json principal para agregar a los productos.
+
+CDO con variantes: 18394
+CDO varios colores: 18582
+CDO 1 sola 1778

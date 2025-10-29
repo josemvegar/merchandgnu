@@ -22,6 +22,9 @@ class cMulticatalogoGNUCron {
 
         // Hook para subir productos cada hora
         add_action('multicatalogo_hourly_upload_products', array('cMulticatalogoGNUCron', 'upload_all_products'));
+
+        // Registrar el hook para los lotes
+        add_action('multicatalogo_batch_upload', array('cMulticatalogoGNUCron', 'handle_batch_upload'), 10, 2);
     }
 
     /**
@@ -61,8 +64,13 @@ class cMulticatalogoGNUCron {
         error_log('[MultiCatalogo Cron] Iniciando subida de productos - ' . current_time('mysql'));
         
         try {
-            error_log('[MultiCatalogo Cron] Subida de productos completada exitosamente');
+            error_log('[MultiCatalogo Cron] Subida de productos ZECAT inciada...');
             self::upload_from_json("ZECAT");
+
+            error_log('[MultiCatalogo Cron] Subida de productos ZECAT inciada...');
+            self::upload_from_json("CDO");
+
+            error_log('[MultiCatalogo Cron] Subida de productos completada exitosamente');
             
         } catch (Exception $e) {
             error_log('[MultiCatalogo Cron] Error al subir productos: ' . $e->getMessage());
@@ -139,14 +147,14 @@ class cMulticatalogoGNUCron {
                     $variableAttributes['Tamaño'][] = $varAttr['size'];
                     $variableAttributes['Color'][] = $varAttr['color'];
 
-                    $added = ['Combinations' => ['Tamaño' => $varAttr['size'], 'Color' => $varAttr['color']], 'Stock' => $varAttr['stock'], 'Precio' => $zecatProduct['price']];
+                    $added = ['Combinations' => ['Tamaño' => $varAttr['size'], 'Color' => $varAttr['color']], 'Stock' => $varAttr['stock'], 'Precio' => $zecatProduct['price'], 'sku' => 'zt0' . $varAttr['sku']];
                 } else {
                     $variableAttributes['Variante'][] = $varAttr['element_description_1'] . ' / ' . $varAttr['element_description_2'] . ' / ' . $varAttr['element_description_3'];
 
-                    $added = [ 
-                        'Combinations' => ['Variante' => $varAttr['element_description_1'] . ' / ' . $varAttr['element_description_2'] . ' / ' . $varAttr['element_description_3']], 
-                        'Stock' => $varAttr['stock'],
-                        'Precio' => $zecatProduct['price']
+                    $added = [ 'Combinations' => ['Variante' => $varAttr['element_description_1'] . ' / ' . $varAttr['element_description_2'] . ' / ' . $varAttr['element_description_3']], 
+                            'Stock' => $varAttr['stock'],
+                            'Precio' => $zecatProduct['price'],
+                            'sku' => 'zt0' . $varAttr['sku']
                     ];
                 }
 
@@ -178,6 +186,58 @@ class cMulticatalogoGNUCron {
 
         // --- CDO ---
         foreach ($productsCDO as $cdoProduct) {
+
+            $images = [];
+            $variableAttributes = [];
+            $infoAttributes = [];
+            $variations = [];
+            foreach ($cdoProduct['variants'] as $variant) {
+                $images[] = $variant['picture']['original'];
+                $images[] = $variant['detail_picture']['original'];
+                $images[] = $variant['other_pictures'][0]['original'];
+
+                if (isset($variant['color'])) {
+                    $color_name = mb_convert_case(trim($variant['color']['name']), MB_CASE_TITLE, "UTF-8");
+                    $variableAttributes['Color'][] = $color_name;
+                    
+                    $variations[] = [
+                        'Combinations' => ['Color' => $color_name],
+                        'Stock' => isset($variant['stock_available']) ? $variant['stock_available'] : 0,
+                        'Precio' => isset($variant['list_price']) ? floatval($variant['list_price']) : 0,
+                        'sku' => 'ss0' . $variant['id']
+                    ];
+                } elseif (isset($variant['colors'])){
+                    // Crear array con todos los nombres de colores
+                    $color_names = [];
+                    foreach ($variant['colors'] as $color) {
+                        $color_names[] = mb_convert_case(trim($color['name']), MB_CASE_TITLE, "UTF-8");
+                    }
+                    
+                    // Combinar colores en un string separado por "/"
+                    $colors_string = implode(' / ', $color_names);
+                    
+                    $variableAttributes['Color'][] = $colors_string;
+
+                    $variations[] = [
+                        'Combinations' => ['Color' => $colors_string],
+                        'Stock' => isset($variant['stock_available']) ? $variant['stock_available'] : 0,
+                        'Precio' => isset($variant['list_price']) ? floatval($variant['list_price']) : 0,
+                        'sku' => 'ss0' . $variant['id']
+                    ];
+                }
+
+
+            }
+            if (isset($cdoProduct['icons']) && !empty($cdoProduct['icons']) ) {
+                 foreach ($cdoProduct['icons'] as $icon) {
+                    if ($icon['label'] != $icon['short_name']) {
+                        $infoAttributes['Métodos de impresión'][] = mb_convert_case(trim($icon['label']), MB_CASE_TITLE, "UTF-8");
+                    }else{
+                        $infoAttributes['Información adicional'][] = mb_convert_case(trim($icon['label']), MB_CASE_TITLE, "UTF-8");
+                    }
+                }
+            }
+
             $categories = [];
             foreach ($cdoProduct['categories'] as $category) {
                 $categories[] = mb_convert_case(trim($category['name']), MB_CASE_TITLE, "UTF-8");
@@ -188,13 +248,18 @@ class cMulticatalogoGNUCron {
                 'sku_proveedor' => $cdoProduct['code'],
                 'nombre_del_producto' => $cdoProduct['name'],
                 'descripcion' => $cdoProduct['description'],
-                'precio' => isset($cdoProduct['variants'][0]['list_price']) ? $cdoProduct['variants'][0]['list_price'] : 0,
+                'precio' => isset($cdoProduct['variants'][0]['list_price']) ? floatval($cdoProduct['variants'][0]['list_price']) : 0,
                 'image' => isset($cdoProduct['variants'][0]['picture']['original'])
                     ? '<a href="' . $cdoProduct['variants'][0]['picture']['original'] . '" target="_blank">Ver imagen</a>'
                     : '',
+                'galery' => $images,
                 'stock' => isset($cdoProduct['variants'][0]['stock_available']) ? $cdoProduct['variants'][0]['stock_available'] : 0,
                 'proveedor' => 'CDO',
-                'categorias' => $categories
+                'categorias' => $categories,
+                'infoAttributes' => $infoAttributes,
+                'isVariable' => count($variableAttributes) > 0 ? true : false,
+                'variableAttributes' => $variableAttributes,
+                'variations' => $variations
             ];
         }
 
@@ -396,7 +461,7 @@ class cMulticatalogoGNUCron {
     /**
      * Subir productos de Zecat desde JSON (versión silenciosa para cron)
      */
-    private static function upload_from_json($provider) {
+    private static function upload_from_json($provider, $offset = 0, $batch_size = 5) {
         // Ruta al archivo JSON normalizado
         $filePathZecat = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
 
@@ -413,12 +478,11 @@ class cMulticatalogoGNUCron {
             return false;
         }
 
-        // Acceder al array 'data' si existe
         if (isset($productsData['data'])) {
             $productsData = $productsData['data'];
         }
 
-        // Filtrar solo productos del proveedor enviado
+        // Filtrar solo productos del proveedor
         $productsFilter = array_filter($productsData, function($product) use ($provider) {
             return isset($product['proveedor']) && $product['proveedor'] === $provider;
         });
@@ -427,14 +491,16 @@ class cMulticatalogoGNUCron {
         $total_productos = count($productsFilter);
         
         if ($total_productos === 0) {
-            error_log('[MultiCatalogo Cron] No se encontraron productos ZECAT para procesar.');
+            error_log('[MultiCatalogo Cron] No se encontraron productos ' . $provider . ' para procesar.');
             return false;
         }
 
+        // Procesar lote actual
+        $productBatch = array_slice($productsFilter, $offset, $batch_size);
         $creados = 0;
         $errors = [];
 
-        foreach ($productsFilter as $productData) {
+        foreach ($productBatch as $productData) {
             try {
                 $result = cMulticatalogoGNUCatalog::createOrUpdateProductFromNormalizedData($productData);
                 if ($result) {
@@ -447,12 +513,31 @@ class cMulticatalogoGNUCron {
             }
         }
 
-        // Log resumen final
-        if (!empty($errors)) {
-            error_log("[MultiCatalogo Cron] Proceso completado con errores. Creados: {$creados}/{$total_productos}. Errores: " . count($errors));
+        $nuevo_offset = $offset + $batch_size;
+        $progreso = round(($nuevo_offset / $total_productos) * 100, 2);
+
+        // Log del progreso
+        error_log("[MultiCatalogo Cron] Lote {$provider}: {$offset}-{$nuevo_offset} de {$total_productos} ({$progreso}%) - Creados: {$creados}");
+
+        // Si hay más productos, programar siguiente lote
+        if ($nuevo_offset < $total_productos) {
+            $next_batch_time = time() + 10; // 10 segundos de delay
+            
+            // Programar siguiente lote
+            if (!wp_next_scheduled('multicatalogo_batch_upload', array($provider, $nuevo_offset))) {
+                wp_schedule_single_event($next_batch_time, 'multicatalogo_batch_upload', array($provider, $nuevo_offset));
+                error_log("[MultiCatalogo Cron] Siguiente lote programado para: " . date('H:i:s', $next_batch_time));
+            }
+            
         } else {
-            error_log("[MultiCatalogo Cron] Proceso completado exitosamente. Creados: {$creados}/{$total_productos}");
+            // Proceso completado
+            error_log("[MultiCatalogo Cron] ✅ IMPORTACIÓN {$provider} COMPLETADA: {$total_productos} productos procesados");
         }
+    }
+
+    public static function handle_batch_upload($provider, $offset) {
+        error_log("[MultiCatalogo Cron] Ejecutando lote para {$provider} desde offset: {$offset}");
+        self::upload_from_json($provider, $offset);
     }
 
 }

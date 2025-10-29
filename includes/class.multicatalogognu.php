@@ -36,7 +36,7 @@ class cMultiCatalogoGNU {
 
 		add_action('wp_ajax_PublicarProductosPromoImport', array( 'cMulticatalogoGNUCatalog', 'fcreateWooCommerceProductsFromPromoImportJsonGlobo' ));
 		
-		add_action('wp_ajax_PublicarProductosZecat', array( 'cMulticatalogoGNUCatalog', 'fcreateWooCommerceProductsFromZecatJsonGlobo' ));
+		add_action('wp_ajax_PublicarProductosZecat', array( 'cMulticatalogoGNUCatalog', 'fcreateWooCommerceProductsFromJsonGlobo' ));
 
 		add_action('wp_ajax_PublicarProductosCDO', array( 'cMulticatalogoGNUCatalog', 'fcreateWooCommerceProductsFromCDOJsonGlobo' ));
 
@@ -101,7 +101,7 @@ class cMultiCatalogoGNU {
 		);
 
 	    ///funcion para procesar por lotes el stock
-		wp_localize_script('admin-multicatalogognu', 'fcreateWooCommerceProductsFromZecatJsonGlobo',
+		wp_localize_script('admin-multicatalogognu', 'fcreateWooCommerceProductsFromJsonGlobo',
 		    array(
 				'ajax_url' => admin_url('admin-ajax.php'),
 				'nonce'    => wp_create_nonce('publicar_zecat_nonce'),

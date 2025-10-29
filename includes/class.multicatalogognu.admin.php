@@ -50,18 +50,19 @@ class cMulticatalogoGNUAdmin {
             foreach ($zecatProduct['images'] as $image) {
                 $images[] = $image['image_url'];
             }
-            foreach ($zecatProduct['products'] as $varAttr) {
+            foreach ($zecatProduct['products'] as $index => $varAttr) {
                 if ($varAttr['size'] !== '' && $varAttr['color'] !== '') {
                     $variableAttributes['Tamaño'][] = $varAttr['size'];
                     $variableAttributes['Color'][] = $varAttr['color'];
 
-                    $added = ['Combinations' => ['Tamaño' => $varAttr['size'], 'Color' => $varAttr['color']], 'Stock' => $varAttr['stock'], 'Precio' => $zecatProduct['price']];
+                    $added = ['Combinations' => ['Tamaño' => $varAttr['size'], 'Color' => $varAttr['color']], 'Stock' => $varAttr['stock'], 'Precio' => $zecatProduct['price'], 'sku' => 'zt0' . $varAttr['sku']];
                 }else{
                     $variableAttributes['Variante'][] = $varAttr['element_description_1'] . ' / ' . $varAttr['element_description_2'] . ' / ' . $varAttr['element_description_3'];
 
                     $added = [ 'Combinations' => ['Variante' => $varAttr['element_description_1'] . ' / ' . $varAttr['element_description_2'] . ' / ' . $varAttr['element_description_3']], 
                             'Stock' => $varAttr['stock'],
-                            'Precio' => $zecatProduct['price']
+                            'Precio' => $zecatProduct['price'],
+                            'sku' => 'zt0' . $varAttr['sku']
                     ];
                 }
 
@@ -94,6 +95,58 @@ class cMulticatalogoGNUAdmin {
     
         // --- CDO ---
         foreach ($productsCDO as $cdoProduct) {
+
+            $images = [];
+            $variableAttributes = [];
+            $infoAttributes = [];
+            $variations = [];
+            foreach ($cdoProduct['variants'] as $variant) {
+                $images[] = $variant['picture']['original'];
+                $images[] = $variant['detail_picture']['original'];
+                $images[] = $variant['other_pictures'][0]['original'];
+
+                if (isset($variant['color'])) {
+                    $color_name = mb_convert_case(trim($variant['color']['name']), MB_CASE_TITLE, "UTF-8");
+                    $variableAttributes['Color'][] = $color_name;
+                    
+                    $variations[] = [
+                        'Combinations' => ['Color' => $color_name],
+                        'Stock' => isset($variant['stock_available']) ? $variant['stock_available'] : 0,
+                        'Precio' => isset($variant['list_price']) ? floatval($variant['list_price']) : 0,
+                        'sku' => 'ss0' . $variant['id']
+                    ];
+                } elseif (isset($variant['colors'])){
+                    // Crear array con todos los nombres de colores
+                    $color_names = [];
+                    foreach ($variant['colors'] as $color) {
+                        $color_names[] = mb_convert_case(trim($color['name']), MB_CASE_TITLE, "UTF-8");
+                    }
+                    
+                    // Combinar colores en un string separado por "/"
+                    $colors_string = implode(' / ', $color_names);
+                    
+                    $variableAttributes['Color'][] = $colors_string;
+
+                    $variations[] = [
+                        'Combinations' => ['Color' => $colors_string],
+                        'Stock' => isset($variant['stock_available']) ? $variant['stock_available'] : 0,
+                        'Precio' => isset($variant['list_price']) ? floatval($variant['list_price']) : 0,
+                        'sku' => 'ss0' . $variant['id']
+                    ];
+                }
+
+
+            }
+            if (isset($cdoProduct['icons']) && !empty($cdoProduct['icons']) ) {
+                 foreach ($cdoProduct['icons'] as $icon) {
+                    if ($icon['label'] != $icon['short_name']) {
+                        $infoAttributes['Métodos de impresión'][] = mb_convert_case(trim($icon['label']), MB_CASE_TITLE, "UTF-8");
+                    }else{
+                        $infoAttributes['Información adicional'][] = mb_convert_case(trim($icon['label']), MB_CASE_TITLE, "UTF-8");
+                    }
+                }
+            }
+
             $categories = [];
             foreach ($cdoProduct['categories'] as $category) {
                 $categories[] = mb_convert_case(trim($category['name']), MB_CASE_TITLE, "UTF-8");
@@ -104,13 +157,18 @@ class cMulticatalogoGNUAdmin {
                 'sku_proveedor' => $cdoProduct['code'],
                 'nombre_del_producto' => $cdoProduct['name'],
                 'descripcion' => $cdoProduct['description'],
-                'precio' => isset($cdoProduct['variants'][0]['list_price']) ? $cdoProduct['variants'][0]['list_price'] : 0,
+                'precio' => isset($cdoProduct['variants'][0]['list_price']) ? floatval($cdoProduct['variants'][0]['list_price']) : 0,
                 'image' => isset($cdoProduct['variants'][0]['picture']['original'])
                     ? '<a href="' . $cdoProduct['variants'][0]['picture']['original'] . '" target="_blank">Ver imagen</a>'
                     : '',
+                'galery' => $images,
                 'stock' => isset($cdoProduct['variants'][0]['stock_available']) ? $cdoProduct['variants'][0]['stock_available'] : 0,
                 'proveedor' => 'CDO',
-                'categorias' => $categories
+                'categorias' => $categories,
+                'infoAttributes' => $infoAttributes,
+                'isVariable' => count($variableAttributes) > 0 ? true : false,
+                'variableAttributes' => $variableAttributes,
+                'variations' => $variations
             ];
         }
     

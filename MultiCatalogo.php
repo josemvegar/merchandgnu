@@ -40,6 +40,18 @@ require_once( MUTICATALOGOGNU__PLUGIN_DIR . '/includes/class.multicatalogognu.cr
 
 add_action( 'init', array( 'cMultiCatalogoGNU', 'init' ) );
 
+// Agregar intervalo de 30 minutos para cron jobs
+add_filter('cron_schedules', 'multicatalogo_add_cron_intervals');
+function multicatalogo_add_cron_intervals($schedules) {
+    // Intervalo de 30 minutos
+    $schedules['thirty_minutes'] = array(
+        'interval' => 30 * 60, // 1800 segundos
+        'display' => __('Cada 30 minutos')
+    );
+    
+    return $schedules;
+}
+
 // ==================== ACTIVACIÓN DEL PLUGIN ====================
 register_activation_hook( __FILE__, 'multicatalogognu_activate' );
 
@@ -100,11 +112,13 @@ function multicatalogognu_activate() {
     }
     
     if ( ! wp_next_scheduled( 'multicatalogo_hourly_upload_products' ) ) {
-        wp_schedule_event( time(), 'thirty_minutes', 'multicatalogo_hourly_upload_products' );
+        //wp_schedule_event( time(), 'thirty_minutes', 'multicatalogo_hourly_upload_products' );
+        wp_schedule_event( time(), 'hourly', 'multicatalogo_hourly_upload_products' );
     }
 
     if ( ! wp_next_scheduled( 'multicatalogo_hourly_update_prices_stock' ) ) {
-        wp_schedule_event( time(), 'thirty_minutes', 'multicatalogo_hourly_update_prices_stock' );
+        //wp_schedule_event( time(), 'thirty_minutes', 'multicatalogo_hourly_update_prices_stock' );
+        wp_schedule_event( time(), 'hourly', 'multicatalogo_hourly_update_prices_stock' );
     }
 }
 
