@@ -23,8 +23,9 @@ class cMulticatalogoGNUCron {
         // Hook para subir productos cada hora
         add_action('multicatalogo_hourly_upload_products', array('cMulticatalogoGNUCron', 'upload_all_products'));
 
-        // Registrar el hook para los lotes
-        add_action('multicatalogo_batch_upload', array('cMulticatalogoGNUCron', 'handle_batch_upload'), 10, 2);
+        // Registrar hooks separados para cada proveedor
+        add_action('multicatalogo_batch_upload_zecat', array('cMulticatalogoGNUCron', 'handle_batch_upload'), 10, 2);
+        add_action('multicatalogo_batch_upload_cdo', array('cMulticatalogoGNUCron', 'handle_batch_upload'), 10, 2);
     }
 
     /**
@@ -521,12 +522,14 @@ class cMulticatalogoGNUCron {
 
         // Si hay más productos, programar siguiente lote
         if ($nuevo_offset < $total_productos) {
-            $next_batch_time = time() + 10; // 10 segundos de delay
-            
-            // Programar siguiente lote
-            if (!wp_next_scheduled('multicatalogo_batch_upload', array($provider, $nuevo_offset))) {
-                wp_schedule_single_event($next_batch_time, 'multicatalogo_batch_upload', array($provider, $nuevo_offset));
-                error_log("[MultiCatalogo Cron] Siguiente lote programado para: " . date('H:i:s', $next_batch_time));
+            $next_batch_time = time() + 0; // 10 segundos de delay
+
+            // Al programar el siguiente lote, usa el hook específico del proveedor
+            $cron_hook = 'multicatalogo_batch_upload_' . strtolower($provider);
+
+            if (!wp_next_scheduled($cron_hook, array($provider, $nuevo_offset))) {
+                wp_schedule_single_event($next_batch_time, $cron_hook, array($provider, $nuevo_offset));
+                error_log("[MultiCatalogo Cron] Siguiente lote programado para: " . date('H:i:s', $next_batch_time) . " - Proveedor: " . $provider);
             }
             
         } else {

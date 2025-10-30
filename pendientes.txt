@@ -12,6 +12,10 @@ Categorías según el doc enviado.
 
 Incluir los pesos y medidas en el json principal para agregar a los productos.
 
+Que cuando se vaya a comenzar de nuevo una subida de productos, si existe en cola alguno de los cron de lote de cualquier proveedor, no comience.
+
+Ver qué hacer con los productos cuando se dice "Este está, no lo subas".
+
 CDO con variantes: 18394
 CDO varios colores: 18582
 CDO 1 sola 1778
