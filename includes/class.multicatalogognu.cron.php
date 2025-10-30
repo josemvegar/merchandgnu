@@ -71,6 +71,9 @@ class cMulticatalogoGNUCron {
             error_log('[MultiCatalogo Cron] Subida de productos ZECAT inciada...');
             self::upload_from_json("CDO");
 
+            /*error_log('[MultiCatalogo Cron] Subida de productos Promo Import inciada...');
+            self::upload_from_json("promoimport");*/
+
             error_log('[MultiCatalogo Cron] Subida de productos completada exitosamente');
             
         } catch (Exception $e) {
@@ -266,6 +269,74 @@ class cMulticatalogoGNUCron {
 
         // --- PromoImport ---
         foreach ($productsPromo as $promoProduct) {
+            $images = [$promoProduct['fotoPrincipal']];
+            foreach ($promoProduct['images'] as $image) {
+                $images[] = $image['src'];
+            }
+
+            $variableAttributes = [];
+            $variations = [];
+            foreach ($promoProduct['atributos'] as $atributo) {
+                if (isset($atributo['value']) && $atributo['value'] !== '') {
+                    $variableAttributes['Color'][] = mb_convert_case(trim($atributo['value']), MB_CASE_TITLE, "UTF-8");
+                }
+
+                $variations[] = [
+                    'Combinations' => isset($atributo['value']) ? ['Color' => mb_convert_case(trim($atributo['value']), MB_CASE_TITLE, "UTF-8")] : [],
+                    'Stock' => isset($atributo['stock']) ? intval($atributo['stock']) : 0,
+                    'Precio' => isset($promoProduct['precio']) ? floatval($promoProduct['precio']) : 0,
+                    'sku' => 'pi0' . $promoProduct['sku'] . '-' . $atributo['value']
+                ];
+            }
+
+            // EXTRAER ATRIBUTOS DE LA DESCRIPCIÓN
+            $infoAttributes = [];
+            $descripcion = $promoProduct['descripcion'];
+            
+            // Buscar todos los atributos que comienzan con • y terminan con :
+            if (preg_match_all('/•\s*([^:]+):(.*?)(?=<br\s*\/>|$)/s', $descripcion, $matches, PREG_SET_ORDER)) {
+                foreach ($matches as $match) {
+                    $clave = trim($match[1]);
+                    $valor = trim($match[2]);
+                    
+                    // Ignorar claves relacionadas con colores
+                    if (stripos($clave, 'color') !== false) {
+                        continue;
+                    }
+                    
+                    // Si el valor está vacío, saltar
+                    if (empty($valor)) {
+                        continue;
+                    }
+                    
+                    // Procesar el valor para dividir en array si tiene separadores
+                    $valorProcesado = $valor;
+                    
+                    // Si contiene separadores, dividir en array
+                    if (preg_match('/\s*[\/\\\\,]\s*/', $valor)) {
+                        $partes = preg_split('/\s*[\/\\\\,]\s*/', $valor);
+                        $partes = array_map('trim', $partes);
+                        $partes = array_filter($partes);
+                        
+                        // Eliminar puntos finales de CADA elemento
+                        $partes = array_map(function($item) {
+                            return rtrim($item, '.');
+                        }, $partes);
+                        
+                        if (count($partes) > 1) {
+                            $valorProcesado = array_values($partes);
+                        } else {
+                            $valorProcesado = reset($partes);
+                        }
+                    } else {
+                        // Si no hay separadores, eliminar punto final del string completo
+                        $valorProcesado = rtrim($valor, '.');
+                    }
+                    
+                    $infoAttributes[$clave] = $valorProcesado;
+                }
+            }
+
             $categorias = [];
             foreach ($promoProduct['categorias'] as $categoria) {
                 $categorias[] = mb_convert_case(trim($categoria['value']), MB_CASE_TITLE, "UTF-8");
@@ -276,13 +347,18 @@ class cMulticatalogoGNUCron {
                 'sku_proveedor' => $promoProduct['sku'],
                 'nombre_del_producto' => $promoProduct['titulo'],
                 'descripcion' => strip_tags($promoProduct['descripcion']),
-                'precio' => $promoProduct['precio'],
+                'precio' => floatval($promoProduct['precio']),
                 'image' => isset($promoProduct['fotoPrincipal'])
                     ? '<a href="' . $promoProduct['fotoPrincipal'] . '" target="_blank">Ver imagen</a>'
                     : '',
+                'galery' => $images,
                 'stock' => isset($promoProduct['atributos'][0]['stock']) ? intval($promoProduct['atributos'][0]['stock']) : 0,
                 'proveedor' => 'promoimport',
-                'categorias' => $categorias
+                'categorias' => $categorias,
+                'infoAttributes' => $infoAttributes,
+                'isVariable' => count($variableAttributes) > 0 ? true : false,
+                'variableAttributes' => $variableAttributes,
+                'variations' => $variations
             ];
         }
 

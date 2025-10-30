@@ -1,12 +1,12 @@
 Ajustes de skus * PREGUNTAR SI SON CORRECTOS
 
-Publicación automática
+Publicación automática *
 
 Implementación de aumento de precio original
 
 Actualización de precio y stock automática
 
-Publicación de productos con las variaciones y atributos
+Publicación de productos con las variaciones y atributos *
 
 Categorías según el doc enviado.
 

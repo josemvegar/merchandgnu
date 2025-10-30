@@ -106,8 +106,7 @@ jQuery(document).ready(function () {
       url: Global.url,
       data: {
         action: fgetProductsCdo.action,
-        nonce: Global.nonce,
-
+        nonce: Global.nonce
       },
       beforeSend: function () {
         jQuery(".loadermerchan").show();
@@ -158,65 +157,80 @@ jQuery(document).ready(function () {
   });
 
   jQuery('#PublicarProductosPromoImport').on('click', function () {
-
-
     var totalProductos = 0;
     var productosActualizados = 0;
+    var offsetActual = 0;
     var tamanoLote = 2; // Cambia este valor según tus necesidades
 
     function actualizarLote(offset) {
-      if (offset > totalProductos) {
-        alert('Actualización completada.');
-        jQuery('#newproduct').text(productosActualizados);
-        return;
-      }
       jQuery.ajax({
         url: Global.url,
         type: 'POST',
         data: {
-          action: fcreateWooCommerceProductsFromPromoImportJsonGlobo.action,
+          action: fcreateWooCommerceProductsFromJsonGlobo.action,
           offset: offset,
           tamano_lote: tamanoLote,
-          nonce: fcreateWooCommerceProductsFromPromoImportJsonGlobo.nonce
+          nonce: fcreateWooCommerceProductsFromJsonGlobo.nonce,
+          provider: 'promoimport'
+        },
+        beforeSend: function () {
+          jQuery(".loadermerchan").show();
+          jQuery('.popup-overlay-merchan').fadeIn('slow');
         },
         success: function (response) {
           if (response.success) {
             totalProductos = response.data.total;
-            productosActualizados += response.data.actualizados;
-            console.log('total: ' + response.data.total);
-            console.log('actualizados: ' + response.data.actualizados);
-            console.log('offset: ' + response.data.offset);
+            productosActualizados += response.data.creados;
+            offsetActual = response.data.offset;
 
-            totalProductos = response.data.total;
-            productosActualizados += response.data.actualizados;
+            console.log('Total productos: ' + totalProductos);
+            console.log('Actualizados en este lote: ' + response.data.actualizados);
+            console.log('Total actualizados: ' + productosActualizados);
+            console.log('Siguiente offset: ' + offsetActual);
 
             // Actualizar DOM
             jQuery('#totalProducts').text(totalProductos);
             jQuery('#publishedProducts').text(productosActualizados);
 
-            // Calcular porcentaje
-            var porcentaje = Math.min((productosActualizados / totalProductos) * 100, 100);
+            // Calcular porcentaje basado en OFFSET
+            var porcentaje = Math.min((offsetActual / totalProductos) * 100, 100);
             jQuery('#progress').css('width', porcentaje + '%');
+            jQuery('#progress').text(Math.round(porcentaje) + '%');
 
-
-            if (productosActualizados < totalProductos) {
-              actualizarLote(offset + tamanoLote);
+            // Continuar mientras el offset sea menor al total
+            if (offsetActual < totalProductos) {
+              console.log('Continuando con siguiente lote...');
+              actualizarLote(offsetActual);
             } else {
-              alert('Actualización completada.');
+              console.log('Proceso completado');
+              jQuery(".loadermerchan").hide();
+              jQuery('.popup-overlay-merchan').fadeOut('slow');
+
+              if (response.data.errors && response.data.errors.length > 0) {
+                alert('Proceso completado con algunos errores. Revisa la consola para más detalles.');
+                console.log('Errores:', response.data.errors);
+              } else {
+                alert('Actualización completada exitosamente.');
+              }
             }
 
           } else {
-            console.log(response.data);
-            alert('Error en la actualización.');
+            console.log('Error en respuesta:', response.data);
+            alert('Error en la actualización: ' + (response.data || 'Error desconocido'));
+            jQuery(".loadermerchan").hide();
+            jQuery('.popup-overlay-merchan').fadeOut('slow');
           }
         },
-        error: function () {
-          console.log(response.data);
+        error: function (xhr, status, error) {
+          console.log('Error AJAX:', error);
           alert('Error en la comunicación con el servidor.');
+          jQuery(".loadermerchan").hide();
+          jQuery('.popup-overlay-merchan').fadeOut('slow');
         }
       });
     }
 
+    // Iniciar el proceso
     actualizarLote(0);
   });
 
@@ -243,6 +257,7 @@ jQuery(document).ready(function () {
           jQuery('.popup-overlay-merchan').fadeIn('slow');
         },
         success: function (response) {
+          
           if (response.success) {
             totalProductos = response.data.total;
             productosActualizados += response.data.creados; // ✅ Cambiado de 'actualizados' a 'creados'
