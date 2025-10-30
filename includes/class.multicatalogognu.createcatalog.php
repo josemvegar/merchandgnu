@@ -1206,8 +1206,8 @@ private static function uploadImageFromUrl($image_url) {
     } catch (Exception $e) {
         return false;
     } finally {
-        // Limpiar archivo temporal siempre al final
-        if ($temp_file && file_exists($temp_file)) {
+        // Limpiar archivo temporal siempre al final - VERIFICAR que sea string y exista
+        if ($temp_file && is_string($temp_file) && file_exists($temp_file)) {
             @unlink($temp_file);
         }
     }
