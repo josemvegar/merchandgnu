@@ -26,6 +26,7 @@ class cMulticatalogoGNUCron {
         // Registrar hooks separados para cada proveedor
         add_action('multicatalogo_batch_upload_zecat', array('cMulticatalogoGNUCron', 'handle_batch_upload'), 10, 2);
         add_action('multicatalogo_batch_upload_cdo', array('cMulticatalogoGNUCron', 'handle_batch_upload'), 10, 2);
+        add_action('multicatalogo_batch_upload_promoimport', array('cMulticatalogoGNUCron', 'handle_batch_upload'), 10, 2);
     }
 
     /**
@@ -71,8 +72,8 @@ class cMulticatalogoGNUCron {
             error_log('[MultiCatalogo Cron] Subida de productos ZECAT inciada...');
             self::upload_from_json("CDO");
 
-            /*error_log('[MultiCatalogo Cron] Subida de productos Promo Import inciada...');
-            self::upload_from_json("promoimport");*/
+            error_log('[MultiCatalogo Cron] Subida de productos Promo Import inciada...');
+            self::upload_from_json("promoimport");
 
             error_log('[MultiCatalogo Cron] Subida de productos completada exitosamente');
             

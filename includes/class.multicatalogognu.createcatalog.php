@@ -934,6 +934,9 @@ private static function createVariableAttributes($productData) {
     
     foreach ($variableAttributes as $attributeName => $attributeValues) {
         if (!empty($attributeValues)) {
+            // ✅ CREAR ATRIBUTO GLOBAL si no existe
+            self::createGlobalAttribute($attributeName, $attributeValues);
+            
             $attribute = new WC_Product_Attribute();
             $attribute->set_name($attributeName);
             
@@ -946,7 +949,7 @@ private static function createVariableAttributes($productData) {
             $attribute->set_visible(true);
             $attribute->set_variation(true);
             
-            $taxonomy = sanitize_title($attributeName);
+            $taxonomy = 'pa_' . sanitize_title($attributeName); // ✅ 'pa_' para atributos globales
             $attributes[$taxonomy] = $attribute;
             $position++;
         }
@@ -985,18 +988,19 @@ private static function createInfoAttributes($productData) {
     
     if (isset($productData['infoAttributes']) && is_array($productData['infoAttributes'])) {
         foreach ($productData['infoAttributes'] as $attributeName => $attributeValue) {
+            // ✅ CREAR ATRIBUTO GLOBAL si no existe
+            $attributeValues = is_array($attributeValue) ? $attributeValue : [$attributeValue];
+            self::createGlobalAttribute($attributeName, $attributeValues);
+            
             $attribute = new WC_Product_Attribute();
             $attribute->set_name($attributeName);
             
-            // ✅ ADAPTACIÓN: Manejar tanto strings como arrays
             if (is_array($attributeValue)) {
-                // Si es array, usar todos los valores
                 $cleanedValues = array_map(function($value) {
                     return str_replace('\\', '', $value);
                 }, $attributeValue);
                 $attribute->set_options($cleanedValues);
             } else {
-                // Si es string, usar como único valor
                 $cleanedValue = str_replace('\\', '', $attributeValue);
                 $attribute->set_options([$cleanedValue]);
             }
@@ -1005,12 +1009,68 @@ private static function createInfoAttributes($productData) {
             $attribute->set_visible(true);
             $attribute->set_variation(false);
             
-            $attributes['pa_' . sanitize_title($attributeName)] = $attribute;
+            $taxonomy = 'pa_' . sanitize_title($attributeName); // ✅ 'pa_' para atributos globales
+            $attributes[$taxonomy] = $attribute;
             $position++;
         }
     }
     
     return $attributes;
+}
+
+// ✅ NUEVA FUNCIÓN: Crear atributo global
+private static function createGlobalAttribute($attribute_name, $attribute_values) {
+    $taxonomy = 'pa_' . sanitize_title($attribute_name);
+    
+    // Verificar si el atributo ya existe
+    if (!taxonomy_exists($taxonomy)) {
+        // Crear el atributo global
+        $attribute_id = wc_create_attribute([
+            'name' => $attribute_name,
+            'slug' => sanitize_title($attribute_name),
+            'type' => 'select',
+            'order_by' => 'menu_order',
+            'has_archives' => false
+        ]);
+        
+        if ($attribute_id && !is_wp_error($attribute_id)) {
+            // Registrar la taxonomía
+            register_taxonomy($taxonomy, ['product'], [
+                'labels' => [
+                    'name' => $attribute_name,
+                    'singular_name' => $attribute_name
+                ],
+                'hierarchical' => true,
+                'show_ui' => false,
+                'query_var' => true,
+                'rewrite' => false,
+            ]);
+            
+            // Crear los términos (valores del atributo)
+            foreach ($attribute_values as $value) {
+                $cleaned_value = str_replace('\\', '', $value);
+                $term_slug = sanitize_title($cleaned_value);
+                
+                if (!term_exists($cleaned_value, $taxonomy)) {
+                    wp_insert_term($cleaned_value, $taxonomy, [
+                        'slug' => $term_slug
+                    ]);
+                }
+            }
+        }
+    } else {
+        // Si el atributo ya existe, asegurarse de que tenga todos los términos
+        foreach ($attribute_values as $value) {
+            $cleaned_value = str_replace('\\', '', $value);
+            $term_slug = sanitize_title($cleaned_value);
+            
+            if (!term_exists($cleaned_value, $taxonomy)) {
+                wp_insert_term($cleaned_value, $taxonomy, [
+                    'slug' => $term_slug
+                ]);
+            }
+        }
+    }
 }
 
 private static function createProductVariations($product_id, $productData, $parent_attributes) {

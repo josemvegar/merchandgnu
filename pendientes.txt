@@ -19,3 +19,5 @@ Ver qué hacer con los productos cuando se dice "Este está, no lo subas".
 CDO con variantes: 18394
 CDO varios colores: 18582
 CDO 1 sola 1778
+
+while ($true) { Invoke-WebRequest http://localhost/merchant/ -DisableKeepAlive | Out-Null; Write-Host "Ping enviado: $(Get-Date -Format 'HH:mm:ss')"; Start-Sleep 5 }

@@ -57,23 +57,23 @@ register_activation_hook( __FILE__, 'multicatalogognu_activate' );
 
 function multicatalogognu_activate() {
     global $wpdb;
-    
+
     // Crear tabla de configuración
     $table_config = $wpdb->prefix . 'multicatalogo_config';
     $charset_collate = $wpdb->get_charset_collate();
-    
-    $sql_config = "CREATE TABLE IF NOT EXISTS $table_config (
+
+    $sql_config = "CREATE TABLE $table_config (
         id mediumint(9) NOT NULL AUTO_INCREMENT,
         config_key varchar(100) NOT NULL,
         config_value text NOT NULL,
         PRIMARY KEY  (id),
         UNIQUE KEY config_key (config_key)
     ) $charset_collate;";
-    
+
     // Crear tabla de redirección de categorías
     $table_categories = $wpdb->prefix . 'multicatalogo_category_mapping';
-    
-    $sql_categories = "CREATE TABLE IF NOT EXISTS $table_categories (
+
+    $sql_categories = "CREATE TABLE $table_categories (
         id mediumint(9) NOT NULL AUTO_INCREMENT,
         provider varchar(50) NOT NULL,
         original_category varchar(255) NOT NULL,
@@ -82,29 +82,43 @@ function multicatalogognu_activate() {
         PRIMARY KEY  (id),
         UNIQUE KEY provider_category (provider, original_category)
     ) $charset_collate;";
-    
+
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
     dbDelta( $sql_config );
     dbDelta( $sql_categories );
-    
-    // Insertar configuración por defecto
-    $wpdb->insert(
-        $table_config,
-        array(
-            'config_key' => 'profit_margin_percentage',
-            'config_value' => '50'
-        ),
-        array('%s', '%s')
-    );
-    
-    $wpdb->insert(
-        $table_config,
-        array(
-            'config_key' => 'usd_to_clp_rate',
-            'config_value' => '950'
-        ),
-        array('%s', '%s')
-    );
+
+    // Insertar configuración por defecto SOLO si no existen
+    $existing_margin = $wpdb->get_var($wpdb->prepare(
+        "SELECT config_value FROM $table_config WHERE config_key = %s", 
+        'profit_margin_percentage'
+    ));
+
+    if (is_null($existing_margin)) {
+        $wpdb->insert(
+            $table_config,
+            array(
+                'config_key' => 'profit_margin_percentage',
+                'config_value' => '50'
+            ),
+            array('%s', '%s')
+        );
+    }
+
+    $existing_rate = $wpdb->get_var($wpdb->prepare(
+        "SELECT config_value FROM $table_config WHERE config_key = %s", 
+        'usd_to_clp_rate'
+    ));
+
+    if (is_null($existing_rate)) {
+        $wpdb->insert(
+            $table_config,
+            array(
+                'config_key' => 'usd_to_clp_rate',
+                'config_value' => '950'
+            ),
+            array('%s', '%s')
+        );
+    }
     
     // Programar los cron jobs
     if ( ! wp_next_scheduled( 'multicatalogo_hourly_update_json' ) ) {
