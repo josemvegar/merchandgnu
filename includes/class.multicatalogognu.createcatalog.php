@@ -930,24 +930,19 @@ private static function createVariableAttributes($productData) {
     $attributes = [];
     $position = 0;
     
-    error_log("=== INICIANDO createVariableAttributes ===");
-    
     $variableAttributes = self::extractVariableAttributesFromCombinations($productData);
     
     foreach ($variableAttributes as $attributeName => $attributeValues) {
         if (!empty($attributeValues)) {
-            // ✅ CREAR ATRIBUTO GLOBAL y obtener taxonomy
             $taxonomy = self::createGlobalAttribute($attributeName, $attributeValues);
             
             if ($taxonomy) {
-                // ✅ FORZAR que el atributo use la taxonomía global
                 $attribute = new WC_Product_Attribute();
-                $attribute->set_id(wc_attribute_taxonomy_id_by_name($attributeName)); // ✅ ID del atributo global
-                $attribute->set_name($taxonomy); // ✅ Usar la taxonomía completa pa_nombre
+                $attribute->set_id(wc_attribute_taxonomy_id_by_name($attributeName));
+                $attribute->set_name($taxonomy);
                 $attribute->set_visible(true);
                 $attribute->set_variation(true);
                 
-                // ✅ OBTENER TÉRMINOS EXISTENTES de la taxonomía global
                 $term_ids = [];
                 foreach ($attributeValues as $value) {
                     $cleaned_value = str_replace('\\', '', $value);
@@ -957,11 +952,10 @@ private static function createVariableAttributes($productData) {
                     }
                 }
                 
-                // ✅ ASIGNAR TÉRMINOS GLOBALES
                 $attribute->set_options($term_ids);
                 $attribute->set_position($position);
                 
-                $attributes[$taxonomy] = $attribute; // ✅ Clave con pa_
+                $attributes[$taxonomy] = $attribute;
                 $position++;
             }
         }
@@ -981,14 +975,12 @@ private static function createInfoAttributes($productData) {
             $taxonomy = self::createGlobalAttribute($attributeName, $attributeValues);
             
             if ($taxonomy) {
-                // ✅ FORZAR que el atributo use la taxonomía global
                 $attribute = new WC_Product_Attribute();
-                $attribute->set_id(wc_attribute_taxonomy_id_by_name($attributeName)); // ✅ ID del atributo global
-                $attribute->set_name($taxonomy); // ✅ Usar la taxonomía completa pa_nombre
+                $attribute->set_id(wc_attribute_taxonomy_id_by_name($attributeName));
+                $attribute->set_name($taxonomy);
                 $attribute->set_visible(true);
                 $attribute->set_variation(false);
                 
-                // ✅ OBTENER TÉRMINOS EXISTENTES
                 $term_ids = [];
                 foreach ($attributeValues as $value) {
                     $cleaned_value = str_replace('\\', '', $value);
@@ -1001,7 +993,7 @@ private static function createInfoAttributes($productData) {
                 $attribute->set_options($term_ids);
                 $attribute->set_position($position);
                 
-                $attributes[$taxonomy] = $attribute; // ✅ Clave con pa_
+                $attributes[$taxonomy] = $attribute;
                 $position++;
             }
         }
@@ -1010,19 +1002,10 @@ private static function createInfoAttributes($productData) {
     return $attributes;
 }
 
-// ✅ FUNCIÓN MODIFICADA: Crear atributo global y retornar taxonomy
 private static function createGlobalAttribute($attribute_name, $attribute_values) {
     $taxonomy = 'pa_' . sanitize_title($attribute_name);
     
-    error_log("--- createGlobalAttribute: {$attribute_name} ---");
-    error_log("Taxonomía: {$taxonomy}");
-    error_log("Valores: " . print_r($attribute_values, true));
-    
-    // Verificar si el atributo ya existe
     if (!taxonomy_exists($taxonomy)) {
-        error_log("Taxonomía NO existe, creando...");
-        
-        // Crear el atributo global
         $attribute_id = wc_create_attribute([
             'name' => $attribute_name,
             'slug' => sanitize_title($attribute_name),
@@ -1032,9 +1015,6 @@ private static function createGlobalAttribute($attribute_name, $attribute_values
         ]);
         
         if ($attribute_id && !is_wp_error($attribute_id)) {
-            error_log("✓ Atributo global creado - ID: {$attribute_id}");
-            
-            // Registrar la taxonomía
             register_taxonomy($taxonomy, ['product'], [
                 'labels' => [
                     'name' => $attribute_name,
@@ -1045,54 +1025,30 @@ private static function createGlobalAttribute($attribute_name, $attribute_values
                 'query_var' => true,
                 'rewrite' => false,
             ]);
-            error_log("✓ Taxonomía registrada: {$taxonomy}");
         } else {
-            error_log("✗ Error creando atributo global: " . print_r($attribute_id, true));
-            return false; // Falló la creación
+            return false;
         }
-    } else {
-        error_log("✓ Taxonomía YA existe: {$taxonomy}");
     }
     
-    // ✅ Crear/actualizar términos (valores del atributo)
     foreach ($attribute_values as $value) {
         $cleaned_value = str_replace('\\', '', $value);
         $term_slug = sanitize_title($cleaned_value);
         
-        error_log("Procesando término: '{$cleaned_value}' -> slug: '{$term_slug}'");
-        
         if (!term_exists($cleaned_value, $taxonomy)) {
-            $result = wp_insert_term($cleaned_value, $taxonomy, [
+            wp_insert_term($cleaned_value, $taxonomy, [
                 'slug' => $term_slug
             ]);
-            
-            if (!is_wp_error($result)) {
-                error_log("✓ Término creado: '{$cleaned_value}' - ID: {$result['term_id']}");
-            } else {
-                error_log("✗ Error creando término: " . $result->get_error_message());
-            }
-        } else {
-            error_log("✓ Término YA existe: '{$cleaned_value}'");
         }
     }
     
-    error_log("--- FIN createGlobalAttribute ---");
-    return $taxonomy; // ✅ Retornar la taxonomy para usarla
+    return $taxonomy;
 }
 
 private static function createProductVariations($product_id, $productData, $parent_attributes) {
-    error_log("=== INICIANDO createProductVariations ===");
-    error_log("Product ID: {$product_id}");
-    error_log("Variaciones a crear: " . count($productData['variations']));
-    
     $product = wc_get_product($product_id);
     $current_attributes = $product->get_attributes();
-    error_log("Atributos actuales del producto: " . print_r(array_keys($current_attributes), true));
     
     foreach ($productData['variations'] as $index => $variationData) {
-        error_log("--- Creando variación {$index} ---");
-        error_log("Datos variación: " . print_r($variationData, true));
-        
         $variation = new WC_Product_Variation();
         $variation->set_parent_id($product_id);
         
@@ -1100,45 +1056,28 @@ private static function createProductVariations($product_id, $productData, $pare
         
         if (isset($variationData['Combinations']) && is_array($variationData['Combinations'])) {
             foreach ($variationData['Combinations'] as $attributeName => $attributeValue) {
-                // ✅ BUSCAR TAXONOMÍA CON Y SIN pa_
                 $taxonomy_with_pa = 'pa_' . sanitize_title($attributeName);
                 $taxonomy_without_pa = sanitize_title($attributeName);
                 
-                error_log("Procesando combinación: {$attributeName} -> {$attributeValue}");
-                error_log("Taxonomía con pa_: {$taxonomy_with_pa}");
-                error_log("Taxonomía sin pa_: {$taxonomy_without_pa}");
-                
-                // ✅ VERIFICAR AMBAS POSIBILIDADES
                 $taxonomy_to_use = null;
                 if (isset($current_attributes[$taxonomy_with_pa])) {
                     $taxonomy_to_use = $taxonomy_with_pa;
-                    error_log("✓ Taxonomía encontrada CON pa_: {$taxonomy_with_pa}");
                 } elseif (isset($current_attributes[$taxonomy_without_pa])) {
                     $taxonomy_to_use = $taxonomy_without_pa;
-                    error_log("✓ Taxonomía encontrada SIN pa_: {$taxonomy_without_pa}");
-                } else {
-                    error_log("✗ Taxonomía NO encontrada en ninguna forma");
-                    error_log("Atributos disponibles: " . print_r(array_keys($current_attributes), true));
                 }
                 
                 if ($taxonomy_to_use) {
                     $cleanedValue = str_replace('\\', '', $attributeValue);
-                    
-                    // ✅ BUSCAR EL TÉRMINO EN LA TAXONOMÍA CORRECTA
                     $term = get_term_by('name', $cleanedValue, $taxonomy_to_use);
+                    
                     if ($term && !is_wp_error($term)) {
-                        error_log("✓ Término encontrado - Slug: {$term->slug}");
                         $variationAttributes[$taxonomy_to_use] = $term->slug;
                     } else {
-                        error_log("✗ Término NO encontrado por nombre, buscando por slug...");
-                        // Intentar buscar por slug como fallback
                         $term_slug = sanitize_title($cleanedValue);
                         $term = get_term_by('slug', $term_slug, $taxonomy_to_use);
                         if ($term && !is_wp_error($term)) {
-                            error_log("✓ Término encontrado por slug - Slug: {$term->slug}");
                             $variationAttributes[$taxonomy_to_use] = $term->slug;
                         } else {
-                            error_log("✗ Término tampoco encontrado por slug, usando sanitized");
                             $variationAttributes[$taxonomy_to_use] = $term_slug;
                         }
                     }
@@ -1146,13 +1085,8 @@ private static function createProductVariations($product_id, $productData, $pare
             }
         }
         
-        error_log("Atributos de variación finales: " . print_r($variationAttributes, true));
-        
         if (!empty($variationAttributes)) {
             $variation->set_attributes($variationAttributes);
-            error_log("✓ Atributos asignados a la variación");
-        } else {
-            error_log("✗ No se asignaron atributos a la variación");
         }
         
         $variation_price = $variationData['Precio'] ?? 0;
@@ -1166,16 +1100,12 @@ private static function createProductVariations($product_id, $productData, $pare
         $variationSku = $variationData['sku'] ?? ($productData['ID'] . '-var-' . ($index + 1));
         $variation->set_sku($variationSku);
         
-        $result = $variation->save();
-        error_log("Variación guardada - ID: {$result}");
+        $variation->save();
     }
-    
-    error_log("=== FINALIZANDO createProductVariations ===");
     
     $product = wc_get_product($product_id);
     if ($product && $product->is_type('variable')) {
         $product->save();
-        error_log("Producto variable guardado");
     }
 }
 

@@ -140,13 +140,8 @@ function multicatalogognu_activate() {
 register_deactivation_hook( __FILE__, 'multicatalogognu_deactivate' );
 
 function multicatalogognu_deactivate() {
-    // Eliminar los cron jobs programados
-    $timestamp = wp_next_scheduled( 'multicatalogo_hourly_update_json' );
-    wp_unschedule_event( $timestamp, 'multicatalogo_hourly_update_json' );
-
-    $timestamp = wp_next_scheduled( 'multicatalogo_hourly_upload_products' );
-    wp_unschedule_event( $timestamp, 'multicatalogo_hourly_upload_products' );
-    
-    $timestamp = wp_next_scheduled( 'multicatalogo_hourly_update_prices_stock' );
-    wp_unschedule_event( $timestamp, 'multicatalogo_hourly_update_prices_stock' );
+    // Eliminar los cron jobs programados - FORMA CORRECTA
+    wp_clear_scheduled_hook('multicatalogo_hourly_update_json');
+    wp_clear_scheduled_hook('multicatalogo_hourly_upload_products');
+    wp_clear_scheduled_hook('multicatalogo_hourly_update_prices_stock');
 }
