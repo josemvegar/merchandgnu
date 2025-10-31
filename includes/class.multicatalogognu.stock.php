@@ -458,7 +458,7 @@ class cMulticatalogoGNUStock {
         }
 
         // Manejar stock según tipo de producto
-        $isVariable = isset($productData['isVariable']) ? $productData['isVariable'] : false;
+        $isVariable = isset($productData['isVariable']) ? ($productData['isVariable'] == true ? true : false) : false;
         
         if ($isVariable && $product->is_type('variable')) {
             return self::update_variable_product_stock($product, $productData, $sku);
@@ -477,7 +477,7 @@ class cMulticatalogoGNUStock {
         // Verificar si hay stock en las variaciones
         if (!empty($productData['variations']) && is_array($productData['variations'])) {
             foreach ($productData['variations'] as $variation) {
-                $variation_stock = self::get_variation_stock($variation, $productData['proveedor']);
+                $variation_stock = self::get_variation_stock($variation);
                 
                 if ($variation_stock > 0) {
                     $has_stock = true;
@@ -511,29 +511,15 @@ class cMulticatalogoGNUStock {
     /**
      * Obtener stock para una variación según proveedor
      */
-    private static function get_variation_stock($variation, $provider) {
-        $provider = strtoupper($provider);
-        
-        switch ($provider) {
-            case 'ZECAT':
-                return isset($variation['Stock']) ? intval($variation['Stock']) : 0;
-                
-            case 'PROMOIMPORT':
-                return isset($variation['stock']) ? intval($variation['stock']) : 0;
-                
-            case 'CDO':
-                return isset($variation['stock_available']) ? intval($variation['stock_available']) : 0;
-                
-            default:
-                return isset($variation['stock']) ? intval($variation['stock']) : 0;
-        }
+    private static function get_variation_stock($variation) {
+        return isset($variation['Stock']) ? intval($variation['Stock']) : 0;
     }
 
     /**
      * Actualizar stock para productos simples
      */
     private static function update_simple_product_stock($product, $productData, $sku) {
-        $new_stock = self::calculate_simple_stock($productData);
+        $new_stock = self::get_simple_stock($productData);
 
         // Actualizar producto
         $product->set_manage_stock(true);
@@ -554,55 +540,8 @@ class cMulticatalogoGNUStock {
     /**
      * Calcular stock para productos simples según proveedor
      */
-    private static function calculate_simple_stock($productData) {
-        $provider = strtoupper($productData['proveedor']);
-        
-        switch ($provider) {
-            case 'PROMOIMPORT':
-                $stock = 0;
-                if (!empty($productData['atributos']) && is_array($productData['atributos'])) {
-                    foreach ($productData['atributos'] as $atributo) {
-                        if (isset($atributo['stock'])) {
-                            $stock += intval($atributo['stock']);
-                        }
-                    }
-                }
-                return $stock;
-
-            case 'ZECAT':
-                // Para Zecat simple, usar stock principal o verificar variaciones
-                if (isset($productData['stock'])) {
-                    return intval($productData['stock']);
-                } elseif (!empty($productData['variations']) && is_array($productData['variations'])) {
-                    foreach ($productData['variations'] as $variation) {
-                        if (isset($variation['Stock']) && intval($variation['Stock']) > 0) {
-                            $stock += intval($atributo['stock']);
-                        }
-                    }
-                }
-                return $stock;
-
-            case 'CDO':
-                if (isset($productData['stock_available'])) {
-                    return intval($productData['stock_available']);
-                } elseif (!empty($productData['variants']) && is_array($productData['variants'])) {
-                    $stock = 0;
-                    foreach ($productData['variants'] as $variant) {
-                        if (isset($variant['stock_available'])) {
-                            $stock += intval($variant['stock_available']);
-                        }
-                    }
-                    return $stock;
-                }
-                return 0;
-
-            default:
-                // Stock directo para otros proveedores
-                if (isset($productData['stock'])) {
-                    return intval($productData['stock']);
-                }
-                return 0;
-        }
+    private static function get_simple_stock($productData) {
+        return isset($productData['Stock']) ? intval($productData['Stock']) : 0;
     }
 
     /**
@@ -641,9 +580,9 @@ class cMulticatalogoGNUStock {
 
         $provider = strtoupper($productData['proveedor']);
         $prefixes = [
-            'PROMOIMPORT' => 'PI0',
-            'ZECAT' => 'ZT0', 
-            'CDO' => 'SS0'
+            'PROMOIMPORT' => 'pi0',
+            'ZECAT' => 'zt0', 
+            'CDO' => 'ss0'
         ];
 
         if (!isset($prefixes[$provider])) {
@@ -661,77 +600,13 @@ class cMulticatalogoGNUStock {
 
         // Remover prefijo si ya existe (para evitar duplicados)
         foreach ($prefixes as $prefijo) {
-            if (strpos(strtoupper($id), $prefijo) === 0) {
+            if (strpos($id, $prefijo) === 0) {
                 $id = substr($id, strlen($prefijo));
                 break;
             }
         }
 
         return $prefixes[$provider] . $id;
-    }
-
-    /**
-     * Función para uso en Cron
-     */
-    public static function update_stock_cron($provider = '') {
-        $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
-    
-        if (!file_exists($filePath)) {
-            error_log("[Stock Cron] Archivo JSON no encontrado: " . $filePath);
-            return false;
-        }
-    
-        $jsonContent = file_get_contents($filePath);
-        $allProductsData = json_decode($jsonContent, true);
-    
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            error_log("[Stock Cron] Error al decodificar JSON");
-            return false;
-        }
-
-        // Verificar estructura del JSON
-        if (!isset($allProductsData['data']) || !is_array($allProductsData['data'])) {
-            error_log("[Stock Cron] Estructura JSON inválida. Se esperaba array 'data'");
-            return false;
-        }
-    
-        // Filtrar por proveedor si se especifica
-        if (!empty($provider)) {
-            $productsData = array_filter($allProductsData['data'], function($product) use ($provider) {
-                return isset($product['proveedor']) && strtoupper($product['proveedor']) === strtoupper($provider);
-            });
-            $productsData = array_values($productsData);
-        } else {
-            $productsData = $allProductsData['data'];
-        }
-    
-        $actualizados = 0;
-        $total = count($productsData);
-    
-        foreach ($productsData as $productData) {
-            $updated = self::update_product_stock($productData);
-            if ($updated) {
-                $actualizados++;
-            }
-        }
-    
-        error_log("[Stock Cron] Actualización completada. Proveedor: " . ($provider ?: 'TODOS') . " - Total: {$total}, Actualizados: {$actualizados}");
-        return $actualizados;
-    }
-
-    /**
-     * Ejecutar actualización para todos los proveedores via Cron
-     */
-    public static function update_all_providers_stock_cron() {
-        $providers = ['PROMOIMPORT', 'ZECAT', 'CDO'];
-        $results = [];
-        
-        foreach ($providers as $provider) {
-            $results[$provider] = self::update_stock_cron($provider);
-        }
-        
-        error_log("[Stock Cron] Resumen actualización: " . print_r($results, true));
-        return $results;
     }
 
 }

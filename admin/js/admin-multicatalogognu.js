@@ -436,8 +436,8 @@ jQuery(document).ready(function () {
             // Continuar si hay más productos
             if (offsetActual < totalProductos) {
               console.log('Continuando con siguiente lote...');
-              if (offsetActual < 5) {actualizarLote(offsetActual);}
-              
+              actualizarLote(offsetActual);
+
             } else {
               console.log('Proceso completado para ' + provider);
               jQuery(".loadermerchan").hide();
@@ -476,189 +476,19 @@ jQuery(document).ready(function () {
   }
 
   jQuery("#ActualizarStockPromoImport").click(function (e) {
-
-    var totalProductos = 0;
-    var productosActualizados = 0;
-    var tamanoLote = 2; // Cambia este valor según tus necesidades
-
-    function actualizarLote(offset) {
-      if (offset > totalProductos) {
-        alert('Actualización completada.');
-        jQuery('#newproduct').text(productosActualizados);
-        return;
-      }
-      jQuery.ajax({
-        url: Global.url,
-        type: 'POST',
-        data: {
-          action: fUpdateStockPromoImportGlobo.action,
-          offset: offset,
-          tamano_lote: tamanoLote,
-          nonce: fUpdateStockPromoImportGlobo.nonce
-        },
-        success: function (response) {
-          if (response.success) {
-            totalProductos = response.data.total;
-            productosActualizados += response.data.actualizados;
-            console.log('total: ' + response.data.total);
-            console.log('actualizados: ' + response.data.actualizados);
-            console.log('offset: ' + response.data.offset);
-
-
-            totalProductos = response.data.total;
-            productosActualizados += response.data.actualizados;
-
-            // Actualizar DOM
-            jQuery('#totalProducts').text(totalProductos);
-            jQuery('#publishedProducts').text(productosActualizados);
-
-            // Calcular porcentaje
-            var porcentaje = Math.min((productosActualizados / totalProductos) * 100, 100);
-            jQuery('#progress').css('width', porcentaje + '%');
-
-
-            if (productosActualizados < totalProductos) {
-              actualizarLote(offset + tamanoLote);
-            } else {
-              alert('Actualización completada.');
-            }
-
-          } else {
-            console.log(response.data);
-            alert('Error en la actualización.');
-          }
-        },
-        error: function () {
-          console.log(response.data);
-          alert('Error en la comunicación con el servidor.');
-        }
-      });
-    }
-
-    actualizarLote(0);
+    e.preventDefault();
+    actualizarStockProveedor('promoimport');
   });
 
   jQuery("#ActualizarStockZecat").click(function (e) {
-
-    var totalProductos = 0;
-    var productosActualizados = 0;
-    var tamanoLote = 2; // Cambia este valor según tus necesidades
-
-    function actualizarLote(offset) {
-      if (offset > totalProductos) {
-        alert('Actualización completada.');
-        jQuery('#newproduct').text(productosActualizados);
-        return;
-      }
-      jQuery.ajax({
-        url: Global.url,
-        type: 'POST',
-        data: {
-          action: fUpdateStockZecatGlobo.action,
-          offset: offset,
-          tamano_lote: tamanoLote,
-          nonce: fUpdateStockZecatGlobo.nonce
-        },
-        success: function (response) {
-          if (response.success) {
-            totalProductos = response.data.total;
-            productosActualizados += response.data.actualizados;
-            console.log('total: ' + response.data.total);
-            console.log('actualizados: ' + response.data.actualizados);
-            console.log('offset: ' + response.data.offset);
-
-
-            totalProductos = response.data.total;
-            productosActualizados += response.data.actualizados;
-
-            // Actualizar DOM
-            jQuery('#totalProducts').text(totalProductos);
-            jQuery('#publishedProducts').text(productosActualizados);
-
-            // Calcular porcentaje
-            var porcentaje = Math.min((productosActualizados / totalProductos) * 100, 100);
-            jQuery('#progress').css('width', porcentaje + '%');
-
-
-            if (productosActualizados < totalProductos) {
-              actualizarLote(offset + tamanoLote);
-            } else {
-              alert('Actualización completada.');
-            }
-
-          } else {
-            console.log(response.data);
-            alert('Error en la actualización.');
-          }
-        },
-        error: function () {
-          console.log(response.data);
-          alert('Error en la comunicación con el servidor.');
-        }
-      });
-    }
-
-    actualizarLote(0);
+    e.preventDefault();
+    actualizarStockProveedor('zecat');
   });
 
 
   jQuery("#ActualizarStockCDO").click(function (e) {
-
-    var totalProductos = 0;
-    var productosActualizados = 0;
-    var tamanoLote = 2; // Cambia este valor según tus necesidades
-
-    function actualizarLote(offset) {
-      if (offset > totalProductos) {
-        alert('Actualización completada.');
-        jQuery('#newproduct').text(productosActualizados);
-        return;
-      }
-      jQuery.ajax({
-        url: Global.url,
-        type: 'POST',
-        data: {
-          action: fUpdateStockCDOGlobo.action,
-          offset: offset,
-          tamano_lote: tamanoLote,
-          nonce: fUpdateStockCDOGlobo.nonce
-        },
-        success: function (response) {
-          if (response.success) {
-            totalProductos = response.data.total;
-            productosActualizados += response.data.actualizados;
-            console.log('total: ' + response.data.total);
-            console.log('actualizados: ' + response.data.actualizados);
-            console.log('offset: ' + response.data.offset);
-            totalProductos = response.data.total;
-            productosActualizados += response.data.actualizados;
-
-            // Actualizar DOM
-            jQuery('#totalProducts').text(totalProductos);
-            jQuery('#publishedProducts').text(productosActualizados);
-
-            // Calcular porcentaje
-            var porcentaje = Math.min((productosActualizados / totalProductos) * 100, 100);
-            jQuery('#progress').css('width', porcentaje + '%');
-            if (productosActualizados < totalProductos) {
-              actualizarLote(offset + tamanoLote);
-            } else {
-              alert('Actualización completada.');
-            }
-
-          } else {
-            console.log(response.data);
-            alert('Error en la actualización.');
-          }
-        },
-        error: function () {
-          console.log(response.data);
-          alert('Error en la comunicación con el servidor.');
-        }
-      });
-    }
-
-    actualizarLote(0);
+    e.preventDefault();
+    actualizarStockProveedor('cdo');
   });
 
 
