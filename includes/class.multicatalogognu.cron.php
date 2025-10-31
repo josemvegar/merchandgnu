@@ -66,6 +66,11 @@ class cMulticatalogoGNUCron {
         error_log('[MultiCatalogo Cron] Iniciando subida de productos - ' . current_time('mysql'));
         
         try {
+
+            // Primero ejecutar limpiezas
+            self::clean_duplicate_products();
+            self::clean_products_without_images();
+
             error_log('[MultiCatalogo Cron] Subida de productos ZECAT inciada...');
             self::upload_from_json("ZECAT");
 
@@ -618,6 +623,88 @@ class cMulticatalogoGNUCron {
     public static function handle_batch_upload($provider, $offset) {
         error_log("[MultiCatalogo Cron] Ejecutando lote para {$provider} desde offset: {$offset}");
         self::upload_from_json($provider, $offset);
+    }
+
+    /**
+     * Eliminar productos duplicados (mantener el más antiguo por ID)
+     */
+    private static function clean_duplicate_products() {
+        global $wpdb;
+        
+        error_log('[MultiCatalogo Clean] Buscando productos duplicados...');
+        
+        // Consulta corregida - usar MAX(ID) en lugar de MAX(post_date)
+        $query = "
+            SELECT p1.ID as duplicate_id, p1.post_date, pm1.meta_value as sku
+            FROM {$wpdb->posts} p1
+            INNER JOIN {$wpdb->postmeta} pm1 ON (p1.ID = pm1.post_id AND pm1.meta_key = '_sku')
+            INNER JOIN (
+                SELECT meta_value as sku, MAX(p.ID) as max_id
+                FROM {$wpdb->posts} p
+                INNER JOIN {$wpdb->postmeta} pm ON (p.ID = pm.post_id AND pm.meta_key = '_sku')
+                WHERE p.post_type = 'product'
+                AND p.post_status = 'publish'
+                AND meta_value != ''
+                GROUP BY meta_value
+                HAVING COUNT(*) > 1
+            ) duplicados ON (pm1.meta_value = duplicados.sku AND p1.ID = duplicados.max_id)
+            WHERE p1.post_type = 'product'
+            AND p1.post_status = 'publish'
+        ";
+        
+        $duplicates = $wpdb->get_results($query);
+        
+        if (!empty($duplicates)) {
+            error_log('[MultiCatalogo Clean] Encontrados ' . count($duplicates) . ' productos duplicados a eliminar');
+            
+            foreach ($duplicates as $duplicate) {
+                error_log("[MultiCatalogo Clean] Eliminando producto duplicado (más reciente) - ID: {$duplicate->duplicate_id}, SKU: {$duplicate->sku}");
+                
+                // Eliminar producto y sus meta datos
+                wp_delete_post($duplicate->duplicate_id, true);
+                
+                error_log("[MultiCatalogo Clean] Producto eliminado: {$duplicate->duplicate_id}");
+            }
+        } else {
+            error_log('[MultiCatalogo Clean] No se encontraron productos duplicados');
+        }
+    }
+
+    /**
+     * Eliminar productos padres sin imagen principal con SKUs específicos
+     */
+    private static function clean_products_without_images() {
+        global $wpdb;
+        
+        error_log('[MultiCatalogo Clean] Buscando productos sin imagen...');
+        
+        $query = "
+            SELECT p.ID, p.post_title, pm_sku.meta_value as sku
+            FROM {$wpdb->posts} p
+            LEFT JOIN {$wpdb->postmeta} pm_thumb ON (p.ID = pm_thumb.post_id AND pm_thumb.meta_key = '_thumbnail_id')
+            INNER JOIN {$wpdb->postmeta} pm_sku ON (p.ID = pm_sku.post_id AND pm_sku.meta_key = '_sku')
+            WHERE p.post_type = 'product'
+            AND p.post_status = 'publish'
+            AND pm_thumb.meta_value IS NULL
+            AND (pm_sku.meta_value LIKE 'zt0%' OR pm_sku.meta_value LIKE 'ss0%' OR pm_sku.meta_value LIKE 'pi0%')
+        ";
+        
+        $products_without_images = $wpdb->get_results($query);
+        
+        if (!empty($products_without_images)) {
+            error_log('[MultiCatalogo Clean] Encontrados ' . count($products_without_images) . ' productos sin imagen');
+            
+            foreach ($products_without_images as $product) {
+                error_log("[MultiCatalogo Clean] Eliminando producto sin imagen - ID: {$product->ID}, SKU: {$product->sku}, Título: {$product->post_title}");
+                
+                // Eliminar producto y sus meta datos
+                wp_delete_post($product->ID, true);
+                
+                error_log("[MultiCatalogo Clean] Producto sin imagen eliminado: {$product->ID}");
+            }
+        } else {
+            error_log('[MultiCatalogo Clean] No se encontraron productos sin imagen');
+        }
     }
 
 }

@@ -23,3 +23,10 @@ CDO varios colores: 18582
 CDO 1 sola 1778
 
 while ($true) { Invoke-WebRequest http://localhost/merchant/ -DisableKeepAlive | Out-Null; Write-Host "Ping enviado: $(Get-Date -Format 'HH:mm:ss')"; Start-Sleep 5 }
+
+SELECT p1.ID as duplicate_id, p1.post_date, pm1.meta_value as sku FROM wp_posts p1 INNER JOIN wp_postmeta pm1 ON (p1.ID = pm1.post_id AND pm1.meta_key = '_sku') INNER JOIN ( SELECT meta_value as sku, MAX(post_date) as max_date FROM wp_posts p INNER JOIN wp_postmeta pm ON (p.ID = pm.post_id AND pm.meta_key = '_sku') WHERE p.post_type = 'product' AND p.post_status = 'publish' AND meta_value != '' GROUP BY meta_value HAVING COUNT(*) > 1 ) duplicados ON (pm1.meta_value = duplicados.sku AND p1.post_date = duplicados.max_date) WHERE p1.post_type = 'product' AND p1.post_status = 'publish';
+
+SELECT p1.ID as duplicate_id, p1.post_date, pm1.meta_value as sku FROM wp_posts p1 INNER JOIN wp_postmeta pm1 ON (p1.ID = pm1.post_id AND pm1.meta_key = '_sku') INNER JOIN ( SELECT meta_value as sku, MAX(p.ID) as max_id FROM wp_posts p INNER JOIN wp_postmeta pm ON (p.ID = pm.post_id AND pm.meta_key = '_sku') WHERE p.post_type = 'product' AND p.post_status = 'publish' AND meta_value != '' GROUP BY meta_value HAVING COUNT(*) > 1 ) duplicados ON (pm1.meta_value = duplicados.sku AND p1.ID = duplicados.max_id) WHERE p1.post_type = 'product' AND p1.post_status = 'publish';
+
+SELECT p.ID, p.post_title, pm_sku.meta_value as sku FROM wp_posts p LEFT JOIN wp_postmeta pm_thumb ON (p.ID = pm_thumb.post_id AND pm_thumb.meta_key = '_thumbnail_id') INNER JOIN wp_postmeta pm_sku ON (p.ID = pm_sku.post_id AND pm_sku.meta_key = '_sku') WHERE p.post_type = 'product' AND p.post_status = 'publish' AND pm_thumb.meta_value IS NULL AND (pm_sku.meta_value LIKE 'zt0%' OR pm_sku.meta_value LIKE 'ss0%' OR pm_sku.meta_value LIKE 'pi0%');
+
