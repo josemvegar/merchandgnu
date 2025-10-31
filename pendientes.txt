@@ -18,6 +18,10 @@ Que cuando se vaya a comenzar de nuevo una subida de productos, si existe en col
 
 Ver qué hacer con los productos cuando se dice "Este está, no lo subas".
 
+Dejar solo los logs extremadamente necesarios, como los de error y sólo los que indiquen que una acción se completó al 100%
+
+Eliminar los returns innecesarios de los cron.
+
 CDO con variantes: 18394
 CDO varios colores: 18582
 CDO 1 sola 1778

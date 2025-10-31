@@ -27,6 +27,12 @@ class cMulticatalogoGNUCron {
         add_action('multicatalogo_batch_upload_zecat', array('cMulticatalogoGNUCron', 'handle_batch_upload'), 10, 2);
         add_action('multicatalogo_batch_upload_cdo', array('cMulticatalogoGNUCron', 'handle_batch_upload'), 10, 2);
         add_action('multicatalogo_batch_upload_promoimport', array('cMulticatalogoGNUCron', 'handle_batch_upload'), 10, 2);
+
+        // ===== NUEVOS HOOKS PARA ACTUALIZACIÓN DE STOCK =====
+        add_action('multicatalogo_batch_stock_zecat', array('cMulticatalogoGNUCron', 'handle_batch_stock'), 10, 2);
+        add_action('multicatalogo_batch_stock_cdo', array('cMulticatalogoGNUCron', 'handle_batch_stock'), 10, 2);
+        add_action('multicatalogo_batch_stock_promoimport', array('cMulticatalogoGNUCron', 'handle_batch_stock'), 10, 2);
+
     }
 
     /**
@@ -95,18 +101,18 @@ class cMulticatalogoGNUCron {
         
         try {
             // Actualizar Zecat
-            /*error_log('[MultiCatalogo Cron] Actualizando stock y precios Zecat...');
-            self::update_zecat_silent();
+            error_log('[MultiCatalogo Cron] Actualizando stock y precios Zecat...');
+            self::update_stock_from_json('ZECAT');
             
             // Actualizar CDO
             error_log('[MultiCatalogo Cron] Actualizando stock y precios CDO...');
-            self::update_cdo_silent();
+            self::update_stock_from_json('CDO');
             
             // Actualizar PromoImport
             error_log('[MultiCatalogo Cron] Actualizando stock y precios PromoImport...');
-            self::update_promoimport_silent();
+            self::update_stock_from_json('promoimport');
             
-            error_log('[MultiCatalogo Cron] Actualización de precios y stock completada');*/
+            error_log('[MultiCatalogo Cron] Actualización de precios y stock completada');
             
         } catch (Exception $e) {
             error_log('[MultiCatalogo Cron] Error al actualizar precios/stock: ' . $e->getMessage());
@@ -705,6 +711,110 @@ class cMulticatalogoGNUCron {
         } else {
             error_log('[MultiCatalogo Clean] No se encontraron productos sin imagen');
         }
+    }
+
+    private static function update_stock_from_json($provider, $offset = 0, $batch_size = 50) {
+        // Ruta al archivo JSON unificado
+        $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
+
+        if (!file_exists($filePath)) {
+            error_log('[Stock Cron] Archivo JSON no encontrado: ' . $filePath);
+            return false;
+        }
+
+        $jsonContent = file_get_contents($filePath);
+        $productsData = json_decode($jsonContent, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            error_log('[Stock Cron] Error al decodificar JSON: ' . json_last_error_msg());
+            return false;
+        }
+
+        if (isset($productsData['data'])) {
+            $productsData = $productsData['data'];
+        }
+
+        // Filtrar solo productos del proveedor
+        $productsFilter = array_filter($productsData, function($product) use ($provider) {
+            return isset($product['proveedor']) && $product['proveedor'] === $provider;
+        });
+
+        $productsFilter = array_values($productsFilter);
+        $total_productos = count($productsFilter);
+        
+        if ($total_productos === 0) {
+            error_log('[Stock Cron] No se encontraron productos ' . $provider . ' para actualizar stock.');
+            return false;
+        }
+
+        // Procesar lote actual
+        $productBatch = array_slice($productsFilter, $offset, $batch_size);
+        $actualizados = 0;
+        $errors = [];
+
+        foreach ($productBatch as $productData) {
+            try {
+                $result = cMulticatalogoGNUStock::update_product_stock($productData);
+                if ($result) {
+                    $actualizados++;
+                    error_log("✅ STOCK ACTUALIZADO: {$productData['ID']} - {$productData['nombre_del_producto']}");
+                }
+            } catch (Exception $e) {
+                $errors[] = "Error actualizando stock producto {$productData['ID']}: " . $e->getMessage();
+                error_log("❌ ERROR STOCK: {$productData['ID']} - " . $e->getMessage());
+            }
+        }
+
+        $nuevo_offset = $offset + $batch_size;
+        $progreso = round(($nuevo_offset / $total_productos) * 100, 2);
+
+        // Log del progreso
+        error_log("[Stock Cron] Lote {$provider}: {$offset}-{$nuevo_offset} de {$total_productos} ({$progreso}%) - Actualizados: {$actualizados}");
+
+        // Si hay más productos, programar siguiente lote
+        if ($nuevo_offset < $total_productos) {
+            $next_batch_time = time() + 0; // 5 segundos de delay
+
+            // Al programar el siguiente lote, usa el hook específico del proveedor
+            $cron_hook = 'multicatalogo_batch_stock_' . strtolower($provider);
+
+            if (!wp_next_scheduled($cron_hook, array($provider, $nuevo_offset))) {
+                wp_schedule_single_event($next_batch_time, $cron_hook, array($provider, $nuevo_offset));
+                error_log("[Stock Cron] Siguiente lote programado para: " . date('H:i:s', $next_batch_time) . " - Proveedor: " . $provider);
+            }
+            
+        } else {
+            // Proceso completado
+            error_log("[Stock Cron] ✅ ACTUALIZACIÓN STOCK {$provider} COMPLETADA: {$total_productos} productos actualizados");
+        }
+
+        return [
+            'processed' => $nuevo_offset,
+            'total' => $total_productos,
+            'batch_updated' => $actualizados,
+            'percentage' => $progreso,
+            'completed' => ($nuevo_offset >= $total_productos)
+        ];
+    }
+
+    public static function handle_batch_stock($provider, $offset = 0) {
+        error_log("[Stock Cron] Ejecutando lote stock para {$provider} desde offset: {$offset}");
+        return self::update_stock_from_json($provider, $offset);
+    }
+
+    /**
+     * Ejecutar actualización para todos los proveedores via Cron
+     */
+    public static function update_all_providers_stock_cron() {
+        $providers = ['PROMOIMPORT', 'ZECAT', 'CDO'];
+        $results = [];
+        
+        foreach ($providers as $provider) {
+            $results[$provider] = self::update_stock_cron($provider);
+        }
+        
+        error_log("[Stock Cron] Resumen actualización: " . print_r($results, true));
+        return $results;
     }
 
 }

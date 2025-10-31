@@ -384,7 +384,7 @@ class cMulticatalogoGNUAdmin {
                     
                     <div id="progressContainer" style="width: 100%;">
                         <p><strong>Total de productos:</strong> <span id="totalProducts">0</span></p>
-                        <p><strong>Productos publicados:</strong> <span id="publishedProducts">0</span></p>
+                        <p><strong>Productos procesados:</strong> <span id="publishedProducts">0</span></p>
                         <div id="progressBar" style="width: 100%; background-color: #f3f3f3;">
                             <div id="progress" style="height: 20px; width: 0%; background-color: green;"></div>
                         </div>

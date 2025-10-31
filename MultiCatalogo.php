@@ -122,16 +122,20 @@ function multicatalogognu_activate() {
     
     // Programar los cron jobs
     if ( ! wp_next_scheduled( 'multicatalogo_hourly_update_json' ) ) {
+        //wp_schedule_event( time(), 'thirty_minutes', 'multicatalogo_hourly_update_json' );
+        //wp_schedule_event( time(), 'twicedaily', 'multicatalogo_hourly_update_json' );
         wp_schedule_event( time(), 'hourly', 'multicatalogo_hourly_update_json' );
     }
     
     if ( ! wp_next_scheduled( 'multicatalogo_hourly_upload_products' ) ) {
         //wp_schedule_event( time(), 'thirty_minutes', 'multicatalogo_hourly_upload_products' );
+        //wp_schedule_event( time(), 'twicedaily', 'multicatalogo_hourly_upload_products' );
         wp_schedule_event( time(), 'hourly', 'multicatalogo_hourly_upload_products' );
     }
 
     if ( ! wp_next_scheduled( 'multicatalogo_hourly_update_prices_stock' ) ) {
         //wp_schedule_event( time(), 'thirty_minutes', 'multicatalogo_hourly_update_prices_stock' );
+        //wp_schedule_event( time(), 'twicedaily', 'multicatalogo_hourly_update_prices_stock' );
         wp_schedule_event( time(), 'hourly', 'multicatalogo_hourly_update_prices_stock' );
     }
 }

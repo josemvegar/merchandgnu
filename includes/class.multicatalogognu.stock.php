@@ -435,7 +435,7 @@ class cMulticatalogoGNUStock {
     /**
      * Lógica centralizada para actualizar stock de un producto
      */
-    private static function update_product_stock($productData) {
+    public static function update_product_stock($productData) {
         // Determinar SKU según proveedor
         $sku = self::generate_sku($productData);
         
