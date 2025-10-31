@@ -48,6 +48,8 @@ class cMultiCatalogoGNU {
 
 		add_action( 'wp_ajax_ActualizarPrecioZecat', array( 'cMulticatalogoGNUPrice', 'fUpdatePriceZecat' ));
 	    add_action( 'wp_ajax_ActualizarPrecioCDO', array( 'cMulticatalogoGNUPrice', 'fUpdatePriceCDO' ));
+		// Agregar acción AJAX para precios
+		add_action( 'wp_ajax_fUpdatePriceGlobo', array( 'cMulticatalogoGNUPrice', 'fUpdatePriceGlobo' ));
 
 		add_action( 'wp_ajax_datatables_endpoint_merchan',			array( 'cMulticatalogoGNUAdmin',	  'fAjaxEndpointMerchan'));
 		add_action( 'wp_ajax_no_priv_datatables_endpoint_merchan', 	array( 'cMulticatalogoGNUAdmin',	  'fAjaxEndpointMerchan')); 
@@ -178,6 +180,17 @@ class cMultiCatalogoGNU {
 				'action'   => 'ActualizarPrecioCDO',
 				)
         );
+
+		// Localize script para precios
+		wp_localize_script('admin-multicatalogognu', 'fUpdatePriceGlobo',
+			array(
+				'ajax_url' => admin_url('admin-ajax.php'),
+				'nonce_promoimport' => wp_create_nonce('price_promoimport_nonce'),
+				'nonce_zecat' => wp_create_nonce('price_zecat_nonce'),
+				'nonce_cdo' => wp_create_nonce('price_cdo_nonce'),
+				'action' => 'fUpdatePriceGlobo',
+			)
+		);
 
 		wp_localize_script('admin-multicatalogognu', 'combinar_json_zecat_cdo',
 		array(

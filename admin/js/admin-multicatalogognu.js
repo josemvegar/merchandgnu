@@ -492,92 +492,105 @@ jQuery(document).ready(function () {
   });
 
 
-  jQuery("#ActualizarPrecioZecat").click(function (e) {
-
+  // Función unificada para actualización de precios de todos los proveedores
+  function actualizarPrecioProveedor(provider) {
     var totalProductos = 0;
     var productosActualizados = 0;
-    var tamanoLote = 2; // Cambia este valor según tus necesidades
+    var offsetActual = 0;
+    var tamanoLote = 10;
 
     function actualizarLote(offset) {
       jQuery.ajax({
-        url: Global.url,
+        url: fUpdatePriceGlobo.ajax_url,
         type: 'POST',
         data: {
-          action: fUpdatePriceZecat.action,
+          action: fUpdatePriceGlobo.action,
+          provider: provider,
           offset: offset,
           tamano_lote: tamanoLote,
-          nonce: fUpdatePriceZecat.nonce
+          nonce: getNonceByProvider(provider)
+        },
+        beforeSend: function () {
+          jQuery(".loadermerchan").show();
+          jQuery('.popup-overlay-merchan').fadeIn('slow');
+          jQuery('#providerName').text(provider.toUpperCase() + ' - PRECIOS');
         },
         success: function (response) {
           if (response.success) {
             totalProductos = response.data.total;
             productosActualizados += response.data.actualizados;
-            console.log('total: ' + response.data.total);
-            console.log('actualizados: ' + response.data.actualizados);
-            console.log('offset: ' + response.data.offset);
+            offsetActual = response.data.offset;
 
-            if (productosActualizados < totalProductos) {
-              actualizarLote(offset + tamanoLote);
+            console.log('Proveedor Precios: ' + provider);
+            console.log('Total productos: ' + totalProductos);
+            console.log('Actualizados en este lote: ' + response.data.actualizados);
+            console.log('Total actualizados: ' + productosActualizados);
+            console.log('Siguiente offset: ' + offsetActual);
+
+            // Actualizar DOM
+            jQuery('#totalProducts').text(totalProductos);
+            jQuery('#publishedProducts').text(productosActualizados);
+
+            // Calcular porcentaje
+            var porcentaje = Math.min((offsetActual / totalProductos) * 100, 100);
+            jQuery('#progress').css('width', porcentaje + '%');
+            jQuery('#progress').text(Math.round(porcentaje) + '%');
+
+            // Continuar si hay más productos
+            if (offsetActual < totalProductos) {
+              console.log('Continuando con siguiente lote de precios...');
+              actualizarLote(offsetActual);
             } else {
-              alert('Actualización completada.');
+              console.log('Proceso de precios completado para ' + provider);
+              jQuery(".loadermerchan").hide();
+              jQuery('.popup-overlay-merchan').fadeOut('slow');
+              alert('Actualización de precios completada para ' + provider.toUpperCase() + '. Productos actualizados: ' + productosActualizados);
             }
+
           } else {
-            console.log(response.data);
-            alert('Error en la actualización.');
+            console.log('Error en respuesta precios:', response.data);
+            alert('Error en la actualización de precios: ' + (response.data || 'Error desconocido'));
+            jQuery(".loadermerchan").hide();
+            jQuery('.popup-overlay-merchan').fadeOut('slow');
           }
         },
-        error: function () {
-          console.log(response.data);
+        error: function (xhr, status, error) {
+          console.log('Error AJAX precios:', error);
           alert('Error en la comunicación con el servidor.');
+          jQuery(".loadermerchan").hide();
+          jQuery('.popup-overlay-merchan').fadeOut('slow');
         }
       });
     }
 
+    // Helper para obtener nonce según proveedor
+    function getNonceByProvider(provider) {
+      var nonces = {
+        'promoimport': fUpdatePriceGlobo.nonce_promoimport,
+        'zecat': fUpdatePriceGlobo.nonce_zecat,
+        'cdo': fUpdatePriceGlobo.nonce_cdo
+      };
+      return nonces[provider];
+    }
+
+    // Iniciar el proceso
     actualizarLote(0);
+  }
+
+  // Event handlers para precios
+  jQuery("#ActualizarPrecioPromoImport").click(function (e) {
+    e.preventDefault();
+    actualizarPrecioProveedor('promoimport');
+  });
+
+  jQuery("#ActualizarPrecioZecat").click(function (e) {
+    e.preventDefault();
+    actualizarPrecioProveedor('zecat');
   });
 
   jQuery("#ActualizarPrecioCDO").click(function (e) {
-
-    var totalProductos = 0;
-    var productosActualizados = 0;
-    var tamanoLote = 2; // Cambia este valor según tus necesidades
-
-    function actualizarLote(offset) {
-      jQuery.ajax({
-        url: Global.url,
-        type: 'POST',
-        data: {
-          action: fUpdatePriceCDO.action,
-          offset: offset,
-          tamano_lote: tamanoLote,
-          nonce: fUpdatePriceCDO.nonce
-        },
-        success: function (response) {
-          if (response.success) {
-            totalProductos = response.data.total;
-            productosActualizados += response.data.actualizados;
-            console.log('total: ' + response.data.total);
-            console.log('actualizados: ' + response.data.actualizados);
-            console.log('offset: ' + response.data.offset);
-
-            if (productosActualizados < totalProductos) {
-              actualizarLote(offset + tamanoLote);
-            } else {
-              alert('Actualización completada.');
-            }
-          } else {
-            console.log(response.data);
-            alert('Error en la actualización.');
-          }
-        },
-        error: function () {
-          console.log(response.data);
-          alert('Error en la comunicación con el servidor.');
-        }
-      });
-    }
-
-    actualizarLote(0);
+    e.preventDefault();
+    actualizarPrecioProveedor('cdo');
   });
 
   jQuery("#actualizarstockcdozecatv1").click(function (e) {

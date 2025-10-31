@@ -381,6 +381,8 @@ class cMulticatalogoGNUAdmin {
                     <input type="submit" name="submit" id="ActualizarPrecioZecat" class="button button-primary" value="<?php  _e('Actualizar Precio en Woocommerce Zecat', 'MultiCatalogoGNU')?>">
 
                     <input type="submit" name="submit" id="ActualizarPrecioCDO" class="button button-primary" value="<?php  _e('Actualizar Precio en Woocommerce CDO', 'MultiCatalogoGNU')?>">
+
+                    <input type="submit" name="submit" id="ActualizarPrecioPromoImport" class="button button-primary" value="<?php  _e('Actualizar Precio en Woocommerce PromoImport', 'MultiCatalogoGNU')?>">
                     
                     <div id="progressContainer" style="width: 100%;">
                         <p><strong>Total de productos:</strong> <span id="totalProducts">0</span></p>
