@@ -43,6 +43,8 @@ class cMultiCatalogoGNU {
 		add_action( 'wp_ajax_ActualizarStockZecat', array( 'cMulticatalogoGNUStock', 'fUpdateStockZecatGlobo' ));
 		add_action( 'wp_ajax_ActualizarStockCDO', array( 'cMulticatalogoGNUStock', 'fUpdateStockCDOGlobo' ));
 		add_action( 'wp_ajax_ActualizarStockPromoImport', array( 'cMulticatalogoGNUStock', 'fUpdateStockPromoImportGlobo' ));
+		// Agregar esta única acción para la función unificada:
+		add_action( 'wp_ajax_fUpdateStockGlobo', array( 'cMulticatalogoGNUStock', 'fUpdateStockGlobo' ));
 
 		add_action( 'wp_ajax_ActualizarPrecioZecat', array( 'cMulticatalogoGNUPrice', 'fUpdatePriceZecat' ));
 	    add_action( 'wp_ajax_ActualizarPrecioCDO', array( 'cMulticatalogoGNUPrice', 'fUpdatePriceCDO' ));
@@ -144,6 +146,17 @@ class cMultiCatalogoGNU {
 				'ajax_url' => admin_url('admin-ajax.php'),
 				'nonce'    => wp_create_nonce('stock_promoimport_nonce'),
 				'action'   => 'ActualizarStockPromoImport',
+			)
+		);
+
+		///funcion para procesar por lotes el stock
+		wp_localize_script('admin-multicatalogognu', 'fUpdateStockGlobo',
+			array(
+				'ajax_url' => admin_url('admin-ajax.php'),
+				'nonce_promoimport' => wp_create_nonce('stock_promoimport_nonce'),
+				'nonce_zecat' => wp_create_nonce('stock_zecat_nonce'),
+				'nonce_cdo' => wp_create_nonce('stock_cdo_nonce'),
+				'action' => 'fUpdateStockGlobo',
 			)
 		);
 

@@ -322,4 +322,416 @@ class cMulticatalogoGNUStock {
 
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Función principal unificada para actualizar stock
+     */
+    public static function fUpdateStockGlobo() {
+        $provider = isset($_POST['provider']) ? sanitize_text_field($_POST['provider']) : '';
+        
+        // Verificar nonce según el proveedor
+        $nonce_actions = [
+            'promoimport' => 'stock_promoimport_nonce',
+            'zecat' => 'stock_zecat_nonce', 
+            'cdo' => 'stock_cdo_nonce'
+        ];
+        
+        if (!isset($nonce_actions[$provider])) {
+            wp_send_json_error('Proveedor no válido.');
+        }
+        
+        check_ajax_referer($nonce_actions[$provider], 'nonce');
+    
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error('Permisos insuficientes.');
+        }
+    
+        $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
+        $tamano_lote = isset($_POST['tamano_lote']) ? intval($_POST['tamano_lote']) : 10;
+    
+        // Ruta al archivo JSON unificado
+        $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
+    
+        if (!file_exists($filePath)) {
+            wp_send_json_error('Archivo JSON no encontrado.');
+        }
+    
+        $jsonContent = file_get_contents($filePath);
+        $jsonContentUtf8 = mb_convert_encoding($jsonContent, 'UTF-8', 'auto');
+        $allProductsData = json_decode($jsonContentUtf8, true);
+    
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            wp_send_json_error('Error al decodificar JSON.');
+        }
+
+        // Verificar estructura del JSON (con array 'data')
+        if (!isset($allProductsData['data']) || !is_array($allProductsData['data'])) {
+            wp_send_json_error('Estructura JSON inválida. Se esperaba array "data".');
+        }
+    
+        // Filtrar productos por proveedor
+        $providerProducts = array_filter($allProductsData['data'], function($product) use ($provider) {
+            return isset($product['proveedor']) && strtoupper($product['proveedor']) === strtoupper($provider);
+        });
+    
+        // Reindexar array después del filtro
+        $providerProducts = array_values($providerProducts);
+    
+        $total_productos = count($providerProducts);
+        $productBatch = array_slice($providerProducts, $offset, $tamano_lote);
+        $actualizados = 0;
+    
+        foreach ($productBatch as $productData) {
+            $updated = self::update_product_stock($productData);
+            if ($updated) {
+                $actualizados++;
+            }
+        }
+    
+        wp_send_json_success(array(
+            'total' => $total_productos,
+            'actualizados' => $actualizados,
+            'offset' => $offset + $tamano_lote,
+            'provider' => $provider
+        ));
+    }
+
+    /**
+     * Lógica centralizada para actualizar stock de un producto
+     */
+    private static function update_product_stock($productData) {
+        // Determinar SKU según proveedor
+        $sku = self::generate_sku($productData);
+        
+        if (!$sku) {
+            error_log("No se pudo generar SKU para producto: " . print_r($productData['ID'] ?? 'Sin ID', true));
+            return false;
+        }
+
+        $existingProductId = wc_get_product_id_by_sku($sku);
+        
+        if (!$existingProductId) {
+            error_log("Producto no encontrado con SKU: " . $sku);
+            return false;
+        }
+
+        $product = wc_get_product($existingProductId);
+        if (!$product) {
+            error_log("No se pudo obtener el objeto del producto con SKU: " . $sku);
+            return false;
+        }
+
+        // Manejar stock según tipo de producto
+        $isVariable = isset($productData['isVariable']) ? $productData['isVariable'] : false;
+        
+        if ($isVariable && $product->is_type('variable')) {
+            return self::update_variable_product_stock($product, $productData, $sku);
+        } else {
+            return self::update_simple_product_stock($product, $productData, $sku);
+        }
+    }
+
+    /**
+     * Actualizar stock para productos variables
+     */
+    private static function update_variable_product_stock($parent_product, $productData, $parent_sku) {
+        $has_stock = false;
+        $total_variations_updated = 0;
+        
+        // Verificar si hay stock en las variaciones
+        if (!empty($productData['variations']) && is_array($productData['variations'])) {
+            foreach ($productData['variations'] as $variation) {
+                $variation_stock = self::get_variation_stock($variation, $productData['proveedor']);
+                
+                if ($variation_stock > 0) {
+                    $has_stock = true;
+                }
+                
+                // Actualizar variación individual si existe
+                if (isset($variation['sku'])) {
+                    $variation_updated = self::update_variation_stock($variation['sku'], $variation_stock);
+                    if ($variation_updated) {
+                        $total_variations_updated++;
+                    }
+                }
+            }
+        }
+
+        // Actualizar producto padre
+        $parent_product->set_manage_stock(false); // No gestionar stock a nivel padre
+        $parent_product->set_stock_status($has_stock ? 'instock' : 'outofstock');
+
+        $save_result = $parent_product->save();
+
+        if ($save_result) {
+            error_log("Producto variable actualizado - SKU: " . $parent_sku . " - Estado: " . ($has_stock ? "instock" : "outofstock") . " - Variaciones actualizadas: " . $total_variations_updated);
+            return true;
+        } else {
+            error_log("Error al guardar producto variable con SKU: " . $parent_sku);
+            return false;
+        }
+    }
+
+    /**
+     * Obtener stock para una variación según proveedor
+     */
+    private static function get_variation_stock($variation, $provider) {
+        $provider = strtoupper($provider);
+        
+        switch ($provider) {
+            case 'ZECAT':
+                return isset($variation['Stock']) ? intval($variation['Stock']) : 0;
+                
+            case 'PROMOIMPORT':
+                return isset($variation['stock']) ? intval($variation['stock']) : 0;
+                
+            case 'CDO':
+                return isset($variation['stock_available']) ? intval($variation['stock_available']) : 0;
+                
+            default:
+                return isset($variation['stock']) ? intval($variation['stock']) : 0;
+        }
+    }
+
+    /**
+     * Actualizar stock para productos simples
+     */
+    private static function update_simple_product_stock($product, $productData, $sku) {
+        $new_stock = self::calculate_simple_stock($productData);
+
+        // Actualizar producto
+        $product->set_manage_stock(true);
+        $product->set_stock_quantity($new_stock);
+        $product->set_stock_status($new_stock > 0 ? 'instock' : 'outofstock');
+
+        $save_result = $product->save();
+
+        if ($save_result) {
+            error_log("Stock actualizado para SKU: " . $sku . " - Cantidad: " . $new_stock . " - Proveedor: " . $productData['proveedor']);
+            return true;
+        } else {
+            error_log("Error al guardar el stock para el producto con SKU: " . $sku);
+            return false;
+        }
+    }
+
+    /**
+     * Calcular stock para productos simples según proveedor
+     */
+    private static function calculate_simple_stock($productData) {
+        $provider = strtoupper($productData['proveedor']);
+        
+        switch ($provider) {
+            case 'PROMOIMPORT':
+                $stock = 0;
+                if (!empty($productData['atributos']) && is_array($productData['atributos'])) {
+                    foreach ($productData['atributos'] as $atributo) {
+                        if (isset($atributo['stock'])) {
+                            $stock += intval($atributo['stock']);
+                        }
+                    }
+                }
+                return $stock;
+
+            case 'ZECAT':
+                // Para Zecat simple, usar stock principal o verificar variaciones
+                if (isset($productData['stock'])) {
+                    return intval($productData['stock']);
+                } elseif (!empty($productData['variations']) && is_array($productData['variations'])) {
+                    foreach ($productData['variations'] as $variation) {
+                        if (isset($variation['Stock']) && intval($variation['Stock']) > 0) {
+                            $stock += intval($atributo['stock']);
+                        }
+                    }
+                }
+                return $stock;
+
+            case 'CDO':
+                if (isset($productData['stock_available'])) {
+                    return intval($productData['stock_available']);
+                } elseif (!empty($productData['variants']) && is_array($productData['variants'])) {
+                    $stock = 0;
+                    foreach ($productData['variants'] as $variant) {
+                        if (isset($variant['stock_available'])) {
+                            $stock += intval($variant['stock_available']);
+                        }
+                    }
+                    return $stock;
+                }
+                return 0;
+
+            default:
+                // Stock directo para otros proveedores
+                if (isset($productData['stock'])) {
+                    return intval($productData['stock']);
+                }
+                return 0;
+        }
+    }
+
+    /**
+     * Actualizar stock de variación individual
+     */
+    private static function update_variation_stock($variation_sku, $stock) {
+        $variation_id = wc_get_product_id_by_sku($variation_sku);
+        
+        if ($variation_id) {
+            $variation = wc_get_product($variation_id);
+            if ($variation) {
+                $variation->set_manage_stock(true);
+                $variation->set_stock_quantity($stock);
+                $variation->set_stock_status($stock > 0 ? 'instock' : 'outofstock');
+                $save_result = $variation->save();
+                
+                if ($save_result) {
+                    error_log("Variación actualizada - SKU: " . $variation_sku . " - Stock: " . $stock);
+                    return true;
+                }
+            }
+        } else {
+            error_log("Variación no encontrada con SKU: " . $variation_sku);
+        }
+        
+        return false;
+    }
+
+    /**
+     * Generar SKU según proveedor
+     */
+    private static function generate_sku($productData) {
+        if (!isset($productData['proveedor'])) {
+            return false;
+        }
+
+        $provider = strtoupper($productData['proveedor']);
+        $prefixes = [
+            'PROMOIMPORT' => 'PI0',
+            'ZECAT' => 'ZT0', 
+            'CDO' => 'SS0'
+        ];
+
+        if (!isset($prefixes[$provider])) {
+            return false;
+        }
+
+        // Usar ID o sku_proveedor según disponibilidad
+        if (isset($productData['ID']) && !empty($productData['ID'])) {
+            $id = $productData['ID'];
+        } elseif (isset($productData['sku_proveedor']) && !empty($productData['sku_proveedor'])) {
+            $id = $productData['sku_proveedor'];
+        } else {
+            return false;
+        }
+
+        // Remover prefijo si ya existe (para evitar duplicados)
+        foreach ($prefixes as $prefijo) {
+            if (strpos(strtoupper($id), $prefijo) === 0) {
+                $id = substr($id, strlen($prefijo));
+                break;
+            }
+        }
+
+        return $prefixes[$provider] . $id;
+    }
+
+    /**
+     * Función para uso en Cron
+     */
+    public static function update_stock_cron($provider = '') {
+        $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
+    
+        if (!file_exists($filePath)) {
+            error_log("[Stock Cron] Archivo JSON no encontrado: " . $filePath);
+            return false;
+        }
+    
+        $jsonContent = file_get_contents($filePath);
+        $allProductsData = json_decode($jsonContent, true);
+    
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            error_log("[Stock Cron] Error al decodificar JSON");
+            return false;
+        }
+
+        // Verificar estructura del JSON
+        if (!isset($allProductsData['data']) || !is_array($allProductsData['data'])) {
+            error_log("[Stock Cron] Estructura JSON inválida. Se esperaba array 'data'");
+            return false;
+        }
+    
+        // Filtrar por proveedor si se especifica
+        if (!empty($provider)) {
+            $productsData = array_filter($allProductsData['data'], function($product) use ($provider) {
+                return isset($product['proveedor']) && strtoupper($product['proveedor']) === strtoupper($provider);
+            });
+            $productsData = array_values($productsData);
+        } else {
+            $productsData = $allProductsData['data'];
+        }
+    
+        $actualizados = 0;
+        $total = count($productsData);
+    
+        foreach ($productsData as $productData) {
+            $updated = self::update_product_stock($productData);
+            if ($updated) {
+                $actualizados++;
+            }
+        }
+    
+        error_log("[Stock Cron] Actualización completada. Proveedor: " . ($provider ?: 'TODOS') . " - Total: {$total}, Actualizados: {$actualizados}");
+        return $actualizados;
+    }
+
+    /**
+     * Ejecutar actualización para todos los proveedores via Cron
+     */
+    public static function update_all_providers_stock_cron() {
+        $providers = ['PROMOIMPORT', 'ZECAT', 'CDO'];
+        $results = [];
+        
+        foreach ($providers as $provider) {
+            $results[$provider] = self::update_stock_cron($provider);
+        }
+        
+        error_log("[Stock Cron] Resumen actualización: " . print_r($results, true));
+        return $results;
+    }
+
 }
