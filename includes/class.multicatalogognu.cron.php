@@ -537,7 +537,7 @@ class cMulticatalogoGNUCron {
     }
 
     /**
-     * Subir productos de Zecat desde JSON (versión silenciosa para cron)
+     * Subir productos desde JSON (versión silenciosa para cron)
      */
     private static function upload_from_json($provider, $offset = 0, $batch_size = 5) {
         // Ruta al archivo JSON normalizado

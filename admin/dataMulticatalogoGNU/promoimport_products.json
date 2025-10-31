@@ -20,7 +20,7 @@
         "atributos": [
             {
                 "value": "PLATEADO",
-                "stock": "49032"
+                "stock": "48947"
             }
         ],
         "precio": "408"
@@ -718,7 +718,7 @@
         "atributos": [
             {
                 "value": "BLANCO",
-                "stock": "51400"
+                "stock": "51394"
             },
             {
                 "value": "AZUL",
@@ -726,7 +726,7 @@
             },
             {
                 "value": "ROJO",
-                "stock": "27521"
+                "stock": "27520"
             },
             {
                 "value": "NARANJO",
@@ -916,7 +916,7 @@
         "atributos": [
             {
                 "value": "BLANCO",
-                "stock": "27056"
+                "stock": "27041"
             },
             {
                 "value": "AZUL",
@@ -1044,7 +1044,7 @@
             },
             {
                 "value": "AZUL",
-                "stock": "13769"
+                "stock": "13616"
             },
             {
                 "value": "ROJO",
@@ -2042,7 +2042,7 @@
                 "stock": "26372"
             }
         ],
-        "precio": "170"
+        "precio": "150"
     },
     {
         "sku": "B12",
@@ -3473,7 +3473,7 @@
         "atributos": [
             {
                 "value": "MADERA",
-                "stock": "5650"
+                "stock": "5590"
             }
         ],
         "precio": "5145"
@@ -4111,7 +4111,7 @@
         "atributos": [
             {
                 "value": "NATURAL",
-                "stock": "7040"
+                "stock": "7037"
             }
         ],
         "precio": "4750"
@@ -4137,7 +4137,7 @@
         "atributos": [
             {
                 "value": "NATURAL",
-                "stock": "3304"
+                "stock": "3301"
             }
         ],
         "precio": "5250"
@@ -4446,7 +4446,7 @@
         "atributos": [
             {
                 "value": "NATURAL",
-                "stock": "170"
+                "stock": "110"
             }
         ],
         "precio": "6608"
@@ -4758,7 +4758,7 @@
         "atributos": [
             {
                 "value": "VERDE",
-                "stock": "3665"
+                "stock": "3815"
             }
         ],
         "precio": "1990"
@@ -6458,7 +6458,7 @@
             },
             {
                 "value": "ROJO",
-                "stock": "1597"
+                "stock": "1443"
             },
             {
                 "value": "NARANJO",
@@ -7639,7 +7639,7 @@
         "atributos": [
             {
                 "value": "AZUL",
-                "stock": "0"
+                "stock": "1626"
             },
             {
                 "value": "ROJO",
@@ -9426,7 +9426,7 @@
             },
             {
                 "value": "ROJO",
-                "stock": "4086"
+                "stock": "4056"
             },
             {
                 "value": "NARANJO",
@@ -9931,7 +9931,7 @@
             },
             {
                 "value": "NATURAL",
-                "stock": "0"
+                "stock": "28492"
             }
         ],
         "precio": "317"
@@ -10761,7 +10761,7 @@
             },
             {
                 "value": "NARANJO",
-                "stock": "14505"
+                "stock": "14415"
             },
             {
                 "value": "AMARILLO",
@@ -10777,7 +10777,7 @@
             },
             {
                 "value": "NEGRO",
-                "stock": "96"
+                "stock": "92"
             },
             {
                 "value": "BEIGE",
@@ -11231,7 +11231,7 @@
             },
             {
                 "value": "ROJO",
-                "stock": "2071"
+                "stock": "1950"
             },
             {
                 "value": "NARANJO",
@@ -11959,7 +11959,7 @@
             },
             {
                 "value": "AZUL",
-                "stock": "19270"
+                "stock": "18970"
             },
             {
                 "value": "ROJO",
@@ -12353,7 +12353,7 @@
             },
             {
                 "value": "NEGRO",
-                "stock": "21460"
+                "stock": "21159"
             },
             {
                 "value": "BEIGE",
@@ -12510,7 +12510,7 @@
             },
             {
                 "value": "NEGRO",
-                "stock": "19949"
+                "stock": "19763"
             },
             {
                 "value": "BEIGE",
@@ -12526,7 +12526,7 @@
             },
             {
                 "value": "MORADO",
-                "stock": "17519"
+                "stock": "17219"
             },
             {
                 "value": "VERDE PISTACHO",
@@ -13027,7 +13027,7 @@
         "atributos": [
             {
                 "value": "NATURAL",
-                "stock": "52496"
+                "stock": "0"
             }
         ],
         "precio": "650"
@@ -13329,7 +13329,7 @@
         "atributos": [
             {
                 "value": "NATURAL",
-                "stock": "9922"
+                "stock": "9913"
             }
         ],
         "precio": "998"
@@ -13506,7 +13506,7 @@
             },
             {
                 "value": "NARANJO",
-                "stock": "7307"
+                "stock": "6104"
             },
             {
                 "value": "AMARILLO",
@@ -13522,7 +13522,7 @@
             },
             {
                 "value": "NEGRO",
-                "stock": "0"
+                "stock": "14004"
             },
             {
                 "value": "BEIGE",
@@ -13583,7 +13583,7 @@
         "atributos": [
             {
                 "value": "NATURAL",
-                "stock": "81607"
+                "stock": "81396"
             }
         ],
         "precio": "962"
@@ -13755,7 +13755,7 @@
             },
             {
                 "value": "AMARILLO",
-                "stock": "2856"
+                "stock": "2795"
             },
             {
                 "value": "VERDE",
@@ -13771,7 +13771,7 @@
             },
             {
                 "value": "VERDE CLARO",
-                "stock": "2116"
+                "stock": "0"
             },
             {
                 "value": "AZUL MARINO",
@@ -13791,7 +13791,7 @@
             },
             {
                 "value": "MAGENTA",
-                "stock": "4150"
+                "stock": "4089"
             }
         ],
         "precio": "1256"
@@ -14018,7 +14018,7 @@
             },
             {
                 "value": "AZUL",
-                "stock": "36096"
+                "stock": "35181"
             },
             {
                 "value": "ROJO",
@@ -14184,7 +14184,7 @@
         "atributos": [
             {
                 "value": "NATURAL",
-                "stock": "562"
+                "stock": "5"
             }
         ],
         "precio": "2311"
@@ -15125,7 +15125,7 @@
         "atributos": [
             {
                 "value": "NEGRO",
-                "stock": "89"
+                "stock": "0"
             },
             {
                 "value": "NATURAL",
@@ -15866,7 +15866,7 @@
                 "stock": "3573"
             }
         ],
-        "precio": "168"
+        "precio": "110"
     },
     {
         "sku": "G1",
@@ -16187,7 +16187,7 @@
             },
             {
                 "value": "AZUL MARINO",
-                "stock": "8750"
+                "stock": "8735"
             }
         ],
         "precio": "1247"
@@ -16290,7 +16290,7 @@
         "atributos": [
             {
                 "value": "AZUL",
-                "stock": "1068"
+                "stock": "3058"
             },
             {
                 "value": "ROJO",
@@ -16298,7 +16298,7 @@
             },
             {
                 "value": "NEGRO",
-                "stock": "3416"
+                "stock": "4397"
             }
         ],
         "precio": "4990"
@@ -17209,7 +17209,7 @@
         "atributos": [
             {
                 "value": "GRIS",
-                "stock": "8099"
+                "stock": "7973"
             }
         ],
         "precio": "9800"
@@ -17858,7 +17858,7 @@
         "atributos": [
             {
                 "value": "BLANCO",
-                "stock": "8900"
+                "stock": "8893"
             },
             {
                 "value": "AZUL",
@@ -19163,7 +19163,7 @@
             },
             {
                 "value": "AMARILLO",
-                "stock": "26464"
+                "stock": "26458"
             },
             {
                 "value": "VERDE",
@@ -19679,7 +19679,7 @@
         "atributos": [
             {
                 "value": "NEGRO",
-                "stock": "759"
+                "stock": "745"
             }
         ],
         "precio": "17500"
@@ -19729,7 +19729,7 @@
         "atributos": [
             {
                 "value": "NEGRO",
-                "stock": "177"
+                "stock": "173"
             }
         ],
         "precio": "35000"
@@ -19849,7 +19849,7 @@
         "atributos": [
             {
                 "value": "NEGRO",
-                "stock": "79"
+                "stock": "77"
             }
         ],
         "precio": "33000"
@@ -21231,7 +21231,7 @@
             },
             {
                 "value": "BLANCO",
-                "stock": "17"
+                "stock": "5489"
             },
             {
                 "value": "AZUL",
@@ -21239,7 +21239,7 @@
             },
             {
                 "value": "ROJO",
-                "stock": "5903"
+                "stock": "5663"
             },
             {
                 "value": "NARANJO",
@@ -21596,7 +21596,7 @@
                 "stock": "897"
             }
         ],
-        "precio": "25734"
+        "precio": "23300"
     },
     {
         "sku": "J6",
@@ -21770,7 +21770,7 @@
                 "stock": "7481"
             }
         ],
-        "precio": "1346"
+        "precio": "1100"
     },
     {
         "sku": "K13",
@@ -21797,7 +21797,7 @@
                 "stock": "0"
             }
         ],
-        "precio": "800"
+        "precio": "750"
     },
     {
         "sku": "K14",
@@ -21820,7 +21820,7 @@
                 "stock": "23244"
             }
         ],
-        "precio": "897"
+        "precio": "820"
     },
     {
         "sku": "K15",
@@ -21843,7 +21843,7 @@
                 "stock": "14617"
             }
         ],
-        "precio": "897"
+        "precio": "820"
     },
     {
         "sku": "K16",
@@ -21866,7 +21866,7 @@
                 "stock": "35533"
             }
         ],
-        "precio": "897"
+        "precio": "820"
     },
     {
         "sku": "K17",
@@ -21892,7 +21892,7 @@
                 "stock": "5871"
             }
         ],
-        "precio": "1222"
+        "precio": "998"
     },
     {
         "sku": "K18",
@@ -21915,7 +21915,7 @@
                 "stock": "1933"
             }
         ],
-        "precio": "830"
+        "precio": "798"
     },
     {
         "sku": "K19",
@@ -21941,7 +21941,7 @@
                 "stock": "12430"
             }
         ],
-        "precio": "810"
+        "precio": "798"
     },
     {
         "sku": "K2",
@@ -22039,7 +22039,7 @@
                 "stock": "24661"
             }
         ],
-        "precio": "962"
+        "precio": "880"
     },
     {
         "sku": "K21",
@@ -22062,7 +22062,7 @@
                 "stock": "11959"
             }
         ],
-        "precio": "962"
+        "precio": "880"
     },
     {
         "sku": "K22",
@@ -22141,7 +22141,7 @@
             },
             {
                 "value": "NEGRO",
-                "stock": "32534"
+                "stock": "32474"
             }
         ],
         "precio": "195"
@@ -22240,7 +22240,7 @@
             },
             {
                 "value": "VERDE",
-                "stock": "18155"
+                "stock": "18094"
             },
             {
                 "value": "ENCOBRIZADO METALICO",
@@ -22405,7 +22405,7 @@
                 "stock": "6985"
             }
         ],
-        "precio": "897"
+        "precio": "750"
     },
     {
         "sku": "K29",
@@ -22449,7 +22449,7 @@
                 "stock": "2196"
             }
         ],
-        "precio": "750"
+        "precio": "720"
     },
     {
         "sku": "K3",
@@ -22498,7 +22498,7 @@
         "atributos": [
             {
                 "value": "NEGRO",
-                "stock": "12969"
+                "stock": "12968"
             }
         ],
         "precio": "1170"
@@ -22829,7 +22829,7 @@
         "atributos": [
             {
                 "value": "PLATEADO",
-                "stock": "868"
+                "stock": "850"
             }
         ],
         "precio": "390"
@@ -23197,7 +23197,7 @@
         "atributos": [
             {
                 "value": "AZUL",
-                "stock": "21178"
+                "stock": "20578"
             },
             {
                 "value": "ROJO",
@@ -23514,7 +23514,7 @@
         "atributos": [
             {
                 "value": "PLATEADO",
-                "stock": "47028"
+                "stock": "46908"
             },
             {
                 "value": "AZUL",
@@ -24031,7 +24031,7 @@
             },
             {
                 "value": "AZUL",
-                "stock": "21182"
+                "stock": "21121"
             },
             {
                 "value": "ROJO",
@@ -24039,11 +24039,11 @@
             },
             {
                 "value": "VERDE",
-                "stock": "23582"
+                "stock": "23279"
             },
             {
                 "value": "NEGRO",
-                "stock": "44198"
+                "stock": "43895"
             }
         ],
         "precio": "245"
@@ -24082,7 +24082,7 @@
                 "stock": "52415"
             }
         ],
-        "precio": "96"
+        "precio": "88"
     },
     {
         "sku": "L12",
@@ -24278,7 +24278,7 @@
                 "stock": "6487"
             }
         ],
-        "precio": "1262"
+        "precio": "980"
     },
     {
         "sku": "L13",
@@ -24556,7 +24556,7 @@
                 "stock": "23886"
             }
         ],
-        "precio": "330"
+        "precio": "310"
     },
     {
         "sku": "L168",
@@ -24942,7 +24942,7 @@
             },
             {
                 "value": "MORADO",
-                "stock": "10303"
+                "stock": "0"
             },
             {
                 "value": "VERDE PISTACHO",
@@ -25163,7 +25163,7 @@
         "atributos": [
             {
                 "value": "NATURAL",
-                "stock": "120245"
+                "stock": "120177"
             }
         ],
         "precio": "57"
@@ -25315,7 +25315,7 @@
         "atributos": [
             {
                 "value": "BLANCO",
-                "stock": "3643"
+                "stock": "8"
             },
             {
                 "value": "AZUL",
@@ -25339,7 +25339,7 @@
             },
             {
                 "value": "NEGRO",
-                "stock": "4370"
+                "stock": "4270"
             },
             {
                 "value": "MORADO",
@@ -25672,19 +25672,19 @@
             },
             {
                 "value": "AZUL",
-                "stock": "1636"
+                "stock": "1702"
             },
             {
                 "value": "ROJO",
-                "stock": "20897"
+                "stock": "22188"
             },
             {
                 "value": "NARANJO",
-                "stock": "37499"
+                "stock": "73994"
             },
             {
                 "value": "VERDE",
-                "stock": "38594"
+                "stock": "41782"
             },
             {
                 "value": "NEGRO",
@@ -25937,7 +25937,7 @@
             },
             {
                 "value": "ROJO",
-                "stock": "45769"
+                "stock": "45649"
             },
             {
                 "value": "NARANJO",
@@ -25949,7 +25949,7 @@
             },
             {
                 "value": "VERDE",
-                "stock": "53651"
+                "stock": "53531"
             },
             {
                 "value": "NEGRO",
@@ -27732,7 +27732,7 @@
             },
             {
                 "value": "NEGRO",
-                "stock": "19013"
+                "stock": "18950"
             },
             {
                 "value": "VERDE CLARO",
@@ -28171,7 +28171,7 @@
             },
             {
                 "value": "AMARILLO",
-                "stock": "23693"
+                "stock": "23543"
             },
             {
                 "value": "VERDE",
@@ -28191,7 +28191,7 @@
             },
             {
                 "value": "MORADO",
-                "stock": "15499"
+                "stock": "15439"
             },
             {
                 "value": "ESMERALDA",
@@ -29010,7 +29010,7 @@
         "atributos": [
             {
                 "value": "BLANCO",
-                "stock": "283585"
+                "stock": "281633"
             },
             {
                 "value": "AZUL",
@@ -29026,7 +29026,7 @@
             },
             {
                 "value": "NEGRO",
-                "stock": "19983"
+                "stock": "18483"
             },
             {
                 "value": "AZUL MARINO",
@@ -29738,7 +29738,7 @@
                 "stock": "3417"
             }
         ],
-        "precio": "2221"
+        "precio": "1990"
     },
     {
         "sku": "M20",
@@ -29758,7 +29758,7 @@
         "atributos": [
             {
                 "value": "BLANCO",
-                "stock": "15825"
+                "stock": "15807"
             }
         ],
         "precio": "550"
@@ -29855,7 +29855,7 @@
         "atributos": [
             {
                 "value": "BLANCO",
-                "stock": "55922"
+                "stock": "53843"
             }
         ],
         "precio": "750"
@@ -31154,7 +31154,7 @@
                 "stock": "3264"
             }
         ],
-        "precio": "2128"
+        "precio": "1990"
     },
     {
         "sku": "D28",
@@ -31308,7 +31308,7 @@
             },
             {
                 "value": "BLANCO",
-                "stock": "8706"
+                "stock": "8640"
             },
             {
                 "value": "AZUL",
@@ -31475,7 +31475,7 @@
                 "stock": "14741"
             }
         ],
-        "precio": "967"
+        "precio": "790"
     },
     {
         "sku": "N0",
@@ -31827,7 +31827,7 @@
             },
             {
                 "value": "BLANCO",
-                "stock": "17770"
+                "stock": "17470"
             }
         ],
         "precio": "709"
@@ -32064,11 +32064,11 @@
         "atributos": [
             {
                 "value": "AZUL",
-                "stock": "19239"
+                "stock": "19203"
             },
             {
                 "value": "ROJO",
-                "stock": "28930"
+                "stock": "28857"
             },
             {
                 "value": "NARANJO",
@@ -32080,7 +32080,7 @@
             },
             {
                 "value": "NEGRO",
-                "stock": "34900"
+                "stock": "34238"
             }
         ],
         "precio": "898"
@@ -32144,7 +32144,7 @@
         "atributos": [
             {
                 "value": "NATURAL",
-                "stock": "586"
+                "stock": "568"
             }
         ],
         "precio": "1250"
@@ -32251,7 +32251,7 @@
         "atributos": [
             {
                 "value": "NATURAL",
-                "stock": "14658"
+                "stock": "14653"
             }
         ],
         "precio": "1550"
@@ -32296,7 +32296,7 @@
         "atributos": [
             {
                 "value": "NEGRO",
-                "stock": "2495"
+                "stock": "2471"
             }
         ],
         "precio": "4278"
@@ -32355,7 +32355,7 @@
         "atributos": [
             {
                 "value": "BLANCO",
-                "stock": "3285"
+                "stock": "3278"
             },
             {
                 "value": "AZUL",
@@ -32592,7 +32592,7 @@
         "atributos": [
             {
                 "value": "NATURAL",
-                "stock": "15084"
+                "stock": "15096"
             }
         ],
         "precio": "2100"
@@ -32732,7 +32732,7 @@
         "atributos": [
             {
                 "value": "AZUL",
-                "stock": "2834"
+                "stock": "2802"
             },
             {
                 "value": "ROJO",
@@ -32870,7 +32870,7 @@
             },
             {
                 "value": "NEGRO",
-                "stock": "4205"
+                "stock": "3604"
             },
             {
                 "value": "FUCSIA",
@@ -32949,7 +32949,7 @@
             },
             {
                 "value": "ROJO",
-                "stock": "12299"
+                "stock": "14107"
             },
             {
                 "value": "NARANJO",
@@ -32965,7 +32965,7 @@
             },
             {
                 "value": "NEGRO",
-                "stock": "9886"
+                "stock": "9554"
             },
             {
                 "value": "FUCSIA",
@@ -33185,7 +33185,7 @@
                 "stock": "3703"
             }
         ],
-        "precio": "1111"
+        "precio": "850"
     },
     {
         "sku": "N50",
@@ -33331,7 +33331,7 @@
                 "stock": "11636"
             }
         ],
-        "precio": "760"
+        "precio": "720"
     },
     {
         "sku": "N56",
@@ -33369,10 +33369,10 @@
         "atributos": [
             {
                 "value": "NEGRO",
-                "stock": "5658"
+                "stock": "5646"
             }
         ],
-        "precio": "2900"
+        "precio": "1990"
     },
     {
         "sku": "N57",
@@ -33607,7 +33607,7 @@
         "atributos": [
             {
                 "value": "NATURAL",
-                "stock": "16383"
+                "stock": "16083"
             }
         ],
         "precio": "838"
@@ -33760,7 +33760,7 @@
             },
             {
                 "value": "ROJO",
-                "stock": "5537"
+                "stock": "5475"
             },
             {
                 "value": "NARANJO",
@@ -34584,7 +34584,7 @@
             },
             {
                 "value": "AZUL",
-                "stock": "159"
+                "stock": "147"
             },
             {
                 "value": "ROJO",
@@ -34604,11 +34604,11 @@
             },
             {
                 "value": "NEGRO",
-                "stock": "90"
+                "stock": "36"
             },
             {
                 "value": "BEIGE",
-                "stock": "132"
+                "stock": "130"
             },
             {
                 "value": "AZUL MARINO",
@@ -35217,7 +35217,7 @@
             },
             {
                 "value": "GRIS",
-                "stock": "2914"
+                "stock": "2912"
             },
             {
                 "value": "NEGRO",
@@ -35229,10 +35229,10 @@
             },
             {
                 "value": "AZUL MARINO",
-                "stock": "1276"
+                "stock": "1273"
             }
         ],
-        "precio": "2900"
+        "precio": "3900"
     },
     {
         "sku": "P20",
@@ -35625,7 +35625,7 @@
         "atributos": [
             {
                 "value": "GRIS OSCURO",
-                "stock": "588"
+                "stock": "586"
             }
         ],
         "precio": "14950"
@@ -35676,7 +35676,7 @@
             },
             {
                 "value": "AZUL",
-                "stock": "462"
+                "stock": "461"
             },
             {
                 "value": "ROJO",
@@ -36057,7 +36057,7 @@
                 "stock": "21824"
             }
         ],
-        "precio": "750"
+        "precio": "440"
     },
     {
         "sku": "P6",
@@ -36232,7 +36232,7 @@
                 "stock": "727"
             }
         ],
-        "precio": "2218"
+        "precio": "2900"
     },
     {
         "sku": "Q0",
@@ -37009,7 +37009,7 @@
             },
             {
                 "value": "AMARILLO",
-                "stock": "6077"
+                "stock": "6053"
             },
             {
                 "value": "VERDE",
@@ -37249,7 +37249,7 @@
                 "stock": "0"
             }
         ],
-        "precio": "1290"
+        "precio": "990"
     },
     {
         "sku": "S19",
@@ -37817,7 +37817,7 @@
             },
             {
                 "value": "AZUL",
-                "stock": "3593"
+                "stock": "3592"
             },
             {
                 "value": "ROJO",
@@ -37952,7 +37952,7 @@
         "atributos": [
             {
                 "value": "BLANCO",
-                "stock": "2131"
+                "stock": "2129"
             },
             {
                 "value": "AZUL",
@@ -38773,7 +38773,7 @@
             },
             {
                 "value": "AZUL",
-                "stock": "43867"
+                "stock": "43819"
             },
             {
                 "value": "ROJO",
@@ -38781,14 +38781,14 @@
             },
             {
                 "value": "NARANJO",
-                "stock": "33344"
+                "stock": "43916"
             },
             {
                 "value": "VERDE",
                 "stock": "27013"
             }
         ],
-        "precio": "246"
+        "precio": "290"
     },
     {
         "sku": "S9",
@@ -39580,7 +39580,7 @@
             },
             {
                 "value": "AZUL",
-                "stock": "2750"
+                "stock": "2696"
             },
             {
                 "value": "ROJO",
@@ -40604,7 +40604,7 @@
                 "stock": "16598"
             }
         ],
-        "precio": "578"
+        "precio": "550"
     },
     {
         "sku": "W5",
@@ -40854,7 +40854,7 @@
         "atributos": [
             {
                 "value": "NEGRO",
-                "stock": "2311"
+                "stock": "2251"
             }
         ],
         "precio": "1100"
@@ -41333,7 +41333,7 @@
         "atributos": [
             {
                 "value": "AZUL FROZEN",
-                "stock": "1706"
+                "stock": "1646"
             },
             {
                 "value": "VERDE FROZEN",
@@ -42223,7 +42223,7 @@
         "atributos": [
             {
                 "value": "BLANCO",
-                "stock": "582"
+                "stock": "1"
             }
         ],
         "precio": "733"
@@ -42290,7 +42290,7 @@
                 "stock": "17108"
             }
         ],
-        "precio": "374"
+        "precio": "340"
     },
     {
         "sku": "Y23",
@@ -42646,7 +42646,7 @@
             },
             {
                 "value": "AZUL",
-                "stock": "20593"
+                "stock": "19987"
             },
             {
                 "value": "ROJO",
@@ -42674,7 +42674,7 @@
             },
             {
                 "value": "BEIGE",
-                "stock": "11962"
+                "stock": "11956"
             },
             {
                 "value": "AZUL MARINO",
@@ -43282,7 +43282,7 @@
                 "stock": "10381"
             }
         ],
-        "precio": "990"
+        "precio": "650"
     },
     {
         "sku": "Y55",
@@ -43311,7 +43311,7 @@
                 "stock": "8123"
             }
         ],
-        "precio": "990"
+        "precio": "650"
     },
     {
         "sku": "Y56",
@@ -43340,7 +43340,7 @@
                 "stock": "9823"
             }
         ],
-        "precio": "990"
+        "precio": "650"
     },
     {
         "sku": "Y57",
@@ -43369,7 +43369,7 @@
                 "stock": "9576"
             }
         ],
-        "precio": "990"
+        "precio": "650"
     },
     {
         "sku": "Y6",
@@ -43506,7 +43506,7 @@
         "atributos": [
             {
                 "value": "BLANCO",
-                "stock": "23462"
+                "stock": "23461"
             }
         ],
         "precio": "440"
@@ -44364,11 +44364,11 @@
         "atributos": [
             {
                 "value": "BLANCO TALLA: L",
-                "stock": "1231"
+                "stock": "1230"
             },
             {
                 "value": "BLANCO TALLA: M",
-                "stock": "730"
+                "stock": "729"
             },
             {
                 "value": "BLANCO TALLA: S",
@@ -44532,27 +44532,27 @@
             },
             {
                 "value": "NEGRO TALLA: L",
-                "stock": "176"
+                "stock": "155"
             },
             {
                 "value": "NEGRO TALLA: M",
-                "stock": "3326"
+                "stock": "3320"
             },
             {
                 "value": "NEGRO TALLA: S",
-                "stock": "4505"
+                "stock": "4495"
             },
             {
                 "value": "NEGRO TALLA: XL",
-                "stock": "5675"
+                "stock": "5659"
             },
             {
                 "value": "NEGRO TALLA: XS",
-                "stock": "2209"
+                "stock": "2204"
             },
             {
                 "value": "NEGRO TALLA: XXL",
-                "stock": "2381"
+                "stock": "2372"
             },
             {
                 "value": "GRIS MELANGE  TALLA: L",
@@ -46064,7 +46064,7 @@
             },
             {
                 "value": "NEGRO TALLA: XL",
-                "stock": "138"
+                "stock": "137"
             },
             {
                 "value": "NEGRO TALLA: XS",
@@ -46544,7 +46544,7 @@
                 "stock": "1365"
             }
         ],
-        "precio": "1571"
+        "precio": "1440"
     },
     {
         "sku": "Z6",
@@ -46987,7 +46987,7 @@
             },
             {
                 "value": "BLANCO TALLA: XS",
-                "stock": "87"
+                "stock": "86"
             },
             {
                 "value": "BLANCO TALLA: XXL",
@@ -47027,7 +47027,7 @@
             },
             {
                 "value": "ROJO TALLA: S",
-                "stock": "122"
+                "stock": "121"
             },
             {
                 "value": "ROJO TALLA: XL",
@@ -47212,7 +47212,7 @@
             },
             {
                 "value": "NEGRO TALLA: L",
-                "stock": "319"
+                "stock": "316"
             },
             {
                 "value": "NEGRO TALLA: M",
@@ -47438,19 +47438,19 @@
         "atributos": [
             {
                 "value": "BLANCO",
-                "stock": "2576"
+                "stock": "2575"
             },
             {
                 "value": "AZUL",
-                "stock": "1702"
+                "stock": "1734"
             },
             {
                 "value": "ROJO",
-                "stock": "819"
+                "stock": "852"
             },
             {
                 "value": "NEGRO",
-                "stock": "2668"
+                "stock": "2697"
             }
         ],
         "precio": "3750"
@@ -47815,7 +47815,7 @@
                 "stock": "3515"
             }
         ],
-        "precio": "5500"
+        "precio": "2750"
     },
     {
         "sku": "M66",
@@ -47983,7 +47983,7 @@
         "atributos": [
             {
                 "value": "NATURAL",
-                "stock": "4955"
+                "stock": "4954"
             }
         ],
         "precio": "660"
@@ -48220,7 +48220,7 @@
         "atributos": [
             {
                 "value": "ENCOBRIZADO METALICO",
-                "stock": "148"
+                "stock": "143"
             }
         ],
         "precio": "11900"
@@ -48381,7 +48381,7 @@
         "atributos": [
             {
                 "value": "NEGRO",
-                "stock": "119"
+                "stock": "116"
             }
         ],
         "precio": "8800"
@@ -48522,7 +48522,7 @@
         "atributos": [
             {
                 "value": "NATURAL",
-                "stock": "13614"
+                "stock": "13564"
             }
         ],
         "precio": "750"
@@ -50258,7 +50258,7 @@
             },
             {
                 "value": "AZUL",
-                "stock": "2650"
+                "stock": "2741"
             },
             {
                 "value": "ROJO",
@@ -51136,7 +51136,7 @@
             },
             {
                 "value": "NEGRO",
-                "stock": "762"
+                "stock": "612"
             }
         ],
         "precio": "5400"
@@ -54540,7 +54540,7 @@
         "atributos": [
             {
                 "value": "NATURAL",
-                "stock": "206"
+                "stock": "203"
             }
         ],
         "precio": "11000"
@@ -55410,7 +55410,7 @@
                 "stock": "8136"
             }
         ],
-        "precio": "896"
+        "precio": "844"
     },
     {
         "sku": "M81",
@@ -55473,7 +55473,7 @@
                 "stock": "7157"
             }
         ],
-        "precio": "1190"
+        "precio": "1050"
     },
     {
         "sku": "M82",
@@ -55529,14 +55529,14 @@
         "atributos": [
             {
                 "value": "ROJO",
-                "stock": "8171"
+                "stock": "8168"
             },
             {
                 "value": "AZUL MARINO",
                 "stock": "7059"
             }
         ],
-        "precio": "1150"
+        "precio": "1050"
     },
     {
         "sku": "D25",
@@ -55781,7 +55781,7 @@
             },
             {
                 "value": "NEGRO",
-                "stock": "1906"
+                "stock": "1894"
             }
         ],
         "precio": "3300"
@@ -57308,7 +57308,7 @@
                 "stock": "1797"
             }
         ],
-        "precio": "2700"
+        "precio": "2490"
     },
     {
         "sku": "U82",
