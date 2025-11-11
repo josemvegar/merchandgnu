@@ -56,7 +56,7 @@ class cMultiCatalogoGNU {
 
 		add_action( 'wp_ajax_ActualizarListaProductos', 	array( 'cMulticatalogoGNUAdmin',	  'combinar_json_zecat_cdo')); 
 
-
+		add_action( 'wp_ajax_multicatalogo_save_config', array( 'cMulticatalogoGNUConfig', 'ajax_save_config' ));
 
 	}
 
@@ -198,8 +198,16 @@ class cMultiCatalogoGNU {
 			'nonce'    => wp_create_nonce('lista_productos_nonce'),
 			'action'   => 'ActualizarListaProductos',
 			)
-	);
+		);
 
+		// Localize script para guardar configuración de precios
+		wp_localize_script('admin-multicatalogognu', 'multicatalogo_save_config',
+			array(
+				'ajax_url' => admin_url('admin-ajax.php'),
+				'nonce'    => wp_create_nonce('multicatalogo_save_config_nonce'),
+				'action'   => 'multicatalogo_save_config',
+			)
+		);
 
     }
 

@@ -119,6 +119,22 @@ function multicatalogognu_activate() {
             array('%s', '%s')
         );
     }
+
+    $existing_currency = $wpdb->get_var($wpdb->prepare(
+        "SELECT config_value FROM $table_config WHERE config_key = %s", 
+        'currency_type'
+    ));
+
+    if (is_null($existing_currency)) {
+        $wpdb->insert(
+            $table_config,
+            array(
+                'config_key' => 'currency_type',
+                'config_value' => 'usd'
+            ),
+            array('%s', '%s')
+        );
+    }
     
     // Programar los cron jobs
     if ( ! wp_next_scheduled( 'multicatalogo_hourly_update_json' ) ) {

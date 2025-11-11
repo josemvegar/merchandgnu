@@ -114,7 +114,7 @@ class cMulticatalogoGNUAdmin {
                         'Combinations' => ['Color' => $color_name],
                         'Stock' => isset($variant['stock_available']) ? $variant['stock_available'] : 0,
                         'Precio' => isset($variant['list_price']) ? floatval($variant['list_price']) : 0,
-                        'sku' => 'ss0' . $variant['id']
+                        'sku' => 'ss0' . $variant['id'],
                         'sku_proveedor' => $variant['sku']
                     ];
                 } elseif (isset($variant['colors'])){
@@ -381,7 +381,7 @@ class cMulticatalogoGNUAdmin {
 
                     <input type="submit" name="submit" id="ActualizarStockPromoImport" class="button button-primary" value="<?php  _e('Actualizar Stock en Woocommerce PromoImport', 'MultiCatalogoGNU')?>">
 
-                    <input type="submit" name="submit" id="ActualizarPrecioZecat" class="button button-primary" value="<?php  _e('Actualizar Precio en Woocommerce Zecat', 'MultiCatalogoGNU')?>">
+                    <input type="submit" name="submit" id="ActualizarPrecioZecat" class="button button-primary" value="<?php  _e('Actualizar Precio en Woocommerce ZECAT', 'MultiCatalogoGNU')?>">
 
                     <input type="submit" name="submit" id="ActualizarPrecioCDO" class="button button-primary" value="<?php  _e('Actualizar Precio en Woocommerce CDO', 'MultiCatalogoGNU')?>">
 
@@ -454,6 +454,7 @@ class cMulticatalogoGNUAdmin {
         $config = new cMulticatalogoGNUConfig();
         $profit_margin = $config->get_profit_margin();
         $usd_to_clp = $config->get_usd_to_clp_rate();
+        $currency_type = $config->get_currency_type();
 
         ?>
         <div class="wrap">
@@ -461,11 +462,22 @@ class cMulticatalogoGNUAdmin {
             
             <div class="card" style="max-width: 600px; padding: 20px; margin-top: 20px;">
                 <h2>Configuración de Conversión y Ganancia</h2>
-                <p>Los precios se calcularán con la siguiente fórmula:</p>
-                <p><strong>Precio Final (CLP) = (Precio USD × Tasa de Cambio) × (1 + Porcentaje de Ganancia / 100)</strong></p>
                 
                 <form id="config-precios-form">
                     <table class="form-table">
+                        <!-- Añadir selector de tipo de moneda -->
+                        <tr>
+                            <th scope="row">
+                                <label for="currency_type">Tipo de Moneda Base</label>
+                            </th>
+                            <td>
+                                <select id="currency_type" name="currency_type" class="regular-text">
+                                    <option value="usd" <?php selected($currency_type, 'usd'); ?>>Dólares (USD)</option>
+                                    <option value="clp" <?php selected($currency_type, 'clp'); ?>>Pesos Chilenos (CLP)</option>
+                                </select>
+                                <p class="description">Selecciona la moneda en la que vienen los precios base de los proveedores</p>
+                            </td>
+                        </tr>
                         <tr>
                             <th scope="row">
                                 <label for="profit_margin">Porcentaje de Ganancia (%)</label>
@@ -482,7 +494,8 @@ class cMulticatalogoGNUAdmin {
                                 <p class="description">Ejemplo: 50 = 50% de ganancia sobre el precio base</p>
                             </td>
                         </tr>
-                        <tr>
+                        <!-- Hacer que el campo de tasa de cambio se muestre/oculte según la moneda -->
+                        <tr id="usd_rate_row" style="<?php echo ($currency_type === 'clp') ? 'display: none;' : ''; ?>">
                             <th scope="row">
                                 <label for="usd_to_clp">Tasa de Cambio USD a CLP</label>
                             </th>
@@ -510,22 +523,106 @@ class cMulticatalogoGNUAdmin {
 
                 <hr style="margin: 30px 0;">
 
+                <!-- Actualizar la explicación de la fórmula según el tipo de moneda -->
+                <h3>Fórmula Aplicada</h3>
+                <div id="formula-explanation">
+                    <?php if ($currency_type === 'clp'): ?>
+                        <p><strong>Moneda Base: Pesos Chilenos (CLP)</strong></p>
+                        <p>Precio Final = Precio Base × (1 + Porcentaje de Ganancia / 100)</p>
+                    <?php else: ?>
+                        <p><strong>Moneda Base: Dólares (USD)</strong></p>
+                        <p>Precio Final = (Precio USD × Tasa de Cambio) × (1 + Porcentaje de Ganancia / 100)</p>
+                    <?php endif; ?>
+                </div>
+
                 <h3>Ejemplo de Cálculo</h3>
-                <p>Si un producto cuesta <strong>$10 USD</strong>:</p>
-                <p id="ejemplo-calculo">
-                    Precio Final = ($10 × <?php echo $usd_to_clp; ?>) × (1 + <?php echo $profit_margin; ?>/100) 
-                    = <strong>$<?php echo number_format($config->calculate_final_price(10), 0, ',', '.'); ?> CLP</strong>
-                </p>
+                <div id="ejemplo-container">
+                    <?php if ($currency_type === 'clp'): ?>
+                        <p>Si un producto cuesta <strong>$10,000 CLP</strong>:</p>
+                        <p id="ejemplo-calculo">
+                            Precio Final = $10,000 × (1 + <?php echo $profit_margin; ?>/100) 
+                            = <strong>$<?php echo number_format($config->calculate_final_price(10000), 0, ',', '.'); ?> CLP</strong>
+                        </p>
+                    <?php else: ?>
+                        <p>Si un producto cuesta <strong>$10 USD</strong>:</p>
+                        <p id="ejemplo-calculo">
+                            Precio Final = ($10 × <?php echo $usd_to_clp; ?>) × (1 + <?php echo $profit_margin; ?>/100) 
+                            = <strong>$<?php echo number_format($config->calculate_final_price(10), 0, ',', '.'); ?> CLP</strong>
+                        </p>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
 
         <script>
         jQuery(document).ready(function($) {
+            $('#currency_type').on('change', function() {
+                var currencyType = $(this).val();
+                if (currencyType === 'clp') {
+                    $('#usd_rate_row').slideUp();
+                    updateFormulaExplanation('clp');
+                } else {
+                    $('#usd_rate_row').slideDown();
+                    updateFormulaExplanation('usd');
+                }
+                updateExample();
+            });
+
+            function updateFormulaExplanation(currency) {
+                if (currency === 'clp') {
+                    $('#formula-explanation').html(
+                        '<p><strong>Moneda Base: Pesos Chilenos (CLP)</strong></p>' +
+                        '<p>Precio Final = Precio Base × (1 + Porcentaje de Ganancia / 100)</p>'
+                    );
+                } else {
+                    $('#formula-explanation').html(
+                        '<p><strong>Moneda Base: Dólares (USD)</strong></p>' +
+                        '<p>Precio Final = (Precio USD × Tasa de Cambio) × (1 + Porcentaje de Ganancia / 100)</p>'
+                    );
+                }
+            }
+
+            function updateExample() {
+                var currencyType = $('#currency_type').val();
+                var profitMargin = parseFloat($('#profit_margin').val()) || 0;
+                var usdToClp = parseFloat($('#usd_to_clp').val()) || 1;
+                var precioFinal;
+
+                if (currencyType === 'clp') {
+                    // Precio base en CLP
+                    var basePrice = 10000;
+                    precioFinal = basePrice * (1 + profitMargin/100);
+                    $('#ejemplo-container').html(
+                        '<p>Si un producto cuesta <strong>$10,000 CLP</strong>:</p>' +
+                        '<p id="ejemplo-calculo">' +
+                        'Precio Final = $10,000 × (1 + ' + profitMargin + '/100) = ' +
+                        '<strong>$' + Math.round(precioFinal).toLocaleString('es-CL') + ' CLP</strong>' +
+                        '</p>'
+                    );
+                } else {
+                    // Precio base en USD
+                    var basePrice = 10;
+                    precioFinal = (basePrice * usdToClp) * (1 + profitMargin/100);
+                    $('#ejemplo-container').html(
+                        '<p>Si un producto cuesta <strong>$10 USD</strong>:</p>' +
+                        '<p id="ejemplo-calculo">' +
+                        'Precio Final = ($10 × ' + usdToClp + ') × (1 + ' + profitMargin + '/100) = ' +
+                        '<strong>$' + Math.round(precioFinal).toLocaleString('es-CL') + ' CLP</strong>' +
+                        '</p>'
+                    );
+                }
+            }
+
+            $('#profit_margin, #usd_to_clp').on('input', function() {
+                updateExample();
+            });
+
             $('#config-precios-form').on('submit', function(e) {
                 e.preventDefault();
                 
                 var profitMargin = $('#profit_margin').val();
                 var usdToClp = $('#usd_to_clp').val();
+                var currencyType = $('#currency_type').val();
                 
                 $.ajax({
                     url: ajaxurl,
@@ -534,18 +631,13 @@ class cMulticatalogoGNUAdmin {
                         action: 'multicatalogo_save_config',
                         profit_margin: profitMargin,
                         usd_to_clp: usdToClp,
+                        currency_type: currencyType,
                         nonce: '<?php echo wp_create_nonce('multicatalogo_config_nonce'); ?>'
                     },
                     success: function(response) {
                         if (response.success) {
                             $('#config-mensaje').html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
-                            
-                            // Actualizar ejemplo
-                            var precioFinal = (10 * usdToClp) * (1 + profitMargin/100);
-                            $('#ejemplo-calculo').html(
-                                'Precio Final = ($10 × ' + usdToClp + ') × (1 + ' + profitMargin + '/100) = <strong>$' + 
-                                Math.round(precioFinal).toLocaleString('es-CL') + ' CLP</strong>'
-                            );
+                            updateExample();
                         } else {
                             $('#config-mensaje').html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
                         }
