@@ -62,7 +62,8 @@ class cMulticatalogoGNUAdmin {
                     $added = [ 'Combinations' => ['Variante' => $varAttr['element_description_1'] . ' / ' . $varAttr['element_description_2'] . ' / ' . $varAttr['element_description_3']], 
                             'Stock' => $varAttr['stock'],
                             'Precio' => $zecatProduct['price'],
-                            'sku' => 'zt0' . $varAttr['sku']
+                            'sku' => 'zt0' . $varAttr['id'],
+                            'sku_proveedor' => $varAttr['sku']
                     ];
                 }
 
@@ -114,6 +115,7 @@ class cMulticatalogoGNUAdmin {
                         'Stock' => isset($variant['stock_available']) ? $variant['stock_available'] : 0,
                         'Precio' => isset($variant['list_price']) ? floatval($variant['list_price']) : 0,
                         'sku' => 'ss0' . $variant['id']
+                        'sku_proveedor' => $variant['sku']
                     ];
                 } elseif (isset($variant['colors'])){
                     // Crear array con todos los nombres de colores
@@ -131,7 +133,8 @@ class cMulticatalogoGNUAdmin {
                         'Combinations' => ['Color' => $colors_string],
                         'Stock' => isset($variant['stock_available']) ? $variant['stock_available'] : 0,
                         'Precio' => isset($variant['list_price']) ? floatval($variant['list_price']) : 0,
-                        'sku' => 'ss0' . $variant['id']
+                        'sku' => 'ss0' . $variant['id'],
+                        'sku_proveedor' => $variant['sku']
                     ];
                 }
 
