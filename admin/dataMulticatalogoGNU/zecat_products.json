@@ -1466,7 +1466,7 @@
                 "primary_color": "#ffffff",
                 "secondary_color": "#0000FF",
                 "achromatic": false,
-                "stock": 25268,
+                "stock": 25167,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -1938,7 +1938,7 @@
                 "primary_color": "#ffffff",
                 "secondary_color": "#5945f2",
                 "achromatic": false,
-                "stock": 97910,
+                "stock": 97756,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -2063,7 +2063,7 @@
                 "primary_color": "#f7f7f7",
                 "secondary_color": "#e00000",
                 "achromatic": false,
-                "stock": 47944,
+                "stock": 47943,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -2088,7 +2088,7 @@
                 "primary_color": "#fafafa",
                 "secondary_color": "#007502",
                 "achromatic": false,
-                "stock": 18739,
+                "stock": 19799,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -3686,7 +3686,7 @@
         "external_id": "99030777431",
         "name": "Llavero Helmet",
         "buyBySize": false,
-        "description": "",
+        "description": "Llavero en forma de casco de obra hecho de ABS e hierro. Fabricado con materiales resistentes y livianos, cuenta con argolla metálica para llaves y un diseño en miniatura de casco de seguridad disponible en varios colores. Es ideal para promociones de empresas de construcción, regalos institucionales o como distintivo temático en eventos relacionados a la seguridad laboral.\n\nDimensiones: 39 x 34 x 21,8 mm\n\nTAHG.",
         "badges": [
             {
                 "title": "NOVEDAD",
@@ -3696,11 +3696,11 @@
                 "icon": "",
                 "enable": true,
                 "BadgesByGenericProducts": {
-                    "id": "1783",
+                    "id": "1921",
                     "badgeId": "11",
                     "genericProductId": "417",
-                    "createdAt": "2025-10-15T13:38:25.122Z",
-                    "updatedAt": "2025-10-15T13:38:25.122Z"
+                    "createdAt": "2025-11-12T19:32:23.818Z",
+                    "updatedAt": "2025-11-12T19:32:23.818Z"
                 }
             }
         ],
@@ -3735,7 +3735,7 @@
                     "genericProductId": "417",
                     "main": false,
                     "createdAt": "2025-10-15T13:38:25.128Z",
-                    "updatedAt": "2025-10-15T13:38:25.131Z"
+                    "updatedAt": "2025-11-12T19:32:23.826Z"
                 },
                 "products_related": false,
                 "discount": true
@@ -3750,7 +3750,7 @@
                     "genericProductId": "417",
                     "main": false,
                     "createdAt": "2025-05-14T20:09:05.057Z",
-                    "updatedAt": "2025-10-15T13:38:25.131Z"
+                    "updatedAt": "2025-11-12T19:32:23.826Z"
                 },
                 "products_related": false,
                 "discount": true
@@ -3765,7 +3765,7 @@
                     "genericProductId": "417",
                     "main": true,
                     "createdAt": "2025-08-12T12:42:05.530Z",
-                    "updatedAt": "2025-10-15T13:38:25.134Z"
+                    "updatedAt": "2025-11-12T19:32:23.830Z"
                 },
                 "products_related": false,
                 "discount": true
@@ -4272,7 +4272,7 @@
                 "primary_color": "#FF0000",
                 "secondary_color": "#FF0000",
                 "achromatic": false,
-                "stock": 19401,
+                "stock": 19400,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -4490,7 +4490,7 @@
                 "primary_color": "#F0E68C",
                 "secondary_color": "#F0E68C",
                 "achromatic": false,
-                "stock": 59301,
+                "stock": 58311,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -4939,7 +4939,7 @@
                 "primary_color": "#FFFFFF",
                 "secondary_color": "#FFFFFF",
                 "achromatic": true,
-                "stock": 9151,
+                "stock": 8161,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -5387,7 +5387,7 @@
                 "primary_color": "#0000FF",
                 "secondary_color": "#0000FF",
                 "achromatic": false,
-                "stock": 23511,
+                "stock": 23506,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -5779,7 +5779,7 @@
                 "primary_color": "#fcfcfc",
                 "secondary_color": "#fcfcfc",
                 "achromatic": false,
-                "stock": 29700,
+                "stock": 29699,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -6961,7 +6961,7 @@
                 "primary_color": "#FF0000",
                 "secondary_color": "#FF0000",
                 "achromatic": false,
-                "stock": 11961,
+                "stock": 11975,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -7011,7 +7011,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 7869,
+                "stock": 7666,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -7061,7 +7061,7 @@
                 "primary_color": "#FFFFFF",
                 "secondary_color": "#FFFFFF",
                 "achromatic": true,
-                "stock": 7485,
+                "stock": 7384,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -8195,7 +8195,7 @@
                 "primary_color": "#F0E68C",
                 "secondary_color": "#F0E68C",
                 "achromatic": false,
-                "stock": 3910,
+                "stock": 2770,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -8539,7 +8539,7 @@
                 "primary_color": "#FF0000",
                 "secondary_color": "#FF0000",
                 "achromatic": false,
-                "stock": 59169,
+                "stock": 44319,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -8589,7 +8589,7 @@
                 "primary_color": "#FFFFFF",
                 "secondary_color": "#FFFFFF",
                 "achromatic": true,
-                "stock": 89643,
+                "stock": 89638,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -8614,7 +8614,7 @@
                 "primary_color": "#2152b5",
                 "secondary_color": "#2152b5",
                 "achromatic": false,
-                "stock": 54917,
+                "stock": 53758,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -8639,7 +8639,7 @@
                 "primary_color": "#393960",
                 "secondary_color": "#393960",
                 "achromatic": false,
-                "stock": 14883,
+                "stock": 14844,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -10214,7 +10214,7 @@
                 "primary_color": "#008000",
                 "secondary_color": "#008000",
                 "achromatic": false,
-                "stock": 8102,
+                "stock": 6042,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -12311,7 +12311,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 9374,
+                "stock": 9373,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -12336,7 +12336,7 @@
                 "primary_color": "#FFFFFF",
                 "secondary_color": "#FFFFFF",
                 "achromatic": true,
-                "stock": 3705,
+                "stock": 3603,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -13257,7 +13257,7 @@
                 "primary_color": "#0000FF",
                 "secondary_color": "#0000FF",
                 "achromatic": false,
-                "stock": 7983,
+                "stock": 7884,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -14327,7 +14327,7 @@
                 "primary_color": "#FFFFFF",
                 "secondary_color": "#FFFFFF",
                 "achromatic": true,
-                "stock": 5902,
+                "stock": 5704,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -14632,7 +14632,7 @@
                 "primary_color": "#FFFFFF",
                 "secondary_color": "#FFFFFF",
                 "achromatic": true,
-                "stock": 27758,
+                "stock": 27555,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -14847,12 +14847,12 @@
                     "elementDescription3": ".",
                     "additionalDescription": " ",
                     "stock": "1",
-                    "reservedStock": "99",
+                    "reservedStock": "0",
                     "active": true,
                     "achromatic": false,
                     "wepod": false,
                     "createdAt": "2025-01-09T12:51:44.295Z",
-                    "updatedAt": "2025-11-11T19:35:37.161Z",
+                    "updatedAt": "2025-11-12T23:06:49.468Z",
                     "size": "",
                     "color": "",
                     "primaryColor": "#966227",
@@ -15264,7 +15264,7 @@
                 "primary_color": "#14699f",
                 "secondary_color": "#14699f",
                 "achromatic": false,
-                "stock": 57784,
+                "stock": 57685,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -15958,7 +15958,7 @@
                 "primary_color": "#e11919",
                 "secondary_color": "#e11919",
                 "achromatic": false,
-                "stock": 14850,
+                "stock": 14849,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -17824,7 +17824,7 @@
                 "primary_color": "#e6cc70",
                 "secondary_color": "#e6cc70",
                 "achromatic": false,
-                "stock": 9949,
+                "stock": 9948,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -20203,7 +20203,7 @@
                 "primary_color": "#db2929",
                 "secondary_color": "#db2929",
                 "achromatic": false,
-                "stock": 19800,
+                "stock": 19799,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -20391,7 +20391,7 @@
                 "primary_color": "#FF0000",
                 "secondary_color": "#FF0000",
                 "achromatic": false,
-                "stock": 13740,
+                "stock": 13739,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -21083,7 +21083,7 @@
                 "primary_color": "#F5F5F5",
                 "secondary_color": "#F5F5F5",
                 "achromatic": false,
-                "stock": 118681,
+                "stock": 117526,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -23495,7 +23495,7 @@
                 "primary_color": "#F0E68C",
                 "secondary_color": "#F0E68C",
                 "achromatic": false,
-                "stock": 9798,
+                "stock": 9833,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -24170,7 +24170,7 @@
                 "primary_color": "#D3D3D3",
                 "secondary_color": "#D3D3D3",
                 "achromatic": true,
-                "stock": 13669,
+                "stock": 13666,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -25452,7 +25452,7 @@
                 "primary_color": "#FFD700",
                 "secondary_color": "#FFD700",
                 "achromatic": false,
-                "stock": 68,
+                "stock": 76,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -27030,7 +27030,7 @@
                 "primary_color": "#F0E68C",
                 "secondary_color": "#F0E68C",
                 "achromatic": false,
-                "stock": 16026,
+                "stock": 15949,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -27622,7 +27622,7 @@
                 "primary_color": "#0000FF",
                 "secondary_color": "#0000FF",
                 "achromatic": false,
-                "stock": 1936,
+                "stock": 846,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -28599,7 +28599,7 @@
                 "primary_color": "#F0E68C",
                 "secondary_color": "#F0E68C",
                 "achromatic": false,
-                "stock": 14,
+                "stock": 94,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -29116,7 +29116,7 @@
                 "primary_color": "#0000FF",
                 "secondary_color": "#0000FF",
                 "achromatic": false,
-                "stock": 693,
+                "stock": 642,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -29472,7 +29472,7 @@
                 "primary_color": "#0000FF",
                 "secondary_color": "#0000FF",
                 "achromatic": false,
-                "stock": 1106,
+                "stock": 11105,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -29497,7 +29497,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 657,
+                "stock": 10656,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -30273,7 +30273,7 @@
                 "primary_color": "#ffffff",
                 "secondary_color": "#161dfe",
                 "achromatic": false,
-                "stock": 8,
+                "stock": 17,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -31145,7 +31145,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#ffffff",
                 "achromatic": true,
-                "stock": 9761,
+                "stock": 9721,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -31170,7 +31170,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 8405,
+                "stock": 8403,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -31710,7 +31710,7 @@
                 "primary_color": "#ffffff",
                 "secondary_color": "#ffffff",
                 "achromatic": true,
-                "stock": 2942,
+                "stock": 2917,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -31760,7 +31760,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 39752,
+                "stock": 39727,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -31835,7 +31835,7 @@
                 "primary_color": "#f5d000",
                 "secondary_color": "#f5d000",
                 "achromatic": false,
-                "stock": 9176,
+                "stock": 9173,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -32410,7 +32410,7 @@
                 "primary_color": "#d82c2c",
                 "secondary_color": "#d82c2c",
                 "achromatic": false,
-                "stock": 9900,
+                "stock": 9899,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -33361,21 +33361,6 @@
                 "discount": true
             },
             {
-                "id": "121",
-                "description": "Verano",
-                "show": true,
-                "kits_related": false,
-                "fgp": {
-                    "familyId": "121",
-                    "genericProductId": "442",
-                    "main": false,
-                    "createdAt": "2025-10-15T13:35:02.489Z",
-                    "updatedAt": "2025-10-15T13:35:02.493Z"
-                },
-                "products_related": false,
-                "discount": true
-            },
-            {
                 "id": "151",
                 "description": "Viajes",
                 "show": true,
@@ -33416,6 +33401,21 @@
                     "main": true,
                     "createdAt": "2025-04-08T15:21:43.058Z",
                     "updatedAt": "2025-10-15T13:35:02.498Z"
+                },
+                "products_related": false,
+                "discount": true
+            },
+            {
+                "id": "121",
+                "description": "Verano",
+                "show": true,
+                "kits_related": false,
+                "fgp": {
+                    "familyId": "121",
+                    "genericProductId": "442",
+                    "main": false,
+                    "createdAt": "2025-10-15T13:35:02.489Z",
+                    "updatedAt": "2025-10-15T13:35:02.493Z"
                 },
                 "products_related": false,
                 "discount": true
@@ -33547,7 +33547,7 @@
                 "primary_color": "#d5d2d2",
                 "secondary_color": "#1a1a1a",
                 "achromatic": false,
-                "stock": 884,
+                "stock": 853,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -36651,13 +36651,13 @@
                     "elementDescription2": "Gris Claro",
                     "elementDescription3": ".",
                     "additionalDescription": " ",
-                    "stock": "232",
-                    "reservedStock": "0",
+                    "stock": "182",
+                    "reservedStock": "50",
                     "active": true,
                     "achromatic": true,
                     "wepod": false,
                     "createdAt": "2022-08-08T12:09:34.936Z",
-                    "updatedAt": "2025-11-10T17:10:14.519Z",
+                    "updatedAt": "2025-11-12T20:23:50.290Z",
                     "size": "",
                     "color": "",
                     "primaryColor": "#D3D3D3",
@@ -36762,7 +36762,7 @@
                 "primary_color": "#D3D3D3",
                 "secondary_color": "#D3D3D3",
                 "achromatic": true,
-                "stock": 229,
+                "stock": 180,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": [
@@ -37889,7 +37889,7 @@
         "external_id": "99030777437",
         "name": "Toalla de Golf Caddy",
         "buyBySize": false,
-        "description": "",
+        "description": "Toalla de golf con ojal metálico hecha de algodón de 400 gsm. Fabricada en algodón negro de alta absorción y suavidad, cuenta con un ojal con argolla metálica para colgar fácilmente en la bolsa de golf o cinturón. Es ideal para jugadores de golf que buscan mantener sus manos, palos o pelotas limpias y secas durante el juego.\n\nDimensiones: 30 x 50 cm\n\nTAHG.",
         "badges": [
             {
                 "title": "NOVEDAD",
@@ -37899,11 +37899,11 @@
                 "icon": "",
                 "enable": true,
                 "BadgesByGenericProducts": {
-                    "id": "1768",
+                    "id": "1920",
                     "badgeId": "11",
                     "genericProductId": "418",
-                    "createdAt": "2025-10-15T13:35:10.569Z",
-                    "updatedAt": "2025-10-15T13:35:10.569Z"
+                    "createdAt": "2025-11-12T19:32:15.328Z",
+                    "updatedAt": "2025-11-12T19:32:15.328Z"
                 }
             }
         ],
@@ -37938,7 +37938,7 @@
                     "genericProductId": "418",
                     "main": true,
                     "createdAt": "2025-03-21T19:51:42.838Z",
-                    "updatedAt": "2025-10-15T13:35:10.583Z"
+                    "updatedAt": "2025-11-12T19:32:15.376Z"
                 },
                 "products_related": false,
                 "discount": true
@@ -37953,7 +37953,7 @@
                     "genericProductId": "418",
                     "main": false,
                     "createdAt": "2025-08-12T12:41:40.111Z",
-                    "updatedAt": "2025-10-15T13:35:10.580Z"
+                    "updatedAt": "2025-11-12T19:32:15.360Z"
                 },
                 "products_related": false,
                 "discount": true
@@ -37968,7 +37968,7 @@
                     "genericProductId": "418",
                     "main": false,
                     "createdAt": "2025-10-15T13:35:10.577Z",
-                    "updatedAt": "2025-10-15T13:35:10.580Z"
+                    "updatedAt": "2025-11-12T19:32:15.360Z"
                 },
                 "products_related": false,
                 "discount": true
@@ -37983,7 +37983,7 @@
                     "genericProductId": "418",
                     "main": false,
                     "createdAt": "2025-08-12T12:41:40.111Z",
-                    "updatedAt": "2025-10-15T13:35:10.580Z"
+                    "updatedAt": "2025-11-12T19:32:15.360Z"
                 },
                 "products_related": false,
                 "discount": false
@@ -39088,7 +39088,7 @@
                 "primary_color": "#FFFFFF",
                 "secondary_color": "#FFFFFF",
                 "achromatic": true,
-                "stock": 4378,
+                "stock": 4376,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -39113,7 +39113,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 1608,
+                "stock": 1579,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -40432,7 +40432,7 @@
                 "primary_color": "#808080",
                 "secondary_color": "#808080",
                 "achromatic": true,
-                "stock": 2440,
+                "stock": 2003,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -41004,7 +41004,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": false,
-                "stock": 1980,
+                "stock": 2029,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -42016,7 +42016,7 @@
                 "primary_color": "#bdac7a",
                 "secondary_color": "#bdac7a",
                 "achromatic": false,
-                "stock": 4952,
+                "stock": 4951,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -42530,7 +42530,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": false,
-                "stock": 1744,
+                "stock": 1734,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -44234,13 +44234,13 @@
                     "elementDescription2": "Azul",
                     "elementDescription3": ".",
                     "additionalDescription": " ",
-                    "stock": "179",
+                    "stock": "29",
                     "reservedStock": "0",
                     "active": true,
                     "achromatic": false,
                     "wepod": false,
                     "createdAt": "2022-08-08T12:09:35.337Z",
-                    "updatedAt": "2025-11-10T20:25:24.154Z",
+                    "updatedAt": "2025-11-12T19:14:10.211Z",
                     "size": "",
                     "color": "",
                     "primaryColor": "#0000FF",
@@ -44270,7 +44270,7 @@
                 "primary_color": "#0000FF",
                 "secondary_color": "#0000FF",
                 "achromatic": false,
-                "stock": 177,
+                "stock": 28,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": [
@@ -44331,7 +44331,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 2089,
+                "stock": 1941,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -44658,7 +44658,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": false,
-                "stock": 2901,
+                "stock": 2802,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -46836,7 +46836,7 @@
                 "primary_color": "#FFFFFF",
                 "secondary_color": "#FFFFFF",
                 "achromatic": true,
-                "stock": 2287,
+                "stock": 1877,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -47389,7 +47389,7 @@
                 "primary_color": "#bdac7a",
                 "secondary_color": "#bdac7a",
                 "achromatic": false,
-                "stock": 1,
+                "stock": 85,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -49225,7 +49225,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 5728,
+                "stock": 5103,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -51522,7 +51522,7 @@
                 "primary_color": "#fcfcfc",
                 "secondary_color": "#fcfcfc",
                 "achromatic": true,
-                "stock": 7675,
+                "stock": 7526,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -52269,7 +52269,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 13928,
+                "stock": 13877,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -52736,7 +52736,7 @@
                 "primary_color": "#D3D3D3",
                 "secondary_color": "#D3D3D3",
                 "achromatic": true,
-                "stock": 3560,
+                "stock": 3490,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -52761,7 +52761,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 4658,
+                "stock": 4700,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -55872,7 +55872,7 @@
                 "primary_color": "#ffffff",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 1970,
+                "stock": 1962,
                 "size": "Medium",
                 "color": "Blanco",
                 "product_stock_arrival": []
@@ -56322,7 +56322,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 5767,
+                "stock": 5760,
                 "size": "Large",
                 "color": "Negro",
                 "product_stock_arrival": []
@@ -57872,7 +57872,7 @@
                 "primary_color": "#ffffff",
                 "secondary_color": "#FFFFFF",
                 "achromatic": true,
-                "stock": 6548,
+                "stock": 6527,
                 "size": "Large",
                 "color": "Blanco",
                 "product_stock_arrival": []
@@ -58147,7 +58147,7 @@
                 "primary_color": "#ffffff",
                 "secondary_color": "#FFFFFF",
                 "achromatic": true,
-                "stock": 3571,
+                "stock": 3554,
                 "size": "X Large",
                 "color": "Blanco",
                 "product_stock_arrival": []
@@ -59981,7 +59981,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 3658,
+                "stock": 3656,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -61770,7 +61770,7 @@
                 "primary_color": "#FFFFFF",
                 "secondary_color": "#FFFFFF",
                 "achromatic": true,
-                "stock": 966,
+                "stock": 827,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -62768,7 +62768,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": false,
-                "stock": 1977,
+                "stock": 1581,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -63959,7 +63959,7 @@
                 "primary_color": "#f2f2f2",
                 "secondary_color": "#c28f66",
                 "achromatic": false,
-                "stock": 254,
+                "stock": 6,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -65588,13 +65588,13 @@
                     "elementDescription2": "Negro",
                     "elementDescription3": ".",
                     "additionalDescription": " ",
-                    "stock": "5464",
+                    "stock": "5062",
                     "reservedStock": "0",
                     "active": true,
                     "achromatic": true,
                     "wepod": false,
                     "createdAt": "2022-08-08T18:00:55.359Z",
-                    "updatedAt": "2025-11-03T21:39:33.425Z",
+                    "updatedAt": "2025-11-12T12:17:37.675Z",
                     "size": "",
                     "color": "",
                     "primaryColor": "#000000",
@@ -65699,7 +65699,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 5409,
+                "stock": 5011,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": [
@@ -66602,7 +66602,7 @@
                 "primary_color": "#F5F5F5",
                 "secondary_color": "#ffffff",
                 "achromatic": true,
-                "stock": 846,
+                "stock": 845,
                 "size": "Small",
                 "color": "Blanco",
                 "product_stock_arrival": []
@@ -66927,7 +66927,7 @@
                 "primary_color": "#FFFFFF",
                 "secondary_color": "#ffffff",
                 "achromatic": true,
-                "stock": 700,
+                "stock": 699,
                 "size": "Medium",
                 "color": "Blanco",
                 "product_stock_arrival": []
@@ -66952,7 +66952,7 @@
                 "primary_color": "#F5F5F5",
                 "secondary_color": "#ffffff",
                 "achromatic": true,
-                "stock": 36,
+                "stock": 35,
                 "size": "3X Large",
                 "color": "Blanco",
                 "product_stock_arrival": []
@@ -67227,7 +67227,7 @@
                 "primary_color": "#F5F5F5",
                 "secondary_color": "#ffffff",
                 "achromatic": true,
-                "stock": 2905,
+                "stock": 2904,
                 "size": "Large",
                 "color": "Blanco",
                 "product_stock_arrival": []
@@ -67902,7 +67902,7 @@
                 "primary_color": "#F5F5F5",
                 "secondary_color": "#ffffff",
                 "achromatic": true,
-                "stock": 72,
+                "stock": 71,
                 "size": "XX Large",
                 "color": "Blanco",
                 "product_stock_arrival": []
@@ -68935,7 +68935,7 @@
                 "primary_color": "#4a4af7",
                 "secondary_color": "#4a4af7",
                 "achromatic": false,
-                "stock": 125,
+                "stock": 124,
                 "size": "Small",
                 "color": "Azulino",
                 "product_stock_arrival": []
@@ -72839,6 +72839,11 @@
         ],
         "subattributes": [
             {
+                "id": 60,
+                "name": "Transfer full color",
+                "attribute_name": "Técnica de aplicación"
+            },
+            {
                 "id": 70,
                 "name": "Mochilas",
                 "attribute_name": "Subcategoría"
@@ -72871,11 +72876,6 @@
             {
                 "id": 59,
                 "name": "Transfer monocolor ",
-                "attribute_name": "Técnica de aplicación"
-            },
-            {
-                "id": 60,
-                "name": "Transfer full color",
                 "attribute_name": "Técnica de aplicación"
             }
         ],
@@ -73446,21 +73446,6 @@
                 "discount": false
             },
             {
-                "id": "134",
-                "description": "2025 Reingresos",
-                "show": true,
-                "kits_related": false,
-                "fgp": {
-                    "familyId": "134",
-                    "genericProductId": "76",
-                    "main": false,
-                    "createdAt": "2025-08-26T18:10:19.991Z",
-                    "updatedAt": "2025-08-26T18:10:19.995Z"
-                },
-                "products_related": false,
-                "discount": true
-            },
-            {
                 "id": "124",
                 "description": "Logo 24hs",
                 "show": true,
@@ -73470,6 +73455,21 @@
                     "genericProductId": "76",
                     "main": false,
                     "createdAt": "2023-02-17T20:42:50.510Z",
+                    "updatedAt": "2025-08-26T18:10:19.995Z"
+                },
+                "products_related": false,
+                "discount": true
+            },
+            {
+                "id": "134",
+                "description": "2025 Reingresos",
+                "show": true,
+                "kits_related": false,
+                "fgp": {
+                    "familyId": "134",
+                    "genericProductId": "76",
+                    "main": false,
+                    "createdAt": "2025-08-26T18:10:19.991Z",
                     "updatedAt": "2025-08-26T18:10:19.995Z"
                 },
                 "products_related": false,
@@ -74156,13 +74156,13 @@
                     "elementDescription2": "Blanco",
                     "elementDescription3": "Metal",
                     "additionalDescription": " ",
-                    "stock": "2499",
+                    "stock": "2498",
                     "reservedStock": "0",
                     "active": true,
                     "achromatic": false,
                     "wepod": false,
                     "createdAt": "2025-04-08T14:51:43.219Z",
-                    "updatedAt": "2025-11-11T16:41:39.668Z",
+                    "updatedAt": "2025-11-12T12:59:32.718Z",
                     "size": "",
                     "color": "",
                     "primaryColor": "#ffffff",
@@ -74192,7 +74192,7 @@
                 "primary_color": "#ffffff",
                 "secondary_color": "#ffffff",
                 "achromatic": false,
-                "stock": 2474,
+                "stock": 2473,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": [
@@ -76233,7 +76233,7 @@
                 "primary_color": "#fdfcfc",
                 "secondary_color": "#fdfcfc",
                 "achromatic": true,
-                "stock": 3846,
+                "stock": 3806,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -76448,6 +76448,11 @@
         ],
         "subattributes": [
             {
+                "id": 27,
+                "name": "Tahg",
+                "attribute_name": "Marca"
+            },
+            {
                 "id": 51,
                 "name": "Bordado",
                 "attribute_name": "Técnica de aplicación"
@@ -76466,11 +76471,6 @@
                 "id": 37,
                 "name": "Menos de 10 Litros",
                 "attribute_name": "Capacidad "
-            },
-            {
-                "id": 27,
-                "name": "Tahg",
-                "attribute_name": "Marca"
             }
         ],
         "printing_types": [],
@@ -76987,7 +76987,7 @@
                 "primary_color": "#FF0000",
                 "secondary_color": "#FF0000",
                 "achromatic": false,
-                "stock": 4896,
+                "stock": 4895,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -77012,7 +77012,7 @@
                 "primary_color": "#D3D3D3",
                 "secondary_color": "#D3D3D3",
                 "achromatic": true,
-                "stock": 4038,
+                "stock": 4009,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -77977,6 +77977,16 @@
         ],
         "subattributes": [
             {
+                "id": 38,
+                "name": "10,1 a 15 Litros",
+                "attribute_name": "Capacidad "
+            },
+            {
+                "id": 51,
+                "name": "Bordado",
+                "attribute_name": "Técnica de aplicación"
+            },
+            {
                 "id": 59,
                 "name": "Transfer monocolor ",
                 "attribute_name": "Técnica de aplicación"
@@ -77995,16 +78005,6 @@
                 "id": 27,
                 "name": "Tahg",
                 "attribute_name": "Marca"
-            },
-            {
-                "id": 38,
-                "name": "10,1 a 15 Litros",
-                "attribute_name": "Capacidad "
-            },
-            {
-                "id": 51,
-                "name": "Bordado",
-                "attribute_name": "Técnica de aplicación"
             }
         ],
         "printing_types": [],
@@ -78742,6 +78742,11 @@
         ],
         "subattributes": [
             {
+                "id": 60,
+                "name": "Transfer full color",
+                "attribute_name": "Técnica de aplicación"
+            },
+            {
                 "id": 29,
                 "name": "The Daily Book",
                 "attribute_name": "Marca"
@@ -78754,11 +78759,6 @@
             {
                 "id": 56,
                 "name": "Serigrafía",
-                "attribute_name": "Técnica de aplicación"
-            },
-            {
-                "id": 60,
-                "name": "Transfer full color",
                 "attribute_name": "Técnica de aplicación"
             }
         ],
@@ -81614,6 +81614,11 @@
         ],
         "subattributes": [
             {
+                "id": 21,
+                "name": "Re use me",
+                "attribute_name": "Marca"
+            },
+            {
                 "id": 54,
                 "name": "Laser",
                 "attribute_name": "Técnica de aplicación"
@@ -81647,11 +81652,6 @@
                 "id": 23,
                 "name": "No",
                 "attribute_name": "Apto Microondas"
-            },
-            {
-                "id": 21,
-                "name": "Re use me",
-                "attribute_name": "Marca"
             }
         ],
         "printing_types": [],
@@ -83372,21 +83372,6 @@
                 "discount": true
             },
             {
-                "id": "139",
-                "description": "Primavera",
-                "show": false,
-                "kits_related": false,
-                "fgp": {
-                    "familyId": "139",
-                    "genericProductId": "92",
-                    "main": false,
-                    "createdAt": "2025-07-25T14:30:34.013Z",
-                    "updatedAt": "2025-07-25T14:30:34.018Z"
-                },
-                "products_related": false,
-                "discount": true
-            },
-            {
                 "id": "124",
                 "description": "Logo 24hs",
                 "show": true,
@@ -83396,6 +83381,21 @@
                     "genericProductId": "92",
                     "main": false,
                     "createdAt": "2023-02-17T20:55:58.503Z",
+                    "updatedAt": "2025-07-25T14:30:34.018Z"
+                },
+                "products_related": false,
+                "discount": true
+            },
+            {
+                "id": "139",
+                "description": "Primavera",
+                "show": false,
+                "kits_related": false,
+                "fgp": {
+                    "familyId": "139",
+                    "genericProductId": "92",
+                    "main": false,
+                    "createdAt": "2025-07-25T14:30:34.013Z",
                     "updatedAt": "2025-07-25T14:30:34.018Z"
                 },
                 "products_related": false,
@@ -84636,7 +84636,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 141,
+                "stock": 136,
                 "size": "XX Large",
                 "color": "Negro",
                 "product_stock_arrival": []
@@ -86549,11 +86549,6 @@
         ],
         "subattributes": [
             {
-                "id": 27,
-                "name": "Tahg",
-                "attribute_name": "Marca"
-            },
-            {
                 "id": 56,
                 "name": "Serigrafía",
                 "attribute_name": "Técnica de aplicación"
@@ -86562,6 +86557,11 @@
                 "id": 61,
                 "name": "Tampografía ",
                 "attribute_name": "Técnica de aplicación"
+            },
+            {
+                "id": 27,
+                "name": "Tahg",
+                "attribute_name": "Marca"
             }
         ],
         "printing_types": [],
@@ -87465,13 +87465,28 @@
                 "primary_color": "#D3D3D3",
                 "secondary_color": "#D3D3D3",
                 "achromatic": true,
-                "stock": 10644,
+                "stock": 10645,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
             }
         ],
         "subattributes": [
+            {
+                "id": 59,
+                "name": "Transfer monocolor ",
+                "attribute_name": "Técnica de aplicación"
+            },
+            {
+                "id": 60,
+                "name": "Transfer full color",
+                "attribute_name": "Técnica de aplicación"
+            },
+            {
+                "id": 70,
+                "name": "Mochilas",
+                "attribute_name": "Subcategoría"
+            },
             {
                 "id": 121,
                 "name": "Si",
@@ -87496,21 +87511,6 @@
                 "id": 51,
                 "name": "Bordado",
                 "attribute_name": "Técnica de aplicación"
-            },
-            {
-                "id": 59,
-                "name": "Transfer monocolor ",
-                "attribute_name": "Técnica de aplicación"
-            },
-            {
-                "id": 60,
-                "name": "Transfer full color",
-                "attribute_name": "Técnica de aplicación"
-            },
-            {
-                "id": 70,
-                "name": "Mochilas",
-                "attribute_name": "Subcategoría"
             }
         ],
         "printing_types": [],
@@ -88367,7 +88367,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 3249,
+                "stock": 3234,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -89328,11 +89328,6 @@
         ],
         "subattributes": [
             {
-                "id": 61,
-                "name": "Tampografía ",
-                "attribute_name": "Técnica de aplicación"
-            },
-            {
                 "id": 27,
                 "name": "Tahg",
                 "attribute_name": "Marca"
@@ -89340,6 +89335,11 @@
             {
                 "id": 60,
                 "name": "Transfer full color",
+                "attribute_name": "Técnica de aplicación"
+            },
+            {
+                "id": 61,
+                "name": "Tampografía ",
                 "attribute_name": "Técnica de aplicación"
             }
         ],
@@ -91249,21 +91249,6 @@
                 "discount": true
             },
             {
-                "id": "119",
-                "description": "2025 Felices Fiestas",
-                "show": true,
-                "kits_related": false,
-                "fgp": {
-                    "familyId": "119",
-                    "genericProductId": "128",
-                    "main": false,
-                    "createdAt": "2025-09-01T12:44:33.777Z",
-                    "updatedAt": "2025-09-09T13:38:23.589Z"
-                },
-                "products_related": false,
-                "discount": true
-            },
-            {
                 "id": "134",
                 "description": "2025 Reingresos",
                 "show": true,
@@ -91273,6 +91258,21 @@
                     "genericProductId": "128",
                     "main": false,
                     "createdAt": "2025-09-09T13:35:03.789Z",
+                    "updatedAt": "2025-09-09T13:38:23.589Z"
+                },
+                "products_related": false,
+                "discount": true
+            },
+            {
+                "id": "119",
+                "description": "2025 Felices Fiestas",
+                "show": true,
+                "kits_related": false,
+                "fgp": {
+                    "familyId": "119",
+                    "genericProductId": "128",
+                    "main": false,
+                    "createdAt": "2025-09-01T12:44:33.777Z",
                     "updatedAt": "2025-09-09T13:38:23.589Z"
                 },
                 "products_related": false,
@@ -92374,21 +92374,6 @@
                 "discount": false
             },
             {
-                "id": "129",
-                "description": "Invierno",
-                "show": false,
-                "kits_related": false,
-                "fgp": {
-                    "familyId": "129",
-                    "genericProductId": "322",
-                    "main": false,
-                    "createdAt": "2025-05-19T15:59:11.982Z",
-                    "updatedAt": "2025-10-24T15:39:41.432Z"
-                },
-                "products_related": false,
-                "discount": true
-            },
-            {
                 "id": "96",
                 "description": "Drinkware",
                 "show": true,
@@ -92399,6 +92384,21 @@
                     "main": true,
                     "createdAt": "2023-10-04T19:15:36.394Z",
                     "updatedAt": "2025-10-24T15:39:41.435Z"
+                },
+                "products_related": false,
+                "discount": true
+            },
+            {
+                "id": "129",
+                "description": "Invierno",
+                "show": false,
+                "kits_related": false,
+                "fgp": {
+                    "familyId": "129",
+                    "genericProductId": "322",
+                    "main": false,
+                    "createdAt": "2025-05-19T15:59:11.982Z",
+                    "updatedAt": "2025-10-24T15:39:41.432Z"
                 },
                 "products_related": false,
                 "discount": true
@@ -93363,6 +93363,11 @@
         ],
         "subattributes": [
             {
+                "id": 6,
+                "name": "UV Rotativa",
+                "attribute_name": "Técnica de aplicación"
+            },
+            {
                 "id": 28,
                 "name": "Si",
                 "attribute_name": "Logo 24hs"
@@ -93401,11 +93406,6 @@
                 "id": 93,
                 "name": "Botella",
                 "attribute_name": "Subcategoría "
-            },
-            {
-                "id": 6,
-                "name": "UV Rotativa",
-                "attribute_name": "Técnica de aplicación"
             }
         ],
         "printing_types": [],
@@ -94119,13 +94119,23 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 2515,
+                "stock": 2396,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
             }
         ],
         "subattributes": [
+            {
+                "id": 51,
+                "name": "Bordado",
+                "attribute_name": "Técnica de aplicación"
+            },
+            {
+                "id": 59,
+                "name": "Transfer monocolor ",
+                "attribute_name": "Técnica de aplicación"
+            },
             {
                 "id": 60,
                 "name": "Transfer full color",
@@ -94155,16 +94165,6 @@
                 "id": 39,
                 "name": "15,1 a 20 Litros",
                 "attribute_name": "Capacidad "
-            },
-            {
-                "id": 51,
-                "name": "Bordado",
-                "attribute_name": "Técnica de aplicación"
-            },
-            {
-                "id": 59,
-                "name": "Transfer monocolor ",
-                "attribute_name": "Técnica de aplicación"
             }
         ],
         "printing_types": [],
@@ -97237,6 +97237,11 @@
         ],
         "subattributes": [
             {
+                "id": 28,
+                "name": "Si",
+                "attribute_name": "Logo 24hs"
+            },
+            {
                 "id": 27,
                 "name": "Tahg",
                 "attribute_name": "Marca"
@@ -97270,11 +97275,6 @@
                 "id": 70,
                 "name": "Mochilas",
                 "attribute_name": "Subcategoría"
-            },
-            {
-                "id": 28,
-                "name": "Si",
-                "attribute_name": "Logo 24hs"
             }
         ],
         "printing_types": [],
@@ -98891,7 +98891,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": false,
-                "stock": 1951,
+                "stock": 1949,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -99566,7 +99566,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 649,
+                "stock": 698,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -101289,7 +101289,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": false,
-                "stock": 13,
+                "stock": 0,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -101464,7 +101464,7 @@
                 "primary_color": "#4a5d2d",
                 "secondary_color": "#4a5d2d",
                 "achromatic": false,
-                "stock": 518,
+                "stock": 266,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -103371,13 +103371,13 @@
                     "elementDescription2": "Negro",
                     "elementDescription3": ".",
                     "additionalDescription": " ",
-                    "stock": "1532",
+                    "stock": "1535",
                     "reservedStock": "0",
                     "active": true,
                     "achromatic": true,
                     "wepod": false,
                     "createdAt": "2023-12-11T12:51:42.862Z",
-                    "updatedAt": "2025-11-10T21:10:54.718Z",
+                    "updatedAt": "2025-11-12T21:26:01.284Z",
                     "size": "",
                     "color": "",
                     "primaryColor": "#000000",
@@ -103710,7 +103710,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 1516,
+                "stock": 1519,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": [
@@ -106047,7 +106047,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 489,
+                "stock": 488,
                 "size": "Large",
                 "color": "Negro",
                 "product_stock_arrival": []
@@ -108200,7 +108200,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": false,
-                "stock": 18,
+                "stock": 11,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -110647,7 +110647,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 72,
+                "stock": 69,
                 "size": "XX Large",
                 "color": "Negro",
                 "product_stock_arrival": []
@@ -110672,7 +110672,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 93,
+                "stock": 90,
                 "size": "X Large",
                 "color": "Negro",
                 "product_stock_arrival": []
@@ -110922,7 +110922,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 229,
+                "stock": 226,
                 "size": "Medium",
                 "color": "Negro",
                 "product_stock_arrival": []
@@ -111097,7 +111097,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 396,
+                "stock": 394,
                 "size": "Large",
                 "color": "Negro",
                 "product_stock_arrival": []
@@ -112207,7 +112207,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 290,
+                "stock": 288,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -118636,7 +118636,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": false,
-                "stock": 4061,
+                "stock": 4145,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -120546,7 +120546,7 @@
                 "primary_color": "#27334e",
                 "secondary_color": "#27334e",
                 "achromatic": false,
-                "stock": 127,
+                "stock": 126,
                 "size": "XX Large",
                 "color": "Azul",
                 "product_stock_arrival": []
@@ -120646,7 +120646,7 @@
                 "primary_color": "#27334e",
                 "secondary_color": "#27334e",
                 "achromatic": false,
-                "stock": 373,
+                "stock": 372,
                 "size": "X Large",
                 "color": "Azul",
                 "product_stock_arrival": []
@@ -120721,7 +120721,7 @@
                 "primary_color": "#27334e",
                 "secondary_color": "#27334e",
                 "achromatic": false,
-                "stock": 99,
+                "stock": 98,
                 "size": "Small",
                 "color": "Azul",
                 "product_stock_arrival": []
@@ -120746,7 +120746,7 @@
                 "primary_color": "#27334e",
                 "secondary_color": "#27334e",
                 "achromatic": false,
-                "stock": 1169,
+                "stock": 1168,
                 "size": "Large",
                 "color": "Azul",
                 "product_stock_arrival": []
@@ -120771,7 +120771,7 @@
                 "primary_color": "#27334e",
                 "secondary_color": "#27334e",
                 "achromatic": false,
-                "stock": 93,
+                "stock": 92,
                 "size": "3X Large",
                 "color": "Azul",
                 "product_stock_arrival": []
@@ -120796,7 +120796,7 @@
                 "primary_color": "#27334e",
                 "secondary_color": "#27334e",
                 "achromatic": false,
-                "stock": 657,
+                "stock": 656,
                 "size": "Medium",
                 "color": "Azul",
                 "product_stock_arrival": []
@@ -121241,7 +121241,7 @@
                 "primary_color": "#3e4156",
                 "secondary_color": "#3e4156",
                 "achromatic": false,
-                "stock": 47,
+                "stock": 46,
                 "size": "X Large",
                 "color": "Azul",
                 "product_stock_arrival": []
@@ -121416,7 +121416,7 @@
                 "primary_color": "#3e4156",
                 "secondary_color": "#3e4156",
                 "achromatic": false,
-                "stock": 61,
+                "stock": 60,
                 "size": "Small",
                 "color": "Azul",
                 "product_stock_arrival": []
@@ -121466,7 +121466,7 @@
                 "primary_color": "#3e4156",
                 "secondary_color": "#3e4156",
                 "achromatic": false,
-                "stock": 164,
+                "stock": 163,
                 "size": "Large",
                 "color": "Azul",
                 "product_stock_arrival": []
@@ -121516,7 +121516,7 @@
                 "primary_color": "#3e4156",
                 "secondary_color": "#3e4156",
                 "achromatic": false,
-                "stock": 211,
+                "stock": 210,
                 "size": "Medium",
                 "color": "Azul",
                 "product_stock_arrival": []
@@ -123608,7 +123608,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": false,
-                "stock": 248,
+                "stock": 249,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []

@@ -58,6 +58,9 @@ class cMultiCatalogoGNU {
 
 		add_action( 'wp_ajax_multicatalogo_save_config', array( 'cMulticatalogoGNUConfig', 'ajax_save_config' ));
 
+		add_action( 'wp_ajax_multicatalogo_save_mapping', array( 'cMulticatalogoGNUCategories', 'ajax_save_mapping' ));
+		add_action( 'wp_ajax_multicatalogo_delete_mapping', array( 'cMulticatalogoGNUCategories', 'ajax_delete_mapping' ));
+
 	}
 
 

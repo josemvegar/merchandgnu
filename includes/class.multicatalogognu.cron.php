@@ -191,6 +191,7 @@ class cMulticatalogoGNUCron {
                 $infoAttributes[$infoAttr['attribute_name']] = trim($infoAttr['name']);
             }
 
+            $categorias_mapeadas = cMulticatalogoGNUCategories::apply_category_mapping($families);
 
             $mergedProducts[] = [
                 'ID' => "zt0" . $zecatProduct['id'],
@@ -204,7 +205,7 @@ class cMulticatalogoGNUCron {
                 'galery' => $images,
                 'stock' => isset($zecatProduct['products'][0]['stock']) ? $zecatProduct['products'][0]['stock'] : 0,
                 'proveedor' => 'ZECAT',
-                'categorias' => $families,
+                'categorias' => $categorias_mapeadas, // Usar categorías mapeadas
                 'infoAttributes' => $infoAttributes,
                 'isVariable' => count($variableAttributes) > 0 ? true : false,
                 'variableAttributes' => $variableAttributes,
@@ -280,6 +281,8 @@ class cMulticatalogoGNUCron {
                 $categories[] = mb_convert_case(trim($category['name']), MB_CASE_TITLE, "UTF-8");
             }
 
+            $categorias_mapeadas = cMulticatalogoGNUCategories::apply_category_mapping($categories);
+
             $mergedProducts[] = [
                 'ID' => "ss0" . $cdoProduct['id'],
                 'sku_proveedor' => $cdoProduct['code'],
@@ -292,7 +295,7 @@ class cMulticatalogoGNUCron {
                 'galery' => $images,
                 'stock' => isset($cdoProduct['variants'][0]['stock_available']) ? $cdoProduct['variants'][0]['stock_available'] : 0,
                 'proveedor' => 'CDO',
-                'categorias' => $categories,
+                'categorias' => $categorias_mapeadas, // Usar categorías mapeadas
                 'infoAttributes' => $infoAttributes,
                 'isVariable' => count($variableAttributes) > 0 ? true : false,
                 'variableAttributes' => $variableAttributes,
@@ -378,6 +381,8 @@ class cMulticatalogoGNUCron {
                 $categorias[] = mb_convert_case(trim($categoria['value']), MB_CASE_TITLE, "UTF-8");
             }
 
+            $categorias_mapeadas = cMulticatalogoGNUCategories::apply_category_mapping($categorias);
+
             $mergedProducts[] = [
                 'ID' => "pi0" . $promoProduct['sku'],
                 'sku_proveedor' => $promoProduct['sku'],
@@ -390,7 +395,7 @@ class cMulticatalogoGNUCron {
                 'galery' => $images,
                 'stock' => isset($promoProduct['atributos'][0]['stock']) ? intval($promoProduct['atributos'][0]['stock']) : 0,
                 'proveedor' => 'promoimport',
-                'categorias' => $categorias,
+                'categorias' => $categorias_mapeadas, // Usar categorías mapeadas
                 'infoAttributes' => $infoAttributes,
                 'isVariable' => count($variableAttributes) > 0 ? true : false,
                 'variableAttributes' => $variableAttributes,

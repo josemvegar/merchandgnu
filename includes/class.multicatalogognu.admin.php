@@ -75,6 +75,7 @@ class cMulticatalogoGNUAdmin {
                 $infoAttributes[$infoAttr['attribute_name']] = trim($infoAttr['name']);
             }
 
+            $categorias_mapeadas = cMulticatalogoGNUCategories::apply_category_mapping($families);
 
             $mergedProducts[] = [
                 'ID' => "zt0" . $zecatProduct['id'],
@@ -88,7 +89,7 @@ class cMulticatalogoGNUAdmin {
                 'galery' => $images,
                 'stock' => isset($zecatProduct['products'][0]['stock']) ? $zecatProduct['products'][0]['stock'] : 0,
                 'proveedor' => 'ZECAT',
-                'categorias' => $families,
+                'categorias' => $categorias_mapeadas, // Usar categorías mapeadas
                 'infoAttributes' => $infoAttributes,
                 'isVariable' => count($variableAttributes) > 0 ? true : false,
                 'variableAttributes' => $variableAttributes,
@@ -164,6 +165,8 @@ class cMulticatalogoGNUAdmin {
                 $categories[] = mb_convert_case(trim($category['name']), MB_CASE_TITLE, "UTF-8");
             }
 
+            $categorias_mapeadas = cMulticatalogoGNUCategories::apply_category_mapping($categories);
+
             $mergedProducts[] = [
                 'ID' => "ss0" . $cdoProduct['id'],
                 'sku_proveedor' => $cdoProduct['code'],
@@ -176,7 +179,7 @@ class cMulticatalogoGNUAdmin {
                 'galery' => $images,
                 'stock' => isset($cdoProduct['variants'][0]['stock_available']) ? $cdoProduct['variants'][0]['stock_available'] : 0,
                 'proveedor' => 'CDO',
-                'categorias' => $categories,
+                'categorias' => $categorias_mapeadas, // Usar categorías mapeadas
                 'infoAttributes' => $infoAttributes,
                 'isVariable' => count($variableAttributes) > 0 ? true : false,
                 'variableAttributes' => $variableAttributes,
@@ -262,6 +265,8 @@ class cMulticatalogoGNUAdmin {
                 $categorias[] = mb_convert_case(trim($categoria['value']), MB_CASE_TITLE, "UTF-8");
             }
 
+            $categorias_mapeadas = cMulticatalogoGNUCategories::apply_category_mapping($categorias);
+
             $mergedProducts[] = [
                 'ID' => "pi0" . $promoProduct['sku'],
                 'sku_proveedor' => $promoProduct['sku'],
@@ -274,7 +279,7 @@ class cMulticatalogoGNUAdmin {
                 'galery' => $images,
                 'stock' => isset($promoProduct['atributos'][0]['stock']) ? intval($promoProduct['atributos'][0]['stock']) : 0,
                 'proveedor' => 'promoimport',
-                'categorias' => $categorias,
+                'categorias' => $categorias_mapeadas, // Usar categorías mapeadas
                 'infoAttributes' => $infoAttributes,
                 'isVariable' => count($variableAttributes) > 0 ? true : false,
                 'variableAttributes' => $variableAttributes,
@@ -675,10 +680,7 @@ class cMulticatalogoGNUAdmin {
         $categoryManager = new cMulticatalogoGNUCategories();
         $mappings = $categoryManager->get_all_mappings();
         
-        // Obtener categorías sin mapear de cada proveedor
-        $unmapped_zecat = $categoryManager->get_unmapped_categories('zecat');
-        $unmapped_cdo = $categoryManager->get_unmapped_categories('cdo');
-        $unmapped_promo = $categoryManager->get_unmapped_categories('promoimport');
+        $unmapped_categories = $categoryManager->get_unmapped_categories();
 
         // Obtener todas las categorías de WooCommerce
         $woo_categories = get_terms(array(
@@ -692,26 +694,21 @@ class cMulticatalogoGNUAdmin {
             
             <div class="card" style="padding: 20px; margin-top: 20px;">
                 <h2>Mapeo de Categorías</h2>
-                <p>Define cómo se deben reasignar las categorías de los proveedores a las categorías de WooCommerce.</p>
+                <p>Define cómo se deben reasignar las categorías del catálogo a las categorías de WooCommerce.</p>
                 
                 <h3>Agregar Nueva Redirección</h3>
                 <form id="add-mapping-form" style="background: #f9f9f9; padding: 15px; border-radius: 5px;">
                     <table class="form-table">
                         <tr>
-                            <th><label for="provider">Proveedor</label></th>
-                            <td>
-                                <select id="provider" name="provider" class="regular-text">
-                                    <option value="zecat">ZECAT</option>
-                                    <option value="cdo">CDO</option>
-                                    <option value="promoimport">PromoImport</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
                             <th><label for="source_category">Categoría Original</label></th>
                             <td>
-                                <input type="text" id="source_category" name="source_category" class="regular-text" placeholder="Ej: Textiles">
-                                <p class="description">Nombre de la categoría como viene desde la API del proveedor</p>
+                                <input type="text" id="source_category" name="source_category" class="regular-text" placeholder="Ej: 2025 Descuentos Mochilas" list="unmapped-categories-list">
+                                <datalist id="unmapped-categories-list">
+                                    <?php foreach ($unmapped_categories as $cat): ?>
+                                        <option value="<?php echo esc_attr($cat); ?>">
+                                    <?php endforeach; ?>
+                                </datalist>
+                                <p class="description">Nombre de la categoría como viene desde el JSON del catálogo</p>
                             </td>
                         </tr>
                         <tr>
@@ -739,24 +736,22 @@ class cMulticatalogoGNUAdmin {
                 <table class="wp-list-table widefat fixed striped">
                     <thead>
                         <tr>
-                            <th>Proveedor</th>
                             <th>Categoría Original</th>
-                            <th>→</th>
+                            <th style="text-align: center; width: 50px;">→</th>
                             <th>Categoría Destino</th>
-                            <th>Acciones</th>
+                            <th style="width: 120px;">Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="mappings-list">
                         <?php if (empty($mappings)): ?>
                             <tr>
-                                <td colspan="5" style="text-align: center;">No hay redirecciones configuradas</td>
+                                <td colspan="4" style="text-align: center;">No hay redirecciones configuradas</td>
                             </tr>
                         <?php else: ?>
                             <?php foreach ($mappings as $mapping): ?>
                                 <tr data-mapping-id="<?php echo esc_attr($mapping->id); ?>">
-                                    <td><?php echo esc_html(strtoupper($mapping->provider)); ?></td>
-                                    <td><?php echo esc_html($mapping->source_category); ?></td>
-                                    <td style="text-align: center;">→</td>
+                                    <td><strong><?php echo esc_html($mapping->source_category); ?></strong></td>
+                                    <td style="text-align: center; font-size: 18px;">→</td>
                                     <td><?php echo esc_html($mapping->target_category_name); ?></td>
                                     <td>
                                         <button class="button button-small delete-mapping" data-id="<?php echo esc_attr($mapping->id); ?>">
@@ -772,38 +767,18 @@ class cMulticatalogoGNUAdmin {
                 <hr style="margin: 30px 0;">
 
                 <h3>Categorías Sin Redirigir</h3>
+                <p class="description">Estas categorías del catálogo no tienen mapeo y se crearán tal como vienen en el JSON:</p>
                 
-                <h4>ZECAT</h4>
-                <?php if (empty($unmapped_zecat)): ?>
-                    <p style="color: green;">✓ Todas las categorías de ZECAT están mapeadas</p>
+                <?php if (empty($unmapped_categories)): ?>
+                    <p style="color: green; font-weight: bold;">✓ Todas las categorías del catálogo están mapeadas</p>
                 <?php else: ?>
-                    <ul>
-                        <?php foreach ($unmapped_zecat as $cat): ?>
-                            <li><?php echo esc_html($cat); ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php endif; ?>
-
-                <h4>CDO</h4>
-                <?php if (empty($unmapped_cdo)): ?>
-                    <p style="color: green;">✓ Todas las categorías de CDO están mapeadas</p>
-                <?php else: ?>
-                    <ul>
-                        <?php foreach ($unmapped_cdo as $cat): ?>
-                            <li><?php echo esc_html($cat); ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php endif; ?>
-
-                <h4>PromoImport</h4>
-                <?php if (empty($unmapped_promo)): ?>
-                    <p style="color: green;">✓ Todas las categorías de PromoImport están mapeadas</p>
-                <?php else: ?>
-                    <ul>
-                        <?php foreach ($unmapped_promo as $cat): ?>
-                            <li><?php echo esc_html($cat); ?></li>
-                        <?php endforeach; ?>
-                    </ul>
+                    <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin-top: 10px;">
+                        <ul style="margin: 0; padding-left: 20px;">
+                            <?php foreach ($unmapped_categories as $cat): ?>
+                                <li><strong><?php echo esc_html($cat); ?></strong></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>
@@ -814,7 +789,6 @@ class cMulticatalogoGNUAdmin {
             $('#add-mapping-form').on('submit', function(e) {
                 e.preventDefault();
                 
-                var provider = $('#provider').val();
                 var sourceCategory = $('#source_category').val().trim();
                 var targetCategory = $('#target_category').val();
                 
@@ -828,7 +802,6 @@ class cMulticatalogoGNUAdmin {
                     type: 'POST',
                     data: {
                         action: 'multicatalogo_save_mapping',
-                        provider: provider,
                         source_category: sourceCategory,
                         target_category: targetCategory,
                         nonce: '<?php echo wp_create_nonce('multicatalogo_category_nonce'); ?>'
@@ -836,7 +809,9 @@ class cMulticatalogoGNUAdmin {
                     success: function(response) {
                         if (response.success) {
                             $('#mapping-mensaje').html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
-                            location.reload(); // Recargar para mostrar la nueva redirección
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000);
                         } else {
                             $('#mapping-mensaje').html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
                         }
@@ -865,7 +840,9 @@ class cMulticatalogoGNUAdmin {
                         if (response.success) {
                             row.fadeOut(300, function() {
                                 $(this).remove();
-                                location.reload();
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 500);
                             });
                         } else {
                             alert('Error al eliminar la redirección');
