@@ -44,6 +44,8 @@ class cMulticatalogoGNUAdmin {
             $infoAttributes = [];
             $variations = [];
 
+            $precioFinalZecat = cMulticatalogoGNUConfig::calculate_final_price($zecatProduct['price']);
+
             foreach ($zecatProduct['families'] as $family) {
                 $families[] = mb_convert_case(trim($family['description']), MB_CASE_TITLE, "UTF-8");
             }
@@ -55,13 +57,13 @@ class cMulticatalogoGNUAdmin {
                     $variableAttributes['Tamaño'][] = $varAttr['size'];
                     $variableAttributes['Color'][] = $varAttr['color'];
 
-                    $added = ['Combinations' => ['Tamaño' => $varAttr['size'], 'Color' => $varAttr['color']], 'Stock' => $varAttr['stock'], 'Precio' => $zecatProduct['price'], 'sku' => 'zt0' . $varAttr['sku']];
+                    $added = ['Combinations' => ['Tamaño' => $varAttr['size'], 'Color' => $varAttr['color']], 'Stock' => $varAttr['stock'], 'Precio' => $precioFinalZecat, 'sku' => 'zt0' . $varAttr['sku']];
                 }else{
                     $variableAttributes['Variante'][] = $varAttr['element_description_1'] . ' / ' . $varAttr['element_description_2'] . ' / ' . $varAttr['element_description_3'];
 
                     $added = [ 'Combinations' => ['Variante' => $varAttr['element_description_1'] . ' / ' . $varAttr['element_description_2'] . ' / ' . $varAttr['element_description_3']], 
                             'Stock' => $varAttr['stock'],
-                            'Precio' => $zecatProduct['price'],
+                            'Precio' => $precioFinalZecat,
                             'sku' => 'zt0' . $varAttr['id'],
                             'sku_proveedor' => $varAttr['sku']
                     ];
@@ -79,7 +81,7 @@ class cMulticatalogoGNUAdmin {
                 'sku_proveedor' => $zecatProduct['external_id'],
                 'nombre_del_producto' => $zecatProduct['name'],
                 'descripcion' => $zecatProduct['description'],
-                'precio' => $zecatProduct['price'],
+                'precio' => $precioFinalZecat,
                 'image' => isset($zecatProduct['images'][0]['image_url'])
                     ? '<a href="' . $zecatProduct['images'][0]['image_url'] . '" target="_blank">Ver imagen</a>'
                     : '',
@@ -101,10 +103,17 @@ class cMulticatalogoGNUAdmin {
             $variableAttributes = [];
             $infoAttributes = [];
             $variations = [];
+
+            $precioBaseCDO = isset($cdoProduct['variants'][0]['list_price']) ? floatval($cdoProduct['variants'][0]['list_price']) : 0;
+            $precioFinalCDO = cMulticatalogoGNUConfig::calculate_final_price($precioBaseCDO);
+
             foreach ($cdoProduct['variants'] as $variant) {
                 $images[] = $variant['picture']['original'];
                 $images[] = $variant['detail_picture']['original'];
                 $images[] = $variant['other_pictures'][0]['original'];
+
+                $precioVariante = isset($variant['list_price']) ? floatval($variant['list_price']) : 0;
+                $precioFinalVariante = cMulticatalogoGNUConfig::calculate_final_price($precioVariante);
 
                 if (isset($variant['color'])) {
                     $color_name = mb_convert_case(trim($variant['color']['name']), MB_CASE_TITLE, "UTF-8");
@@ -113,7 +122,7 @@ class cMulticatalogoGNUAdmin {
                     $variations[] = [
                         'Combinations' => ['Color' => $color_name],
                         'Stock' => isset($variant['stock_available']) ? $variant['stock_available'] : 0,
-                        'Precio' => isset($variant['list_price']) ? floatval($variant['list_price']) : 0,
+                        'Precio' => $precioFinalVariante,
                         'sku' => 'ss0' . $variant['id'],
                         'sku_proveedor' => $variant['sku']
                     ];
@@ -132,7 +141,7 @@ class cMulticatalogoGNUAdmin {
                     $variations[] = [
                         'Combinations' => ['Color' => $colors_string],
                         'Stock' => isset($variant['stock_available']) ? $variant['stock_available'] : 0,
-                        'Precio' => isset($variant['list_price']) ? floatval($variant['list_price']) : 0,
+                        'Precio' => $precioFinalVariante,
                         'sku' => 'ss0' . $variant['id'],
                         'sku_proveedor' => $variant['sku']
                     ];
@@ -160,7 +169,7 @@ class cMulticatalogoGNUAdmin {
                 'sku_proveedor' => $cdoProduct['code'],
                 'nombre_del_producto' => $cdoProduct['name'],
                 'descripcion' => $cdoProduct['description'],
-                'precio' => isset($cdoProduct['variants'][0]['list_price']) ? floatval($cdoProduct['variants'][0]['list_price']) : 0,
+                'precio' => $precioFinalCDO,
                 'image' => isset($cdoProduct['variants'][0]['picture']['original'])
                     ? '<a href="' . $cdoProduct['variants'][0]['picture']['original'] . '" target="_blank">Ver imagen</a>'
                     : '',
@@ -182,6 +191,9 @@ class cMulticatalogoGNUAdmin {
                 $images[] = $image['src'];
             }
 
+            $precioBasePromo = isset($promoProduct['precio']) ? floatval($promoProduct['precio']) : 0;
+            $precioFinalPromo = cMulticatalogoGNUConfig::calculate_final_price($precioBasePromo);
+
             $variableAttributes = [];
             $variations = [];
             foreach ($promoProduct['atributos'] as $atributo) {
@@ -192,7 +204,7 @@ class cMulticatalogoGNUAdmin {
                 $variations[] = [
                     'Combinations' => isset($atributo['value']) ? ['Color' => mb_convert_case(trim($atributo['value']), MB_CASE_TITLE, "UTF-8")] : [],
                     'Stock' => isset($atributo['stock']) ? intval($atributo['stock']) : 0,
-                    'Precio' => isset($promoProduct['precio']) ? floatval($promoProduct['precio']) : 0,
+                    'Precio' => $precioFinalPromo,
                     'sku' => 'pi0' . $promoProduct['sku'] . '-' . $atributo['value']
                 ];
             }
@@ -255,7 +267,7 @@ class cMulticatalogoGNUAdmin {
                 'sku_proveedor' => $promoProduct['sku'],
                 'nombre_del_producto' => $promoProduct['titulo'],
                 'descripcion' => strip_tags($promoProduct['descripcion']),
-                'precio' => floatval($promoProduct['precio']),
+                'precio' => $precioFinalPromo,
                 'image' => isset($promoProduct['fotoPrincipal'])
                     ? '<a href="' . $promoProduct['fotoPrincipal'] . '" target="_blank">Ver imagen</a>'
                     : '',
