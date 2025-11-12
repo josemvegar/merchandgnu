@@ -105099,7 +105099,7 @@
                 "attribute_2": "1",
                 "attribute_3": "90",
                 "primary_color": "#696969",
-                "secondary_color": "#000000",
+                "secondary_color": "#696969",
                 "achromatic": true,
                 "stock": 126,
                 "size": "Medium",
@@ -105154,31 +105154,6 @@
                 "stock": 73,
                 "size": "Small",
                 "color": "Gris Oscuro",
-                "product_stock_arrival": []
-            },
-            {
-                "id": 3303,
-                "sku": "33014000006002011000",
-                "discountRangeProduct": {
-                    "hasRangeDiscount": true,
-                    "discountId": "20"
-                },
-                "general_description": "Polar Norman Mujer",
-                "element_description_1": "Medium",
-                "element_description_2": "Azulino",
-                "element_description_3": ".",
-                "element_code_1": "002",
-                "element_code_2": "011",
-                "element_code_3": "000",
-                "attribute_1": "87",
-                "attribute_2": "1",
-                "attribute_3": "90",
-                "primary_color": "#0000FF",
-                "secondary_color": "#0000FF",
-                "achromatic": false,
-                "stock": 356,
-                "size": "Medium",
-                "color": "Azulino",
                 "product_stock_arrival": []
             },
             {
@@ -105279,31 +105254,6 @@
                 "stock": -1,
                 "size": "Small",
                 "color": "Azul",
-                "product_stock_arrival": []
-            },
-            {
-                "id": 3282,
-                "sku": "33014000006001011000",
-                "discountRangeProduct": {
-                    "hasRangeDiscount": true,
-                    "discountId": "20"
-                },
-                "general_description": "Polar Norman Mujer",
-                "element_description_1": "Small",
-                "element_description_2": "Azulino",
-                "element_description_3": ".",
-                "element_code_1": "001",
-                "element_code_2": "011",
-                "element_code_3": "000",
-                "attribute_1": "87",
-                "attribute_2": "1",
-                "attribute_3": "90",
-                "primary_color": "#0000FF",
-                "secondary_color": "#0000FF",
-                "achromatic": false,
-                "stock": 138,
-                "size": "Small",
-                "color": "Azulino",
                 "product_stock_arrival": []
             },
             {
