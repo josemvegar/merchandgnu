@@ -404,6 +404,9 @@ class cMulticatalogoGNUAdmin {
 
                     <input type="submit" name="submit" id="ActualizarPrecioPromoImport" class="button button-primary" value="<?php  _e('Actualizar Precio en Woocommerce PromoImport', 'MultiCatalogoGNU')?>">
                     
+                    <!-- Agregar botón para eliminar productos en lote -->
+                    <input type="submit" name="submit" id="EliminarProductosCatalogo" class="button button-danger" value="<?php  _e('Eliminar Productos del Catálogo', 'MultiCatalogoGNU')?>" style="background-color: #dc3232; border-color: #dc3232;">
+                    
                     <div id="progressContainer" style="width: 100%;">
                         <p><strong>Total de productos:</strong> <span id="totalProducts">0</span></p>
                         <p><strong>Productos procesados:</strong> <span id="publishedProducts">0</span></p>
@@ -855,3 +858,4 @@ class cMulticatalogoGNUAdmin {
         <?php
     }
 }
+?>

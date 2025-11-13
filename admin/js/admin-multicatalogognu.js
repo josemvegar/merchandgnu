@@ -4,43 +4,67 @@
  * @since 1.0.0
  */
 
-jQuery(document).ready(function () {
+var jQuery = window.jQuery
+var table
+var Global = window.Global
+var combinar_json_zecat_cdo = window.combinar_json_zecat_cdo
+var fgetProductsZecat = window.fgetProductsZecat
+var fgetProductsCdo = window.fgetProductsCdo
+var fgetProductsPromoImport = window.fgetProductsPromoImport
+var fcreateWooCommerceProductsFromJsonGlobo = window.fcreateWooCommerceProductsFromJsonGlobo
+var fUpdateStockGlobo = window.fUpdateStockGlobo
+var fUpdatePriceGlobo = window.fUpdatePriceGlobo
+var fUpdateStockCDO = window.fUpdateStockCDO
+var fUpdateStockCDOGlobo = window.fUpdateStockCDOGlobo
+var fUpdateStockZecatGlobo = window.fUpdateStockZecatGlobo
+var fUpdatePriceZecat = window.fUpdatePriceZecat
+var fUpdatePriceCDO = window.fUpdatePriceCDO
+var fcreateWooCommerceProductsFromZecatJson2 = window.fcreateWooCommerceProductsFromZecatJson2
+var fcreateWooCommerceProductsFromCDOJson = window.fcreateWooCommerceProductsFromCDOJson
+var fDeleteProductsCatalogo = window.fDeleteProductsCatalogo
 
-  table = jQuery('#MerchanCatalog').DataTable({
-    "dom": 'Bfrtip',
-    "buttons": [
-      'copy', 'csv', 'excel', 'pdf', 'print', 'selected',
-      'selectedSingle',
-      'selectAll',
-      'selectNone',
-      'selectRows',
-      'selectColumns',
-      'selectCells'
+jQuery(document).ready(() => {
+  table = jQuery("#MerchanCatalog").DataTable({
+    dom: "Bfrtip",
+    buttons: [
+      "copy",
+      "csv",
+      "excel",
+      "pdf",
+      "print",
+      "selected",
+      "selectedSingle",
+      "selectAll",
+      "selectNone",
+      "selectRows",
+      "selectColumns",
+      "selectCells",
     ],
-    "responsive": true,
-    "ajax": {
-      "url": "/merchant/wp-admin/admin-ajax.php?action=datatables_endpoint_merchan",
-      "dataSrc": "data"
+    responsive: true,
+    ajax: {
+      url: "/merchant/wp-admin/admin-ajax.php?action=datatables_endpoint_merchan",
+      dataSrc: "data",
     },
-    "select": {
-      "style": 'multi'
+    select: {
+      style: "multi",
     },
-    "columns": [
-      { "data": 'ID' },
-      { "data": 'sku_proveedor' },
-      { "data": 'nombre_del_producto' },
-      { "data": 'descripcion' },
-      { "data": 'precio' },
-      { "data": 'image' },
-      { "data": 'stock' },
-      { "data": 'proveedor' }
+    columns: [
+      { data: "ID" },
+      { data: "sku_proveedor" },
+      { data: "nombre_del_producto" },
+      { data: "descripcion" },
+      { data: "precio" },
+      { data: "image" },
+      { data: "stock" },
+      { data: "proveedor" },
     ],
-  });
+  })
 
-
-  jQuery("#ActualizarListaProductos").click(function (e) {
-    e.preventDefault();
-    jQuery("#ActualizarListaProductos").html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>').addClass('disabled');
+  jQuery("#ActualizarListaProductos").click((e) => {
+    e.preventDefault()
+    jQuery("#ActualizarListaProductos")
+      .html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>')
+      .addClass("disabled")
 
     jQuery.ajax({
       type: "POST",
@@ -48,28 +72,29 @@ jQuery(document).ready(function () {
       data: {
         action: combinar_json_zecat_cdo.action,
         nonce: Global.nonce,
-
       },
-      beforeSend: function () {
-        jQuery(".loadermerchan").show();
-        jQuery('.popup-overlay-merchan').fadeIn('slow');
+      beforeSend: () => {
+        jQuery(".loadermerchan").show()
+        jQuery(".popup-overlay-merchan").fadeIn("slow")
       },
-      success: function (data) {
-        jQuery("#ActualizarListaProductos").removeClass('disabled');
-        console.log(data);
+      success: (data) => {
+        jQuery("#ActualizarListaProductos").removeClass("disabled")
+        console.log(data)
 
-        alert('Actualización completada');
-        jQuery(".loadermerchan").hide();
-        jQuery('.popup-overlay-merchan').fadeOut('slow');
-        location.reload();
-      }
-    });
-  });
+        alert("Actualización completada")
+        jQuery(".loadermerchan").hide()
+        jQuery(".popup-overlay-merchan").fadeOut("slow")
+        location.reload()
+      },
+    })
+  })
 
-  jQuery("#ActualizarCatalogoZecat").click(function (e) {
-    e.preventDefault();
+  jQuery("#ActualizarCatalogoZecat").click((e) => {
+    e.preventDefault()
 
-    jQuery("#ActualizarCatalogoZecat").html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>').addClass('disabled');
+    jQuery("#ActualizarCatalogoZecat")
+      .html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>')
+      .addClass("disabled")
 
     jQuery.ajax({
       type: "POST",
@@ -77,57 +102,60 @@ jQuery(document).ready(function () {
       data: {
         action: fgetProductsZecat.action,
         nonce: Global.nonce,
-
       },
-      beforeSend: function () {
-        jQuery(".loadermerchan").show();
-        jQuery('.popup-overlay-merchan').fadeIn('slow');
+      beforeSend: () => {
+        jQuery(".loadermerchan").show()
+        jQuery(".popup-overlay-merchan").fadeIn("slow")
       },
-      success: function (data) {
-        jQuery("#ActualizarCatalogoZecat").removeClass('disabled');
-        console.log(data);
+      success: (data) => {
+        jQuery("#ActualizarCatalogoZecat").removeClass("disabled")
+        console.log(data)
 
-        alert('Actualización completada');
-        jQuery(".loadermerchan").hide();
-        jQuery('.popup-overlay-merchan').fadeOut('slow');
-        location.reload();
-      }
-    });
-  });
+        alert("Actualización completada")
+        jQuery(".loadermerchan").hide()
+        jQuery(".popup-overlay-merchan").fadeOut("slow")
+        location.reload()
+      },
+    })
+  })
 
-  jQuery("#ActualizarCatalogoCDO").click(function (e) {
-    e.preventDefault();
+  jQuery("#ActualizarCatalogoCDO").click((e) => {
+    e.preventDefault()
 
-    jQuery("#ActualizarCatalogoCDO").html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>').addClass('disabled');
+    jQuery("#ActualizarCatalogoCDO")
+      .html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>')
+      .addClass("disabled")
 
     jQuery.ajax({
       type: "POST",
       url: Global.url,
       data: {
         action: fgetProductsCdo.action,
-        nonce: Global.nonce
+        nonce: Global.nonce,
       },
-      beforeSend: function () {
-        jQuery(".loadermerchan").show();
-        jQuery('.popup-overlay-merchan').fadeIn('slow');
+      beforeSend: () => {
+        jQuery(".loadermerchan").show()
+        jQuery(".popup-overlay-merchan").fadeIn("slow")
       },
-      success: function (data) {
+      success: (data) => {
         //jQuery("#ActualizarCatalogoCDO .fa-spin").remove();
-        jQuery("#ActualizarCatalogoCDO").removeClass('disabled');
-        console.log(data);
+        jQuery("#ActualizarCatalogoCDO").removeClass("disabled")
+        console.log(data)
 
-        alert('Actualización completada');
-        jQuery(".loadermerchan").hide();
-        jQuery('.popup-overlay-merchan').fadeOut('slow');
-        location.reload();
-      }
-    });
-  });
+        alert("Actualización completada")
+        jQuery(".loadermerchan").hide()
+        jQuery(".popup-overlay-merchan").fadeOut("slow")
+        location.reload()
+      },
+    })
+  })
 
-  jQuery("#ActualizarCatalogoPromoImport").click(function (e) {
-    e.preventDefault();
+  jQuery("#ActualizarCatalogoPromoImport").click((e) => {
+    e.preventDefault()
 
-    jQuery("#ActualizarCatalogoPromoImport").html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>').addClass('disabled');
+    jQuery("#ActualizarCatalogoPromoImport")
+      .html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>')
+      .addClass("disabled")
 
     jQuery.ajax({
       type: "POST",
@@ -135,468 +163,470 @@ jQuery(document).ready(function () {
       data: {
         action: fgetProductsPromoImport.action,
         nonce: Global.nonce,
-
       },
-      beforeSend: function () {
-        jQuery(".loadermerchan").show();
-        jQuery('.popup-overlay-merchan').fadeIn('slow');
+      beforeSend: () => {
+        jQuery(".loadermerchan").show()
+        jQuery(".popup-overlay-merchan").fadeIn("slow")
       },
-      success: function (data) {
+      success: (data) => {
         //jQuery("#ActualizarCatalogoPromoImport .fa-spin").remove();
-        jQuery("#ActualizarCatalogoPromoImport").removeClass('disabled');
-        console.log(data);
+        jQuery("#ActualizarCatalogoPromoImport").removeClass("disabled")
+        console.log(data)
 
-        alert('Actualización completada');
-        jQuery(".loadermerchan").hide();
-        jQuery('.popup-overlay-merchan').fadeOut('slow');
-        location.reload();
-      }
-    });
-  });
+        alert("Actualización completada")
+        jQuery(".loadermerchan").hide()
+        jQuery(".popup-overlay-merchan").fadeOut("slow")
+        location.reload()
+      },
+    })
+  })
 
-  jQuery('#PublicarProductosPromoImport').on('click', function () {
-    var totalProductos = 0;
-    var productosActualizados = 0;
-    var offsetActual = 0;
-    var tamanoLote = 2; // Cambia este valor según tus necesidades
+  jQuery("#PublicarProductosPromoImport").on("click", () => {
+    var totalProductos = 0
+    var productosActualizados = 0
+    var offsetActual = 0
+    var tamanoLote = 2 // Cambia este valor según tus necesidades
 
     function actualizarLote(offset) {
       jQuery.ajax({
         url: Global.url,
-        type: 'POST',
+        type: "POST",
         data: {
           action: fcreateWooCommerceProductsFromJsonGlobo.action,
           offset: offset,
           tamano_lote: tamanoLote,
           nonce: fcreateWooCommerceProductsFromJsonGlobo.nonce,
-          provider: 'promoimport'
+          provider: "promoimport",
         },
-        beforeSend: function () {
-          jQuery(".loadermerchan").show();
-          jQuery('.popup-overlay-merchan').fadeIn('slow');
+        beforeSend: () => {
+          jQuery(".loadermerchan").show()
+          jQuery(".popup-overlay-merchan").fadeIn("slow")
         },
-        success: function (response) {
+        success: (response) => {
           if (response.success) {
-            totalProductos = response.data.total;
-            productosActualizados += response.data.creados;
-            offsetActual = response.data.offset;
+            totalProductos = response.data.total
+            productosActualizados += response.data.creados
+            offsetActual = response.data.offset
 
-            console.log('Total productos: ' + totalProductos);
-            console.log('Actualizados en este lote: ' + response.data.actualizados);
-            console.log('Total actualizados: ' + productosActualizados);
-            console.log('Siguiente offset: ' + offsetActual);
+            console.log("Total productos: " + totalProductos)
+            console.log("Actualizados en este lote: " + response.data.actualizados)
+            console.log("Total actualizados: " + productosActualizados)
+            console.log("Siguiente offset: " + offsetActual)
 
             // Actualizar DOM
-            jQuery('#totalProducts').text(totalProductos);
-            jQuery('#publishedProducts').text(productosActualizados);
+            jQuery("#totalProducts").text(totalProductos)
+            jQuery("#publishedProducts").text(productosActualizados)
 
             // Calcular porcentaje basado en OFFSET
-            var porcentaje = Math.min((offsetActual / totalProductos) * 100, 100);
-            jQuery('#progress').css('width', porcentaje + '%');
-            jQuery('#progress').text(Math.round(porcentaje) + '%');
+            var porcentaje = Math.min((offsetActual / totalProductos) * 100, 100)
+            jQuery("#progress").css("width", porcentaje + "%")
+            jQuery("#progress").text(Math.round(porcentaje) + "%")
 
             // Continuar mientras el offset sea menor al total
             if (offsetActual < totalProductos) {
-              console.log('Continuando con siguiente lote...');
-              actualizarLote(offsetActual);
+              console.log("Continuando con siguiente lote...")
+              actualizarLote(offsetActual)
             } else {
-              console.log('Proceso completado');
-              jQuery(".loadermerchan").hide();
-              jQuery('.popup-overlay-merchan').fadeOut('slow');
+              console.log("Proceso completado")
+              jQuery(".loadermerchan").hide()
+              jQuery(".popup-overlay-merchan").fadeOut("slow")
 
               if (response.data.errors && response.data.errors.length > 0) {
-                alert('Proceso completado con algunos errores. Revisa la consola para más detalles.');
-                console.log('Errores:', response.data.errors);
+                alert("Proceso completado con algunos errores. Revisa la consola para más detalles.")
+                console.log("Errores:", response.data.errors)
               } else {
-                alert('Actualización completada exitosamente.');
+                alert("Actualización completada exitosamente.")
               }
             }
-
           } else {
-            console.log('Error en respuesta:', response.data);
-            alert('Error en la actualización: ' + (response.data || 'Error desconocido'));
-            jQuery(".loadermerchan").hide();
-            jQuery('.popup-overlay-merchan').fadeOut('slow');
+            console.log("Error en respuesta:", response.data)
+            alert("Error en la actualización: " + (response.data || "Error desconocido"))
+            jQuery(".loadermerchan").hide()
+            jQuery(".popup-overlay-merchan").fadeOut("slow")
           }
         },
-        error: function (xhr, status, error) {
-          console.log('Error AJAX:', error);
-          alert('Error en la comunicación con el servidor.');
-          jQuery(".loadermerchan").hide();
-          jQuery('.popup-overlay-merchan').fadeOut('slow');
-        }
-      });
+        error: (xhr, status, error) => {
+          console.log("Error AJAX:", error)
+          alert("Error en la comunicación con el servidor.")
+          jQuery(".loadermerchan").hide()
+          jQuery(".popup-overlay-merchan").fadeOut("slow")
+        },
+      })
     }
 
     // Iniciar el proceso
-    actualizarLote(0);
-  });
+    actualizarLote(0)
+  })
 
-  jQuery('#PublicarProductosZecat').on('click', function () {
-    var totalProductos = 0;
-    var productosActualizados = 0;
-    var offsetActual = 0;
-    var tamanoLote = 2; // Cambia este valor según tus necesidades
+  jQuery("#PublicarProductosZecat").on("click", () => {
+    var totalProductos = 0
+    var productosActualizados = 0
+    var offsetActual = 0
+    var tamanoLote = 2 // Cambia este valor según tus necesidades
 
     function actualizarLote(offset) {
       jQuery.ajax({
         url: Global.url,
-        type: 'POST',
+        type: "POST",
         data: {
           action: fcreateWooCommerceProductsFromJsonGlobo.action,
           offset: offset,
           tamano_lote: tamanoLote,
           nonce: fcreateWooCommerceProductsFromJsonGlobo.nonce,
-          provider: 'ZECAT'
+          provider: "ZECAT",
         },
-        beforeSend: function () {
-          jQuery(".loadermerchan").show();
-          jQuery('.popup-overlay-merchan').fadeIn('slow');
+        beforeSend: () => {
+          jQuery(".loadermerchan").show()
+          jQuery(".popup-overlay-merchan").fadeIn("slow")
         },
-        success: function (response) {
-
+        success: (response) => {
           if (response.success) {
-            totalProductos = response.data.total;
-            productosActualizados += response.data.creados; // ✅ Cambiado de 'actualizados' a 'creados'
-            offsetActual = response.data.offset;
+            totalProductos = response.data.total
+            productosActualizados += response.data.creados // ✅ Cambiado de 'actualizados' a 'creados'
+            offsetActual = response.data.offset
 
-            console.log('Total productos: ' + totalProductos);
-            console.log('Creados en este lote: ' + response.data.creados);
-            console.log('Total creados: ' + productosActualizados);
-            console.log('Siguiente offset: ' + offsetActual);
+            console.log("Total productos: " + totalProductos)
+            console.log("Creados en este lote: " + response.data.creados)
+            console.log("Total creados: " + productosActualizados)
+            console.log("Siguiente offset: " + offsetActual)
 
             // Actualizar DOM
-            jQuery('#totalProducts').text(totalProductos);
-            jQuery('#publishedProducts').text(productosActualizados);
+            jQuery("#totalProducts").text(totalProductos)
+            jQuery("#publishedProducts").text(productosActualizados)
 
             // ✅ CORRECCIÓN: Calcular porcentaje basado en OFFSET, no en productos creados
-            var porcentaje = Math.min((offsetActual / totalProductos) * 100, 100);
-            jQuery('#progress').css('width', porcentaje + '%');
-            jQuery('#progress').text(Math.round(porcentaje) + '%');
+            var porcentaje = Math.min((offsetActual / totalProductos) * 100, 100)
+            jQuery("#progress").css("width", porcentaje + "%")
+            jQuery("#progress").text(Math.round(porcentaje) + "%")
 
             // ✅ CORRECCIÓN: Continuar mientras el offset sea menor al total
             if (offsetActual < totalProductos) {
-              console.log('Continuando con siguiente lote...');
-              actualizarLote(offsetActual);
+              console.log("Continuando con siguiente lote...")
+              actualizarLote(offsetActual)
             } else {
-              console.log('Proceso completado');
-              jQuery(".loadermerchan").hide();
-              jQuery('.popup-overlay-merchan').fadeOut('slow');
+              console.log("Proceso completado")
+              jQuery(".loadermerchan").hide()
+              jQuery(".popup-overlay-merchan").fadeOut("slow")
 
               if (response.data.errors && response.data.errors.length > 0) {
-                alert('Proceso completado con algunos errores. Revisa la consola para más detalles.');
-                console.log('Errores:', response.data.errors);
+                alert("Proceso completado con algunos errores. Revisa la consola para más detalles.")
+                console.log("Errores:", response.data.errors)
               } else {
-                alert('Actualización completada exitosamente.');
+                alert("Actualización completada exitosamente.")
               }
             }
-
           } else {
-            console.log('Error en respuesta:', response.data);
-            alert('Error en la actualización: ' + (response.data || 'Error desconocido'));
-            jQuery(".loadermerchan").hide();
-            jQuery('.popup-overlay-merchan').fadeOut('slow');
+            console.log("Error en respuesta:", response.data)
+            alert("Error en la actualización: " + (response.data || "Error desconocido"))
+            jQuery(".loadermerchan").hide()
+            jQuery(".popup-overlay-merchan").fadeOut("slow")
           }
         },
-        error: function (xhr, status, error) {
-          console.log('Error AJAX:', error);
-          alert('Error en la comunicación con el servidor.');
-          jQuery(".loadermerchan").hide();
-          jQuery('.popup-overlay-merchan').fadeOut('slow');
-        }
-      });
+        error: (xhr, status, error) => {
+          console.log("Error AJAX:", error)
+          alert("Error en la comunicación con el servidor.")
+          jQuery(".loadermerchan").hide()
+          jQuery(".popup-overlay-merchan").fadeOut("slow")
+        },
+      })
     }
 
     // Iniciar el proceso
-    actualizarLote(0);
-  });
+    actualizarLote(0)
+  })
 
-  jQuery('#PublicarProductosCDO').on('click', function () {
-    var totalProductos = 0;
-    var productosActualizados = 0;
-    var offsetActual = 0;
-    var tamanoLote = 2; // Cambia este valor según tus necesidades
+  jQuery("#PublicarProductosCDO").on("click", () => {
+    var totalProductos = 0
+    var productosActualizados = 0
+    var offsetActual = 0
+    var tamanoLote = 2 // Cambia este valor según tus necesidades
 
     function actualizarLote(offset) {
       jQuery.ajax({
         url: Global.url,
-        type: 'POST',
+        type: "POST",
         data: {
           action: fcreateWooCommerceProductsFromJsonGlobo.action,
           offset: offset,
           tamano_lote: tamanoLote,
           nonce: fcreateWooCommerceProductsFromJsonGlobo.nonce,
-          provider: 'CDO'
+          provider: "CDO",
         },
-        beforeSend: function () {
-          jQuery(".loadermerchan").show();
-          jQuery('.popup-overlay-merchan').fadeIn('slow');
+        beforeSend: () => {
+          jQuery(".loadermerchan").show()
+          jQuery(".popup-overlay-merchan").fadeIn("slow")
         },
-        success: function (response) {
+        success: (response) => {
           if (response.success) {
-            totalProductos = response.data.total;
-            productosActualizados += response.data.creados;
-            offsetActual = response.data.offset;
+            totalProductos = response.data.total
+            productosActualizados += response.data.creados
+            offsetActual = response.data.offset
 
-            console.log('Total productos: ' + totalProductos);
-            console.log('Creados en este lote: ' + response.data.creados);
-            console.log('Total creados: ' + productosActualizados);
-            console.log('Siguiente offset: ' + offsetActual);
+            console.log("Total productos: " + totalProductos)
+            console.log("Creados en este lote: " + response.data.creados)
+            console.log("Total creados: " + productosActualizados)
+            console.log("Siguiente offset: " + offsetActual)
 
             // Actualizar DOM
-            jQuery('#totalProducts').text(totalProductos);
-            jQuery('#publishedProducts').text(productosActualizados);
+            jQuery("#totalProducts").text(totalProductos)
+            jQuery("#publishedProducts").text(productosActualizados)
 
             // Calcular porcentaje basado en OFFSET
-            var porcentaje = Math.min((offsetActual / totalProductos) * 100, 100);
-            jQuery('#progress').css('width', porcentaje + '%');
-            jQuery('#progress').text(Math.round(porcentaje) + '%');
+            var porcentaje = Math.min((offsetActual / totalProductos) * 100, 100)
+            jQuery("#progress").css("width", porcentaje + "%")
+            jQuery("#progress").text(Math.round(porcentaje) + "%")
 
             // Continuar mientras el offset sea menor al total
             if (offsetActual < totalProductos) {
-              console.log('Continuando con siguiente lote...');
-              actualizarLote(offsetActual);
+              console.log("Continuando con siguiente lote...")
+              actualizarLote(offsetActual)
             } else {
-              console.log('Proceso completado');
-              jQuery(".loadermerchan").hide();
-              jQuery('.popup-overlay-merchan').fadeOut('slow');
+              console.log("Proceso completado")
+              jQuery(".loadermerchan").hide()
+              jQuery(".popup-overlay-merchan").fadeOut("slow")
 
               if (response.data.errors && response.data.errors.length > 0) {
-                alert('Proceso completado con algunos errores. Revisa la consola para más detalles.');
-                console.log('Errores:', response.data.errors);
+                alert("Proceso completado con algunos errores. Revisa la consola para más detalles.")
+                console.log("Errores:", response.data.errors)
               } else {
-                alert('Actualización completada exitosamente.');
+                alert("Actualización completada exitosamente.")
               }
             }
-
           } else {
-            console.log('Error en respuesta:', response.data);
-            alert('Error en la actualización: ' + (response.data || 'Error desconocido'));
-            jQuery(".loadermerchan").hide();
-            jQuery('.popup-overlay-merchan').fadeOut('slow');
+            console.log("Error en respuesta:", response.data)
+            alert("Error en la actualización: " + (response.data || "Error desconocido"))
+            jQuery(".loadermerchan").hide()
+            jQuery(".popup-overlay-merchan").fadeOut("slow")
           }
         },
-        error: function (xhr, status, error) {
-          console.log('Error AJAX:', error);
-          alert('Error en la comunicación con el servidor.');
-          jQuery(".loadermerchan").hide();
-          jQuery('.popup-overlay-merchan').fadeOut('slow');
-        }
-      });
+        error: (xhr, status, error) => {
+          console.log("Error AJAX:", error)
+          alert("Error en la comunicación con el servidor.")
+          jQuery(".loadermerchan").hide()
+          jQuery(".popup-overlay-merchan").fadeOut("slow")
+        },
+      })
     }
 
     // Iniciar el proceso
-    actualizarLote(0);
-  });
+    actualizarLote(0)
+  })
 
   // Función unificada para todos los proveedores
   function actualizarStockProveedor(provider) {
-    var totalProductos = 0;
-    var productosActualizados = 0;
-    var offsetActual = 0;
-    var tamanoLote = 10;
+    var totalProductos = 0
+    var productosActualizados = 0
+    var offsetActual = 0
+    var tamanoLote = 10
 
     function actualizarLote(offset) {
       jQuery.ajax({
         url: fUpdateStockGlobo.ajax_url,
-        type: 'POST',
+        type: "POST",
         data: {
           action: fUpdateStockGlobo.action,
           provider: provider,
           offset: offset,
           tamano_lote: tamanoLote,
-          nonce: getNonceByProvider(provider)
+          nonce: getNonceByProvider(provider),
         },
-        beforeSend: function () {
-          jQuery(".loadermerchan").show();
-          jQuery('.popup-overlay-merchan').fadeIn('slow');
-          jQuery('#providerName').text(provider.toUpperCase());
+        beforeSend: () => {
+          jQuery(".loadermerchan").show()
+          jQuery(".popup-overlay-merchan").fadeIn("slow")
+          jQuery("#providerName").text(provider.toUpperCase())
         },
-        success: function (response) {
+        success: (response) => {
           if (response.success) {
-            totalProductos = response.data.total;
-            productosActualizados += response.data.actualizados;
-            offsetActual = response.data.offset;
+            totalProductos = response.data.total
+            productosActualizados += response.data.actualizados
+            offsetActual = response.data.offset
 
-            console.log('Proveedor: ' + provider);
-            console.log('Total productos: ' + totalProductos);
-            console.log('Actualizados en este lote: ' + response.data.actualizados);
-            console.log('Total actualizados: ' + productosActualizados);
-            console.log('Siguiente offset: ' + offsetActual);
+            console.log("Proveedor: " + provider)
+            console.log("Total productos: " + totalProductos)
+            console.log("Actualizados en este lote: " + response.data.actualizados)
+            console.log("Total actualizados: " + productosActualizados)
+            console.log("Siguiente offset: " + offsetActual)
 
             // Actualizar DOM
-            jQuery('#totalProducts').text(totalProductos);
-            jQuery('#publishedProducts').text(productosActualizados);
+            jQuery("#totalProducts").text(totalProductos)
+            jQuery("#publishedProducts").text(productosActualizados)
 
             // Calcular porcentaje
-            var porcentaje = Math.min((offsetActual / totalProductos) * 100, 100);
-            jQuery('#progress').css('width', porcentaje + '%');
-            jQuery('#progress').text(Math.round(porcentaje) + '%');
+            var porcentaje = Math.min((offsetActual / totalProductos) * 100, 100)
+            jQuery("#progress").css("width", porcentaje + "%")
+            jQuery("#progress").text(Math.round(porcentaje) + "%")
 
             // Continuar si hay más productos
             if (offsetActual < totalProductos) {
-              console.log('Continuando con siguiente lote...');
-              actualizarLote(offsetActual);
-
+              console.log("Continuando con siguiente lote...")
+              actualizarLote(offsetActual)
             } else {
-              console.log('Proceso completado para ' + provider);
-              jQuery(".loadermerchan").hide();
-              jQuery('.popup-overlay-merchan').fadeOut('slow');
-              alert('Actualización de stock completada para ' + provider.toUpperCase() + '. Productos actualizados: ' + productosActualizados);
+              console.log("Proceso completado para " + provider)
+              jQuery(".loadermerchan").hide()
+              jQuery(".popup-overlay-merchan").fadeOut("slow")
+              alert(
+                "Actualización de stock completada para " +
+                  provider.toUpperCase() +
+                  ". Productos actualizados: " +
+                  productosActualizados,
+              )
             }
-
           } else {
-            console.log('Error en respuesta:', response.data);
-            alert('Error en la actualización: ' + (response.data || 'Error desconocido'));
-            jQuery(".loadermerchan").hide();
-            jQuery('.popup-overlay-merchan').fadeOut('slow');
+            console.log("Error en respuesta:", response.data)
+            alert("Error en la actualización: " + (response.data || "Error desconocido"))
+            jQuery(".loadermerchan").hide()
+            jQuery(".popup-overlay-merchan").fadeOut("slow")
           }
         },
-        error: function (xhr, status, error) {
-          console.log('Error AJAX:', error);
-          alert('Error en la comunicación con el servidor.');
-          jQuery(".loadermerchan").hide();
-          jQuery('.popup-overlay-merchan').fadeOut('slow');
-        }
-      });
+        error: (xhr, status, error) => {
+          console.log("Error AJAX:", error)
+          alert("Error en la comunicación con el servidor.")
+          jQuery(".loadermerchan").hide()
+          jQuery(".popup-overlay-merchan").fadeOut("slow")
+        },
+      })
     }
 
     // Helper para obtener nonce según proveedor
     function getNonceByProvider(provider) {
       var nonces = {
-        'promoimport': fUpdateStockGlobo.nonce_promoimport,
-        'zecat': fUpdateStockGlobo.nonce_zecat,
-        'cdo': fUpdateStockGlobo.nonce_cdo
-      };
-      return nonces[provider];
+        promoimport: fUpdateStockGlobo.nonce_promoimport,
+        zecat: fUpdateStockGlobo.nonce_zecat,
+        cdo: fUpdateStockGlobo.nonce_cdo,
+      }
+      return nonces[provider]
     }
 
     // Iniciar el proceso
-    actualizarLote(0);
+    actualizarLote(0)
   }
 
-  jQuery("#ActualizarStockPromoImport").click(function (e) {
-    e.preventDefault();
-    actualizarStockProveedor('promoimport');
-  });
+  jQuery("#ActualizarStockPromoImport").click((e) => {
+    e.preventDefault()
+    actualizarStockProveedor("promoimport")
+  })
 
-  jQuery("#ActualizarStockZecat").click(function (e) {
-    e.preventDefault();
-    actualizarStockProveedor('zecat');
-  });
+  jQuery("#ActualizarStockZecat").click((e) => {
+    e.preventDefault()
+    actualizarStockProveedor("zecat")
+  })
 
-
-  jQuery("#ActualizarStockCDO").click(function (e) {
-    e.preventDefault();
-    actualizarStockProveedor('cdo');
-  });
-
+  jQuery("#ActualizarStockCDO").click((e) => {
+    e.preventDefault()
+    actualizarStockProveedor("cdo")
+  })
 
   // Función unificada para actualización de precios de todos los proveedores
   function actualizarPrecioProveedor(provider) {
-    var totalProductos = 0;
-    var productosActualizados = 0;
-    var offsetActual = 0;
-    var tamanoLote = 10;
+    var totalProductos = 0
+    var productosActualizados = 0
+    var offsetActual = 0
+    var tamanoLote = 10
 
     function actualizarLote(offset) {
       jQuery.ajax({
         url: fUpdatePriceGlobo.ajax_url,
-        type: 'POST',
+        type: "POST",
         data: {
           action: fUpdatePriceGlobo.action,
           provider: provider,
           offset: offset,
           tamano_lote: tamanoLote,
-          nonce: getNonceByProvider(provider)
+          nonce: getNonceByProvider(provider),
         },
-        beforeSend: function () {
-          jQuery(".loadermerchan").show();
-          jQuery('.popup-overlay-merchan').fadeIn('slow');
-          jQuery('#providerName').text(provider.toUpperCase() + ' - PRECIOS');
+        beforeSend: () => {
+          jQuery(".loadermerchan").show()
+          jQuery(".popup-overlay-merchan").fadeIn("slow")
+          jQuery("#providerName").text(provider.toUpperCase() + " - PRECIOS")
         },
-        success: function (response) {
+        success: (response) => {
           if (response.success) {
-            totalProductos = response.data.total;
-            productosActualizados += response.data.actualizados;
-            offsetActual = response.data.offset;
+            totalProductos = response.data.total
+            productosActualizados += response.data.actualizados
+            offsetActual = response.data.offset
 
-            console.log('Proveedor Precios: ' + provider);
-            console.log('Total productos: ' + totalProductos);
-            console.log('Actualizados en este lote: ' + response.data.actualizados);
-            console.log('Total actualizados: ' + productosActualizados);
-            console.log('Siguiente offset: ' + offsetActual);
+            console.log("Proveedor Precios: " + provider)
+            console.log("Total productos: " + totalProductos)
+            console.log("Actualizados en este lote: " + response.data.actualizados)
+            console.log("Total actualizados: " + productosActualizados)
+            console.log("Siguiente offset: " + offsetActual)
 
             // Actualizar DOM
-            jQuery('#totalProducts').text(totalProductos);
-            jQuery('#publishedProducts').text(productosActualizados);
+            jQuery("#totalProducts").text(totalProductos)
+            jQuery("#publishedProducts").text(productosActualizados)
 
             // Calcular porcentaje
-            var porcentaje = Math.min((offsetActual / totalProductos) * 100, 100);
-            jQuery('#progress').css('width', porcentaje + '%');
-            jQuery('#progress').text(Math.round(porcentaje) + '%');
+            var porcentaje = Math.min((offsetActual / totalProductos) * 100, 100)
+            jQuery("#progress").css("width", porcentaje + "%")
+            jQuery("#progress").text(Math.round(porcentaje) + "%")
 
             // Continuar si hay más productos
             if (offsetActual < totalProductos) {
-              console.log('Continuando con siguiente lote de precios...');
-              actualizarLote(offsetActual);
+              console.log("Continuando con siguiente lote de precios...")
+              actualizarLote(offsetActual)
             } else {
-              console.log('Proceso de precios completado para ' + provider);
-              jQuery(".loadermerchan").hide();
-              jQuery('.popup-overlay-merchan').fadeOut('slow');
-              alert('Actualización de precios completada para ' + provider.toUpperCase() + '. Productos actualizados: ' + productosActualizados);
+              console.log("Proceso de precios completado para " + provider)
+              jQuery(".loadermerchan").hide()
+              jQuery(".popup-overlay-merchan").fadeOut("slow")
+              alert(
+                "Actualización de precios completada para " +
+                  provider.toUpperCase() +
+                  ". Productos actualizados: " +
+                  productosActualizados,
+              )
             }
-
           } else {
-            console.log('Error en respuesta precios:', response.data);
-            alert('Error en la actualización de precios: ' + (response.data || 'Error desconocido'));
-            jQuery(".loadermerchan").hide();
-            jQuery('.popup-overlay-merchan').fadeOut('slow');
+            console.log("Error en respuesta precios:", response.data)
+            alert("Error en la actualización de precios: " + (response.data.message || "Error desconocido"))
+            jQuery(".loadermerchan").hide()
+            jQuery(".popup-overlay-merchan").fadeOut("slow")
           }
         },
-        error: function (xhr, status, error) {
-          console.log('Error AJAX precios:', error);
-          alert('Error en la comunicación con el servidor.');
-          jQuery(".loadermerchan").hide();
-          jQuery('.popup-overlay-merchan').fadeOut('slow');
-        }
-      });
+        error: (xhr, status, error) => {
+          console.log("Error AJAX precios:", error)
+          alert("Error en la comunicación con el servidor.")
+          jQuery(".loadermerchan").hide()
+          jQuery(".popup-overlay-merchan").fadeOut("slow")
+        },
+      })
     }
 
     // Helper para obtener nonce según proveedor
     function getNonceByProvider(provider) {
       var nonces = {
-        'promoimport': fUpdatePriceGlobo.nonce_promoimport,
-        'zecat': fUpdatePriceGlobo.nonce_zecat,
-        'cdo': fUpdatePriceGlobo.nonce_cdo
-      };
-      return nonces[provider];
+        promoimport: fUpdatePriceGlobo.nonce_promoimport,
+        zecat: fUpdatePriceGlobo.nonce_zecat,
+        cdo: fUpdatePriceGlobo.nonce_cdo,
+      }
+      return nonces[provider]
     }
 
     // Iniciar el proceso
-    actualizarLote(0);
+    actualizarLote(0)
   }
 
   // Event handlers para precios
-  jQuery("#ActualizarPrecioPromoImport").click(function (e) {
-    e.preventDefault();
-    actualizarPrecioProveedor('promoimport');
-  });
+  jQuery("#ActualizarPrecioPromoImport").click((e) => {
+    e.preventDefault()
+    actualizarPrecioProveedor("promoimport")
+  })
 
-  jQuery("#ActualizarPrecioZecat").click(function (e) {
-    e.preventDefault();
-    actualizarPrecioProveedor('zecat');
-  });
+  jQuery("#ActualizarPrecioZecat").click((e) => {
+    e.preventDefault()
+    actualizarPrecioProveedor("zecat")
+  })
 
-  jQuery("#ActualizarPrecioCDO").click(function (e) {
-    e.preventDefault();
-    actualizarPrecioProveedor('cdo');
-  });
+  jQuery("#ActualizarPrecioCDO").click((e) => {
+    e.preventDefault()
+    actualizarPrecioProveedor("cdo")
+  })
 
-  jQuery("#actualizarstockcdozecatv1").click(function (e) {
-    e.preventDefault();
+  jQuery("#actualizarstockcdozecatv1").click((e) => {
+    e.preventDefault()
 
-    jQuery("#actualizarstockcdozecatv1").html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>').addClass('disabled');
+    jQuery("#actualizarstockcdozecatv1")
+      .html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>')
+      .addClass("disabled")
 
     jQuery.ajax({
       type: "POST",
@@ -604,29 +634,30 @@ jQuery(document).ready(function () {
       data: {
         action: fUpdateStockCDO.action,
         nonce: Global.nonce,
-
       },
-      beforeSend: function () {
-        jQuery(".loadermerchan").show();
-        jQuery('.popup-overlay-merchan').fadeIn('slow');
+      beforeSend: () => {
+        jQuery(".loadermerchan").show()
+        jQuery(".popup-overlay-merchan").fadeIn("slow")
       },
-      success: function (data) {
-        jQuery("#actualizarstockcdozecatv1 .fa-spin").remove();
-        jQuery("#actualizarstockcdozecatv1").removeClass('disabled');
-        console.log(data);
+      success: (data) => {
+        jQuery("#actualizarstockcdozecatv1 .fa-spin").remove()
+        jQuery("#actualizarstockcdozecatv1").removeClass("disabled")
+        console.log(data)
 
-        alert('Actualización completada');
-        jQuery(".loadermerchan").show();
-        jQuery('.popup-overlay-merchan').fadeIn('slow');
+        alert("Actualización completada")
+        jQuery(".loadermerchan").show()
+        jQuery(".popup-overlay-merchan").fadeIn("slow")
         //location.reload();
-      }
-    });
-  });
+      },
+    })
+  })
 
-  jQuery("#actualizarstockcdoglobo").click(function (e) {
-    e.preventDefault();
+  jQuery("#actualizarstockcdoglobo").click((e) => {
+    e.preventDefault()
 
-    jQuery("#actualizarstockcdoglobo").html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>').addClass('disabled');
+    jQuery("#actualizarstockcdoglobo")
+      .html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>')
+      .addClass("disabled")
 
     jQuery.ajax({
       type: "POST",
@@ -634,30 +665,30 @@ jQuery(document).ready(function () {
       data: {
         action: fUpdateStockCDOGlobo.action,
         nonce: Global.nonce,
-
       },
-      beforeSend: function () {
-        jQuery(".loadermerchan").show();
-        jQuery('.popup-overlay-merchan').fadeIn('slow');
+      beforeSend: () => {
+        jQuery(".loadermerchan").show()
+        jQuery(".popup-overlay-merchan").fadeIn("slow")
       },
-      success: function (data) {
-        jQuery("#actualizarstockcdoglobo .fa-spin").remove();
-        jQuery("#actualizarstockcdoglobo").removeClass('disabled');
-        console.log(data);
+      success: (data) => {
+        jQuery("#actualizarstockcdoglobo .fa-spin").remove()
+        jQuery("#actualizarstockcdoglobo").removeClass("disabled")
+        console.log(data)
 
-        alert('Actualización completada');
-        jQuery(".loadermerchan").show();
-        jQuery('.popup-overlay-merchan').fadeIn('slow');
+        alert("Actualización completada")
+        jQuery(".loadermerchan").show()
+        jQuery(".popup-overlay-merchan").fadeIn("slow")
         //location.reload();
-      }
-    });
-  });
+      },
+    })
+  })
 
+  jQuery("#actualizarstockzecatglobo").click((e) => {
+    e.preventDefault()
 
-  jQuery("#actualizarstockzecatglobo").click(function (e) {
-    e.preventDefault();
-
-    jQuery("#actualizarstockzecatglobo").html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>').addClass('disabled');
+    jQuery("#actualizarstockzecatglobo")
+      .html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>')
+      .addClass("disabled")
 
     jQuery.ajax({
       type: "POST",
@@ -665,29 +696,30 @@ jQuery(document).ready(function () {
       data: {
         action: fUpdateStockZecatGlobo.action,
         nonce: Global.nonce,
-
       },
-      beforeSend: function () {
-        jQuery(".loadermerchan").show();
-        jQuery('.popup-overlay-merchan').fadeIn('slow');
+      beforeSend: () => {
+        jQuery(".loadermerchan").show()
+        jQuery(".popup-overlay-merchan").fadeIn("slow")
       },
-      success: function (data) {
-        jQuery("#actualizarstockzecatglobo .fa-spin").remove();
-        jQuery("#actualizarstockzecatglobo").removeClass('disabled');
-        console.log(data);
+      success: (data) => {
+        jQuery("#actualizarstockzecatglobo .fa-spin").remove()
+        jQuery("#actualizarstockzecatglobo").removeClass("disabled")
+        console.log(data)
 
-        alert('Actualización completada');
-        jQuery(".loadermerchan").show();
-        jQuery('.popup-overlay-merchan').fadeIn('slow');
+        alert("Actualización completada")
+        jQuery(".loadermerchan").show()
+        jQuery(".popup-overlay-merchan").fadeIn("slow")
         //location.reload();
-      }
-    });
-  });
+      },
+    })
+  })
 
-  jQuery("#actualizarpreciozecatcdo").click(function (e) {
-    e.preventDefault();
+  jQuery("#actualizarpreciozecatcdo").click((e) => {
+    e.preventDefault()
 
-    jQuery("#actualizarpreciozecatcdo").html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>').addClass('disabled');
+    jQuery("#actualizarpreciozecatcdo")
+      .html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>')
+      .addClass("disabled")
 
     jQuery.ajax({
       type: "POST",
@@ -695,29 +727,30 @@ jQuery(document).ready(function () {
       data: {
         action: fUpdatePriceZecat.action,
         nonce: Global.nonce,
-
       },
-      beforeSend: function () {
-        jQuery(".loadermerchan").show();
-        jQuery('.popup-overlay-merchan').fadeIn('slow');
+      beforeSend: () => {
+        jQuery(".loadermerchan").show()
+        jQuery(".popup-overlay-merchan").fadeIn("slow")
       },
-      success: function (data) {
-        jQuery("#actualizarpreciozecatcdo .fa-spin").remove();
-        jQuery("#actualizarpreciozecatcdo").removeClass('disabled');
-        console.log(data);
+      success: (data) => {
+        jQuery("#actualizarpreciozecatcdo .fa-spin").remove()
+        jQuery("#actualizarpreciozecatcdo").removeClass("disabled")
+        console.log(data)
 
-        alert('Actualización completada');
-        jQuery(".loadermerchan").show();
-        jQuery('.popup-overlay-merchan').fadeIn('slow');
+        alert("Actualización completada")
+        jQuery(".loadermerchan").show()
+        jQuery(".popup-overlay-merchan").fadeIn("slow")
         //location.reload();
-      }
-    });
-  });
+      },
+    })
+  })
 
-  jQuery("#actualizarpreciozecatcdov1").click(function (e) {
-    e.preventDefault();
+  jQuery("#actualizarpreciozecatcdov1").click((e) => {
+    e.preventDefault()
 
-    jQuery("#actualizarpreciozecatcdov1").html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>').addClass('disabled');
+    jQuery("#actualizarpreciozecatcdov1")
+      .html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>')
+      .addClass("disabled")
 
     jQuery.ajax({
       type: "POST",
@@ -725,25 +758,23 @@ jQuery(document).ready(function () {
       data: {
         action: fUpdatePriceCDO.action,
         nonce: Global.nonce,
-
       },
-      beforeSend: function () {
-        jQuery(".loadermerchan").show();
-        jQuery('.popup-overlay-merchan').fadeIn('slow');
+      beforeSend: () => {
+        jQuery(".loadermerchan").show()
+        jQuery(".popup-overlay-merchan").fadeIn("slow")
       },
-      success: function (data) {
-        jQuery("#actualizarpreciozecatcdov1 .fa-spin").remove();
-        jQuery("#actualizarpreciozecatcdov1").removeClass('disabled');
-        console.log(data);
+      success: (data) => {
+        jQuery("#actualizarpreciozecatcdov1 .fa-spin").remove()
+        jQuery("#actualizarpreciozecatcdov1").removeClass("disabled")
+        console.log(data)
 
-        alert('Actualización completada');
-        jQuery(".loadermerchan").show();
-        jQuery('.popup-overlay-merchan').fadeIn('slow');
+        alert("Actualización completada")
+        jQuery(".loadermerchan").show()
+        jQuery(".popup-overlay-merchan").fadeIn("slow")
         //location.reload();
-      }
-    });
-  });
-
+      },
+    })
+  })
 
   /*
     jQuery("#actualizarpreciozecatcdov1").click(function (e) {
@@ -824,11 +855,12 @@ jQuery(document).ready(function () {
     });
   */
 
+  jQuery("#publicarproductoszecatcdo").click((e) => {
+    e.preventDefault()
 
-  jQuery("#publicarproductoszecatcdo").click(function (e) {
-    e.preventDefault();
-
-    jQuery("#publicarproductoszecatcdo").html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>').addClass('disabled');
+    jQuery("#publicarproductoszecatcdo")
+      .html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>')
+      .addClass("disabled")
 
     jQuery.ajax({
       type: "POST",
@@ -836,29 +868,30 @@ jQuery(document).ready(function () {
       data: {
         action: fcreateWooCommerceProductsFromZecatJson2.action,
         nonce: Global.nonce,
-
       },
-      beforeSend: function () {
-        jQuery(".loadermerchan").show();
-        jQuery('.popup-overlay-merchan').fadeIn('slow');
+      beforeSend: () => {
+        jQuery(".loadermerchan").show()
+        jQuery(".popup-overlay-merchan").fadeIn("slow")
       },
-      success: function (data) {
-        jQuery("#publicarproductoszecatcdo .fa-spin").remove();
-        jQuery("#publicarproductoszecatcdo").removeClass('disabled');
-        console.log(data);
+      success: (data) => {
+        jQuery("#publicarproductoszecatcdo .fa-spin").remove()
+        jQuery("#publicarproductoszecatcdo").removeClass("disabled")
+        console.log(data)
 
-        alert('Actualización completada');
-        jQuery(".loadermerchan").show();
-        jQuery('.popup-overlay-merchan').fadeIn('slow');
+        alert("Actualización completada")
+        jQuery(".loadermerchan").show()
+        jQuery(".popup-overlay-merchan").fadeIn("slow")
         //location.reload();
-      }
-    });
-  });
+      },
+    })
+  })
 
-  jQuery("#publicarproductoszecatcdov1").click(function (e) {
-    e.preventDefault();
+  jQuery("#publicarproductoszecatcdov1").click((e) => {
+    e.preventDefault()
 
-    jQuery("#publicarproductoszecatcdov1").html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>').addClass('disabled');
+    jQuery("#publicarproductoszecatcdov1")
+      .html('<i class="fa fa-spinner fa-spin" style="font-size:20px"></i>')
+      .addClass("disabled")
 
     jQuery.ajax({
       type: "POST",
@@ -866,27 +899,116 @@ jQuery(document).ready(function () {
       data: {
         action: fcreateWooCommerceProductsFromCDOJson.action,
         nonce: Global.nonce,
-
       },
-      beforeSend: function () {
-        jQuery(".loadermerchan").show();
-        jQuery('.popup-overlay-merchan').fadeIn('slow');
+      beforeSend: () => {
+        jQuery(".loadermerchan").show()
+        jQuery(".popup-overlay-merchan").fadeIn("slow")
       },
-      success: function (data) {
-        jQuery("#publicarproductoszecatcdov1 .fa-spin").remove();
-        jQuery("#publicarproductoszecatcdov1").removeClass('disabled');
-        console.log(data);
+      success: (data) => {
+        jQuery("#publicarproductoszecatcdov1 .fa-spin").remove()
+        jQuery("#publicarproductoszecatcdov1").removeClass("disabled")
+        console.log(data)
 
-        alert('Actualización completada');
-        jQuery(".loadermerchan").show();
-        jQuery('.popup-overlay-merchan').fadeIn('slow');
+        alert("Actualización completada")
+        jQuery(".loadermerchan").show()
+        jQuery(".popup-overlay-merchan").fadeIn("slow")
         //location.reload();
-      }
-    });
-  });
+      },
+    })
+  })
 
+  jQuery("#EliminarProductosCatalogo").click((e) => {
+    e.preventDefault()
 
+    // Confirmación antes de proceder
+    if (
+      !confirm(
+        "⚠️ ADVERTENCIA: Esta acción eliminará PERMANENTEMENTE todos los productos de ZECAT, CDO y PromoImport que coincidan con el catálogo JSON.\n\n¿Estás seguro de continuar?",
+      )
+    ) {
+      return
+    }
 
+    var totalProductos = 0
+    var productosEliminados = 0
+    var offsetActual = 0
+    var tamanoLote = 10 // Procesar 10 productos por lote
 
+    function eliminarLote(offset) {
+      jQuery.ajax({
+        url: fDeleteProductsCatalogo.ajax_url,
+        type: "POST",
+        data: {
+          action: fDeleteProductsCatalogo.action,
+          offset: offset,
+          tamano_lote: tamanoLote,
+          nonce: fDeleteProductsCatalogo.nonce,
+        },
+        beforeSend: () => {
+          jQuery(".loadermerchan").show()
+          jQuery(".popup-overlay-merchan").fadeIn("slow")
+        },
+        success: (response) => {
+          if (response.success) {
+            totalProductos = response.data.total
+            productosEliminados += response.data.eliminados
+            offsetActual = response.data.offset
 
-});
+            console.log("[v0] Total productos en catálogo: " + totalProductos)
+            console.log("[v0] Eliminados en este lote: " + response.data.eliminados)
+            console.log("[v0] Omitidos (no encontrados): " + response.data.omitidos)
+            console.log("[v0] Total eliminados: " + productosEliminados)
+            console.log("[v0] Siguiente offset: " + offsetActual)
+
+            // Actualizar DOM
+            jQuery("#totalProducts").text(totalProductos)
+            jQuery("#publishedProducts").text(productosEliminados)
+
+            // Calcular porcentaje basado en OFFSET
+            var porcentaje = Math.min((offsetActual / totalProductos) * 100, 100)
+            jQuery("#progress").css("width", porcentaje + "%")
+            jQuery("#progress").text(Math.round(porcentaje) + "%")
+
+            // Continuar mientras el offset sea menor al total
+            if (offsetActual < totalProductos) {
+              console.log("[v0] Continuando con siguiente lote...")
+              eliminarLote(offsetActual)
+            } else {
+              console.log("[v0] Proceso de eliminación completado")
+              jQuery(".loadermerchan").hide()
+              jQuery(".popup-overlay-merchan").fadeOut("slow")
+
+              if (response.data.errors && response.data.errors.length > 0) {
+                alert(
+                  "Proceso completado con algunos errores. Productos eliminados: " +
+                    productosEliminados +
+                    ". Revisa la consola para más detalles.",
+                )
+                console.log("[v0] Errores:", response.data.errors)
+              } else {
+                alert("Eliminación completada exitosamente. Total de productos eliminados: " + productosEliminados)
+              }
+
+              // Recargar la tabla
+              location.reload()
+            }
+          } else {
+            console.log("[v0] Error en respuesta:", response.data)
+            alert("Error en la eliminación: " + (response.data.message || "Error desconocido"))
+            jQuery(".loadermerchan").hide()
+            jQuery(".popup-overlay-merchan").fadeOut("slow")
+          }
+        },
+        error: (xhr, status, error) => {
+          console.log("[v0] Error AJAX:", error)
+          alert("Error en la comunicación con el servidor.")
+          jQuery(".loadermerchan").hide()
+          jQuery(".popup-overlay-merchan").fadeOut("slow")
+        },
+      })
+    }
+
+    // Iniciar el proceso
+    eliminarLote(0)
+  })
+})

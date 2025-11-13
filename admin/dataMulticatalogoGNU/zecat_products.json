@@ -47389,7 +47389,7 @@
                 "primary_color": "#bdac7a",
                 "secondary_color": "#bdac7a",
                 "achromatic": false,
-                "stock": 85,
+                "stock": 0,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -99566,7 +99566,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 698,
+                "stock": 649,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []

@@ -61,6 +61,8 @@ class cMultiCatalogoGNU {
 		add_action( 'wp_ajax_multicatalogo_save_mapping', array( 'cMulticatalogoGNUCategories', 'ajax_save_mapping' ));
 		add_action( 'wp_ajax_multicatalogo_delete_mapping', array( 'cMulticatalogoGNUCategories', 'ajax_delete_mapping' ));
 
+		add_action( 'wp_ajax_EliminarProductosCatalogo', array( 'cMulticatalogoGNUCatalog', 'fDeleteProductsFromCatalogBatch' ));
+
 	}
 
 
@@ -200,6 +202,15 @@ class cMultiCatalogoGNU {
 			'ajax_url' => admin_url('admin-ajax.php'),
 			'nonce'    => wp_create_nonce('lista_productos_nonce'),
 			'action'   => 'ActualizarListaProductos',
+			)
+		);
+
+		// Localize script para eliminar productos
+		wp_localize_script('admin-multicatalogognu', 'fDeleteProductsCatalogo',
+			array(
+				'ajax_url' => admin_url('admin-ajax.php'),
+				'nonce'    => wp_create_nonce('eliminar_productos_catalogo_nonce'),
+				'action'   => 'EliminarProductosCatalogo',
 			)
 		);
 
