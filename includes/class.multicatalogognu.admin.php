@@ -124,7 +124,7 @@ class cMulticatalogoGNUAdmin {
                         'Combinations' => ['Color' => $color_name],
                         'Stock' => isset($variant['stock_available']) ? $variant['stock_available'] : 0,
                         'Precio' => $precioFinalVariante,
-                        'sku' => 'ss0' . $variant['id'],
+                        'sku' => 'SS' . $variant['id'],
                         'sku_proveedor' => $variant['sku']
                     ];
                 } elseif (isset($variant['colors'])){
@@ -143,7 +143,7 @@ class cMulticatalogoGNUAdmin {
                         'Combinations' => ['Color' => $colors_string],
                         'Stock' => isset($variant['stock_available']) ? $variant['stock_available'] : 0,
                         'Precio' => $precioFinalVariante,
-                        'sku' => 'ss0' . $variant['id'],
+                        'sku' => 'SS' . $variant['id'],
                         'sku_proveedor' => $variant['sku']
                     ];
                 }
@@ -168,7 +168,7 @@ class cMulticatalogoGNUAdmin {
             $categorias_mapeadas = cMulticatalogoGNUCategories::apply_category_mapping($categories);
 
             $mergedProducts[] = [
-                'ID' => "ss0" . $cdoProduct['id'],
+                'ID' => "SS" . $cdoProduct['code'],
                 'sku_proveedor' => $cdoProduct['code'],
                 'nombre_del_producto' => $cdoProduct['name'],
                 'descripcion' => $cdoProduct['description'],

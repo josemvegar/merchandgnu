@@ -369,7 +369,7 @@ class cMulticatalogoGNUPrice {
         $prefixes = [
             'PROMOIMPORT' => 'pi0',
             'ZECAT' => 'zt0', 
-            'CDO' => 'ss0'
+            'CDO' => 'SS'
         ];
 
         if (!isset($prefixes[$provider])) {

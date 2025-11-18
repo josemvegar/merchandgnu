@@ -394,7 +394,7 @@ class cMulticatalogoGNUCatalog {
     
         foreach ($productBatch as $productData) {
             // Verificar si el producto ya existe mediante el SKU
-            $sku = "SS0" . $productData['id'];
+            $sku = "SS" . $productData['id'];
             $existingProductId = wc_get_product_id_by_sku($sku);
 
             if ($existingProductId) {

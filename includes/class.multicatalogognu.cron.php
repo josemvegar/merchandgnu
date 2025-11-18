@@ -240,7 +240,7 @@ class cMulticatalogoGNUCron {
                         'Combinations' => ['Color' => $color_name],
                         'Stock' => isset($variant['stock_available']) ? $variant['stock_available'] : 0,
                         'Precio' => $precioFinalVariante,
-                        'sku' => 'ss0' . $variant['id'],
+                        'sku' => 'SS' . $variant['id'],
                         'sku_proveedor' => $variant['sku']
                     ];
                 } elseif (isset($variant['colors'])){
@@ -259,7 +259,7 @@ class cMulticatalogoGNUCron {
                         'Combinations' => ['Color' => $colors_string],
                         'Stock' => isset($variant['stock_available']) ? $variant['stock_available'] : 0,
                         'Precio' => $precioFinalVariante,
-                        'sku' => 'ss0' . $variant['id'],
+                        'sku' => 'SS' . $variant['id'],
                         'sku_proveedor' => $variant['sku']
                     ];
                 }
@@ -284,7 +284,7 @@ class cMulticatalogoGNUCron {
             $categorias_mapeadas = cMulticatalogoGNUCategories::apply_category_mapping($categories);
 
             $mergedProducts[] = [
-                'ID' => "ss0" . $cdoProduct['id'],
+                'ID' => "SS" . $cdoProduct['code'],
                 'sku_proveedor' => $cdoProduct['code'],
                 'nombre_del_producto' => $cdoProduct['name'],
                 'descripcion' => $cdoProduct['description'],
@@ -486,7 +486,7 @@ class cMulticatalogoGNUCron {
 
         $updated = 0;
         foreach ($productsData as $productData) {
-            $sku = "SS0" . $productData['id'];
+            $sku = "SS" . $productData['id'];
             $product_id = wc_get_product_id_by_sku($sku);
             
             if (!$product_id) {
@@ -721,7 +721,7 @@ class cMulticatalogoGNUCron {
             WHERE p.post_type = 'product'
             AND p.post_status = 'publish'
             AND pm_thumb.meta_value IS NULL
-            AND (pm_sku.meta_value LIKE 'zt0%' OR pm_sku.meta_value LIKE 'ss0%' OR pm_sku.meta_value LIKE 'pi0%')
+            AND (pm_sku.meta_value LIKE 'zt0%' OR pm_sku.meta_value LIKE 'SS%' OR pm_sku.meta_value LIKE 'pi0%')
         ";
         
         $products_without_images = $wpdb->get_results($query);
