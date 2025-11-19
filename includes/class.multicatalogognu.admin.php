@@ -368,11 +368,60 @@ class cMulticatalogoGNUAdmin {
         if ( !current_user_can( 'manage_options' ) )  {
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
         }
+        
+        $config = new cMulticatalogoGNUConfig();
+        $auto_updates_enabled = $config->get_auto_updates_enabled();
 
         ?>
         <div class="wrap">
             <h1><?php echo get_admin_page_title();  ?></h1>
             <div class="wrap" style="max-width: 100%;margin: auto;padding: 35px;">
+            
+            <!-- Agregar panel de control de actualizaciones automáticas -->
+            <div class="card" style="max-width: 100%; margin-bottom: 20px; padding: 20px;">
+                <h2 class="title">⚙️ Actualizaciones Automáticas</h2>
+                <p class="description">
+                    Activa o desactiva las actualizaciones automáticas del catálogo. 
+                    Cuando están activadas, el sistema actualizará automáticamente los productos cada hora.
+                </p>
+                
+                <div style="margin: 20px 0;">
+                    <label class="toggle-switch" style="display: inline-flex; align-items: center; cursor: pointer;">
+                        <input type="checkbox" 
+                               id="auto-updates-toggle" 
+                               <?php checked($auto_updates_enabled, '1'); ?>
+                               style="width: 50px; height: 26px; cursor: pointer;">
+                        <span style="margin-left: 15px; font-size: 16px; font-weight: bold;">
+                            <span id="auto-updates-status">
+                                <?php echo $auto_updates_enabled == '1' ? '✅ Activadas' : '⛔ Desactivadas'; ?>
+                            </span>
+                        </span>
+                    </label>
+                </div>
+                
+                <div id="auto-updates-mensaje" style="margin-top: 15px;"></div>
+                
+                <?php if ($auto_updates_enabled == '1'): ?>
+                    <div id="auto-updates-info" style="background: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin-top: 15px;">
+                        <p style="margin: 0;"><strong>ℹ️ Información:</strong></p>
+                        <ul style="margin: 10px 0 0 20px;">
+                            <li>Los productos se actualizarán automáticamente cada hora</li>
+                            <li>Los precios y stock se sincronizarán con los proveedores</li>
+                            <li>Puedes desactivar esta función en cualquier momento</li>
+                        </ul>
+                    </div>
+                <?php else: ?>
+                    <div id="auto-updates-info" style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin-top: 15px;">
+                        <p style="margin: 0;"><strong>ℹ️ Información:</strong></p>
+                        <ul style="margin: 10px 0 0 20px;">
+                            <li>Las actualizaciones automáticas están desactivadas</li>
+                            <li>Puedes actualizar manualmente usando los botones de abajo</li>
+                            <li>Activa esta función para sincronizar automáticamente</li>
+                        </ul>
+                    </div>
+                <?php endif; ?>
+            </div>
+            
             <div class="card opciones-merchan" style="max-width: 100%;">
                 <h2 class="title">Opciones Merchan</h2>
 
@@ -460,6 +509,56 @@ class cMulticatalogoGNUAdmin {
         </div>
 
         </div>
+        
+        <!-- Script para manejar el toggle de actualizaciones automáticas -->
+        <script>
+        jQuery(document).ready(function($) {
+            $('#auto-updates-toggle').on('change', function() {
+                var isEnabled = $(this).is(':checked') ? '1' : '0';
+                var statusText = isEnabled === '1' ? '✅ Activadas' : '⛔ Desactivadas';
+                var infoBoxColor = isEnabled === '1' ? '#d4edda' : '#fff3cd';
+                var infoBorderColor = isEnabled === '1' ? '#28a745' : '#ffc107';
+                var infoContent = isEnabled === '1' 
+                    ? '<p style="margin: 0;"><strong>ℹ️ Información:</strong></p><ul style="margin: 10px 0 0 20px;"><li>Los productos se actualizarán automáticamente cada hora</li><li>Los precios y stock se sincronizarán con los proveedores</li><li>Puedes desactivar esta función en cualquier momento</li></ul>'
+                    : '<p style="margin: 0;"><strong>ℹ️ Información:</strong></p><ul style="margin: 10px 0 0 20px;"><li>Las actualizaciones automáticas están desactivadas</li><li>Puedes actualizar manualmente usando los botones de abajo</li><li>Activa esta función para sincronizar automáticamente</li></ul>';
+                
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'multicatalogo_toggle_auto_updates',
+                        enabled: isEnabled,
+                        nonce: '<?php echo wp_create_nonce('multicatalogo_auto_updates_nonce'); ?>'
+                    },
+                    beforeSend: function() {
+                        $('#auto-updates-mensaje').html('<div class="notice notice-info"><p>⏳ Guardando configuración...</p></div>');
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $('#auto-updates-status').text(statusText);
+                            $('#auto-updates-info').css({
+                                'background': infoBoxColor,
+                                'border-left-color': infoBorderColor
+                            }).html(infoContent);
+                            $('#auto-updates-mensaje').html('<div class="notice notice-success is-dismissible"><p>' + response.data.message + '</p></div>');
+                            setTimeout(function() {
+                                $('#auto-updates-mensaje').fadeOut();
+                            }, 3000);
+                        } else {
+                            $('#auto-updates-mensaje').html('<div class="notice notice-error is-dismissible"><p>' + response.data.message + '</p></div>');
+                            // Revertir el toggle si falla
+                            $('#auto-updates-toggle').prop('checked', !$(this).is(':checked'));
+                        }
+                    },
+                    error: function() {
+                        $('#auto-updates-mensaje').html('<div class="notice notice-error is-dismissible"><p>Error al guardar la configuración</p></div>');
+                        // Revertir el toggle si falla
+                        $('#auto-updates-toggle').prop('checked', !$(this).is(':checked'));
+                    }
+                });
+            });
+        });
+        </script>
         <?php
     }
 

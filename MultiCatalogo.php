@@ -137,24 +137,23 @@ function multicatalogognu_activate() {
         );
     }
     
-    // Programar los cron jobs
-    if ( ! wp_next_scheduled( 'multicatalogo_hourly_update_json' ) ) {
-        //wp_schedule_event( time(), 'thirty_minutes', 'multicatalogo_hourly_update_json' );
-        //wp_schedule_event( time(), 'twicedaily', 'multicatalogo_hourly_update_json' );
-        wp_schedule_event( time(), 'hourly', 'multicatalogo_hourly_update_json' );
+    $existing_auto_updates = $wpdb->get_var($wpdb->prepare(
+        "SELECT config_value FROM $table_config WHERE config_key = %s", 
+        'auto_updates_enabled'
+    ));
+
+    if (is_null($existing_auto_updates)) {
+        $wpdb->insert(
+            $table_config,
+            array(
+                'config_key' => 'auto_updates_enabled',
+                'config_value' => '0' // Desactivado por defecto
+            ),
+            array('%s', '%s')
+        );
     }
     
-    if ( ! wp_next_scheduled( 'multicatalogo_hourly_upload_products' ) ) {
-        //wp_schedule_event( time(), 'thirty_minutes', 'multicatalogo_hourly_upload_products' );
-        //wp_schedule_event( time(), 'twicedaily', 'multicatalogo_hourly_upload_products' );
-        wp_schedule_event( time(), 'hourly', 'multicatalogo_hourly_upload_products' );
-    }
-
-    if ( ! wp_next_scheduled( 'multicatalogo_hourly_update_prices_stock' ) ) {
-        //wp_schedule_event( time(), 'thirty_minutes', 'multicatalogo_hourly_update_prices_stock' );
-        //wp_schedule_event( time(), 'twicedaily', 'multicatalogo_hourly_update_prices_stock' );
-        wp_schedule_event( time(), 'hourly', 'multicatalogo_hourly_update_prices_stock' );
-    }
+    // Los trabajos solo se programarán cuando el usuario los active manualmente desde el admin
 }
 
 function multicatalogognu_migrate_category_mapping_table() {
