@@ -1,34 +1,27 @@
 <?php
-/**
- * Admin options MultiCatalogo
- * @link        https://josecortesia.cl
- * @since       2.0.0
- * 
- * @package     base
- * @subpackage  base/include
- */
+
 
 
 class cMulticatalogoGNUAdmin {
 
     public static function combinar_json_zecat_cdo() {
-        // Rutas a los archivos JSON de Zecat, CDO y PromoImport
+
         $filePathZecat = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/zecat_products.json';
         $filePathCDO = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/cdo_products.json';
         $filePathPromoImport = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/promoimport_products.json';
     
-        // Verificar existencia de archivos
+
         if (!file_exists($filePathZecat) || !file_exists($filePathCDO) || !file_exists($filePathPromoImport)) {
             wp_send_json_error('Uno o más archivos JSON no fueron encontrados.');
             return;
         }
     
-        // Leer y decodificar los contenidos de los archivos JSON
+
         $productsZecat = json_decode(file_get_contents($filePathZecat), true);
         $productsCDO = json_decode(file_get_contents($filePathCDO), true);
         $productsPromo = json_decode(file_get_contents($filePathPromoImport), true);
     
-        // Verificar errores de decodificación
+
         if (json_last_error() !== JSON_ERROR_NONE) {
             wp_send_json_error('Error al decodificar los archivos JSON.');
             return;
@@ -36,7 +29,7 @@ class cMulticatalogoGNUAdmin {
     
         $mergedProducts = [];
     
-        // --- Zecat ---
+
         foreach ($productsZecat as $zecatProduct) {
             $families = [];
             $images = [];
@@ -97,7 +90,7 @@ class cMulticatalogoGNUAdmin {
             ];
         }
     
-        // --- CDO ---
+
         foreach ($productsCDO as $cdoProduct) {
 
             $images = [];
@@ -128,13 +121,13 @@ class cMulticatalogoGNUAdmin {
                         'sku_proveedor' => $variant['sku']
                     ];
                 } elseif (isset($variant['colors'])){
-                    // Crear array con todos los nombres de colores
+
                     $color_names = [];
                     foreach ($variant['colors'] as $color) {
                         $color_names[] = mb_convert_case(trim($color['name']), MB_CASE_TITLE, "UTF-8");
                     }
                     
-                    // Combinar colores en un string separado por "/"
+
                     $colors_string = implode(' / ', $color_names);
                     
                     $variableAttributes['Color'][] = $colors_string;
@@ -187,7 +180,7 @@ class cMulticatalogoGNUAdmin {
             ];
         }
     
-        // --- PromoImport ---
+
         foreach ($productsPromo as $promoProduct) {
             $images = [$promoProduct['fotoPrincipal']];
             foreach ($promoProduct['images'] as $image) {
@@ -212,36 +205,36 @@ class cMulticatalogoGNUAdmin {
                 ];
             }
 
-            // EXTRAER ATRIBUTOS DE LA DESCRIPCIÓN
+
             $infoAttributes = [];
             $descripcion = $promoProduct['descripcion'];
             
-            // Buscar todos los atributos que comienzan con • y terminan con :
+
             if (preg_match_all('/•\s*([^:]+):(.*?)(?=<br\s*\/>|$)/s', $descripcion, $matches, PREG_SET_ORDER)) {
                 foreach ($matches as $match) {
                     $clave = trim($match[1]);
                     $valor = trim($match[2]);
                     
-                    // Ignorar claves relacionadas con colores
+
                     if (stripos($clave, 'color') !== false) {
                         continue;
                     }
                     
-                    // Si el valor está vacío, saltar
+
                     if (empty($valor)) {
                         continue;
                     }
                     
-                    // Procesar el valor para dividir en array si tiene separadores
+
                     $valorProcesado = $valor;
                     
-                    // Si contiene separadores, dividir en array
+
                     if (preg_match('/\s*[\/\\\\,]\s*/', $valor)) {
                         $partes = preg_split('/\s*[\/\\\\,]\s*/', $valor);
                         $partes = array_map('trim', $partes);
                         $partes = array_filter($partes);
                         
-                        // Eliminar puntos finales de CADA elemento
+
                         $partes = array_map(function($item) {
                             return rtrim($item, '.');
                         }, $partes);
@@ -252,7 +245,7 @@ class cMulticatalogoGNUAdmin {
                             $valorProcesado = reset($partes);
                         }
                     } else {
-                        // Si no hay separadores, eliminar punto final del string completo
+
                         $valorProcesado = rtrim($valor, '.');
                     }
                     
@@ -287,10 +280,10 @@ class cMulticatalogoGNUAdmin {
             ];
         }
     
-        // Crear el archivo final
+
         $finalJson = [ 'data' => $mergedProducts ];
     
-        // Guardar el JSON combinado
+
         $mergedFilePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
         file_put_contents($mergedFilePath, json_encode($finalJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
     
@@ -298,39 +291,39 @@ class cMulticatalogoGNUAdmin {
     }
     
 	public static function fAjaxEndpointMerchan(){
-        // Verificar que el archivo existe
+
         $jsonPath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
         
         if (!file_exists($jsonPath)) {
-            // Si no existe, intentar crearlo combinando los JSON
+
             self::combinar_json_zecat_cdo();
         }
         
-        // Verificar nuevamente después de intentar crear
+
         if (!file_exists($jsonPath)) {
             wp_send_json_error(['message' => 'El archivo dataMerchan.json no existe. Por favor, actualiza primero los JSON de los proveedores.']);
             wp_die();
         }
         
-        // Leer el contenido
+
         $content = file_get_contents($jsonPath);
         
-        // Verificar que el contenido es válido
+
         $json = json_decode($content, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
             wp_send_json_error(['message' => 'Error al leer el archivo JSON: ' . json_last_error_msg()]);
             wp_die();
         }
         
-        // Establecer headers correctos para JSON
+
         header('Content-Type: application/json');
         echo $content;
         wp_die();
 	}
 
-    // Registrar el menú del administrador
+
     public static function fMultiCatalogoGNUAdmin() {
-        // Menú principal
+
         add_menu_page( 
             'Configuración', 
             'MultiCatalogoGnu', 
@@ -341,7 +334,7 @@ class cMulticatalogoGNUAdmin {
             '65'
         );
 
-        // Submenú: Configuración de Precios
+
         add_submenu_page(
             'multicatalogo_options',
             'Configuración de Precios',
@@ -351,7 +344,7 @@ class cMulticatalogoGNUAdmin {
             array( 'cMulticatalogoGNUAdmin', 'fPaginaConfiguracion' )
         );
 
-        // Submenú: Gestión de Categorías
+
         add_submenu_page(
             'multicatalogo_options',
             'Gestión de Categorías',
@@ -546,13 +539,13 @@ class cMulticatalogoGNUAdmin {
                             }, 3000);
                         } else {
                             $('#auto-updates-mensaje').html('<div class="notice notice-error is-dismissible"><p>' + response.data.message + '</p></div>');
-                            // Revertir el toggle si falla
+
                             $('#auto-updates-toggle').prop('checked', !$(this).is(':checked'));
                         }
                     },
                     error: function() {
                         $('#auto-updates-mensaje').html('<div class="notice notice-error is-dismissible"><p>Error al guardar la configuración</p></div>');
-                        // Revertir el toggle si falla
+
                         $('#auto-updates-toggle').prop('checked', !$(this).is(':checked'));
                     }
                 });
@@ -562,9 +555,7 @@ class cMulticatalogoGNUAdmin {
         <?php
     }
 
-    /**
-     * Página de Configuración de Precios
-     */
+    
     public static function fPaginaConfiguracion() {
         if ( !current_user_can( 'manage_options' ) )  {
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
@@ -708,7 +699,7 @@ class cMulticatalogoGNUAdmin {
                 var precioFinal;
 
                 if (currencyType === 'clp') {
-                    // Precio base en CLP
+
                     var basePrice = 10000;
                     precioFinal = basePrice * (1 + profitMargin/100);
                     $('#ejemplo-container').html(
@@ -719,7 +710,7 @@ class cMulticatalogoGNUAdmin {
                         '</p>'
                     );
                 } else {
-                    // Precio base en USD
+
                     var basePrice = 10;
                     precioFinal = (basePrice * usdToClp) * (1 + profitMargin/100);
                     $('#ejemplo-container').html(
@@ -771,9 +762,7 @@ class cMulticatalogoGNUAdmin {
         <?php
     }
 
-    /**
-     * Página de Gestión de Categorías
-     */
+    
     public static function fPaginaCategorias() {
         if ( !current_user_can( 'manage_options' ) )  {
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
@@ -784,7 +773,7 @@ class cMulticatalogoGNUAdmin {
         
         $unmapped_categories = $categoryManager->get_unmapped_categories();
 
-        // Obtener todas las categorías de WooCommerce
+
         $woo_categories = get_terms(array(
             'taxonomy' => 'product_cat',
             'hide_empty' => false,
@@ -887,7 +876,7 @@ class cMulticatalogoGNUAdmin {
 
         <script>
         jQuery(document).ready(function($) {
-            // Agregar mapeo
+
             $('#add-mapping-form').on('submit', function(e) {
                 e.preventDefault();
                 
@@ -921,7 +910,7 @@ class cMulticatalogoGNUAdmin {
                 });
             });
 
-            // Eliminar mapeo
+
             $('.delete-mapping').on('click', function() {
                 if (!confirm('¿Estás seguro de eliminar esta redirección?')) {
                     return;

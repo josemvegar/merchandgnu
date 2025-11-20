@@ -1,18 +1,9 @@
 <?php
-/**
- * MultiCatalogo Category Mapping Management
- * @link        https://josecortesia.cl
- * @since       2.0.0
- * 
- * @package     base
- * @subpackage  base/include
- */
+
 
 class cMulticatalogoGNUCategories {
 
-    /**
-     * Obtener todas las redirecciones de categorías
-     */
+    
     public static function get_all_mappings() {
         global $wpdb;
         $table = $wpdb->prefix . 'multicatalogo_category_mapping';
@@ -27,9 +18,7 @@ class cMulticatalogoGNUCategories {
         return $results;
     }
 
-    /**
-     * Obtener categorías sin mapear (del JSON principal)
-     */
+    
     public static function get_unmapped_categories() {
         $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
         
@@ -69,21 +58,19 @@ class cMulticatalogoGNUCategories {
         return $unmapped;
     }
 
-    /**
-     * Crear o actualizar una redirección de categoría
-     */
+    
     public static function save_mapping($source_category, $target_category_id) {
         global $wpdb;
         $table = $wpdb->prefix . 'multicatalogo_category_mapping';
         
-        // Verificar si ya existe un mapeo para esta categoría
+
         $existing = $wpdb->get_var($wpdb->prepare(
             "SELECT id FROM $table WHERE source_category = %s",
             $source_category
         ));
         
         if ($existing) {
-            // Actualizar
+
             $result = $wpdb->update(
                 $table,
                 array(
@@ -95,7 +82,7 @@ class cMulticatalogoGNUCategories {
                 array('%s')
             );
         } else {
-            // Insertar
+
             $result = $wpdb->insert(
                 $table,
                 array(
@@ -111,21 +98,14 @@ class cMulticatalogoGNUCategories {
         return $result !== false;
     }
 
-    /**
-     * Eliminar una redirección
-     */
+    
     public static function delete_mapping($id) {
         global $wpdb;
         $table = $wpdb->prefix . 'multicatalogo_category_mapping';
         return $wpdb->delete($table, array('id' => $id), array('%d'));
     }
 
-    /**
-     * Aplicar mapeo inteligente a un array de categorías
-     * 
-     * @param array $categorias Array de nombres de categorías originales
-     * @return array Array con categorías finales (mapeadas cuando corresponda)
-     */
+    
     public static function apply_category_mapping($categorias) {
         if (empty($categorias) || !is_array($categorias)) {
             return array();
@@ -148,52 +128,22 @@ class cMulticatalogoGNUCategories {
         $categorias_finales = array();
         foreach ($categorias as $categoria) {
             if (isset($mappings[$categoria])) {
-                // Existe mapeo: usar categoría destino
+
                 $categorias_finales[] = $mappings[$categoria];
             } else {
-                // No existe mapeo: usar categoría original
+
                 $categorias_finales[] = $categoria;
             }
         }
         
-        // Eliminar duplicados y retornar
+
         return array_values(array_unique($categorias_finales));
     }
 
-    /**
-     * Obtener categorías no mapeadas de un producto
-     * 
-     * @param array $categorias Array de categorías originales
-     * @return array Array de categorías que no tienen mapeo
-     */
-    public static function get_unmapped_from_list($categorias) {
-        if (empty($categorias) || !is_array($categorias)) {
-            return array();
-        }
-        
-        global $wpdb;
-        $table = $wpdb->prefix . 'multicatalogo_category_mapping';
-        
-        $mapped_categories = array();
-        $results = $wpdb->get_results("SELECT source_category FROM $table", ARRAY_A);
-        
-        foreach ($results as $row) {
-            $mapped_categories[$row['source_category']] = true;
-        }
-        
-        $unmapped = array();
-        foreach ($categorias as $categoria) {
-            if (!isset($mapped_categories[$categoria])) {
-                $unmapped[] = $categoria;
-            }
-        }
-        
-        return $unmapped;
-    }
+    
+    public static 
 
-    /**
-     * AJAX: Guardar mapeo de categoría
-     */
+    
     public static function ajax_save_mapping() {
         check_ajax_referer('multicatalogo_category_nonce', 'nonce');
         
@@ -217,9 +167,7 @@ class cMulticatalogoGNUCategories {
         }
     }
 
-    /**
-     * AJAX: Eliminar mapeo
-     */
+    
     public static function ajax_delete_mapping() {
         check_ajax_referer('multicatalogo_category_nonce', 'nonce');
         

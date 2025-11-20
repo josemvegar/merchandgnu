@@ -1,12 +1,5 @@
 <?php
-/**
- * WooIntcomex Admin Clases plugin
- * @link        https://josecortesia.cl
- * @since       1.0.0
- * 
- * @package     base
- * @subpackage  base/include
- */
+
 
 
 class cMulticatalogoGNUStock {
@@ -22,7 +15,7 @@ class cMulticatalogoGNUStock {
         $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
         $tamano_lote = isset($_POST['tamano_lote']) ? intval($_POST['tamano_lote']) : 2;
     
-        // Ruta al archivo JSON de PromoImport
+
         $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/promoimport_products.json';
     
         if (!file_exists($filePath)) {
@@ -58,7 +51,7 @@ class cMulticatalogoGNUStock {
                 continue;
             }
     
-            // Calcular el total de stock sumando los valores de los atributos
+
             $total_stock = 0;
             if (!empty($productData['atributos']) && is_array($productData['atributos'])) {
                 foreach ($productData['atributos'] as $atributo) {
@@ -68,14 +61,14 @@ class cMulticatalogoGNUStock {
                 }
             }
     
-            // Actualizar la gestión y cantidad de stock
+
             $product->set_manage_stock(true);
             $product->set_stock_quantity($total_stock);
     
-            // Establecer estado de inventario
+
             $product->set_stock_status($total_stock > 0 ? 'instock' : 'outofstock');
     
-            // Guardar cambios
+
             $save_result = $product->save();
     
             if ($save_result) {
@@ -102,28 +95,28 @@ class cMulticatalogoGNUStock {
         $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
         $tamano_lote = isset($_POST['tamano_lote']) ? intval($_POST['tamano_lote']) : 2;
     
-        // Ruta al archivo JSON de Zecat
+
         $filePathZecat = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/zecat_products.json';
     
-        // Verificar si el archivo existe
+
         if (!file_exists($filePathZecat)) {
             wp_send_json_error('Archivo JSON no encontrado.');
         }
     
-        // Obtener y decodificar el contenido JSON
+
         $jsonContent = file_get_contents($filePathZecat);
         $jsonContentUtf8 = mb_convert_encoding($jsonContent, 'UTF-8', 'auto');
         $productsData = json_decode($jsonContentUtf8, true);
     
-        // Verificar si la decodificación fue exitosa
+
         if (json_last_error() !== JSON_ERROR_NONE) {
             wp_send_json_error('Error al decodificar JSON.');
         }
     
-        // Total de productos
+
         $total_productos = count($productsData);
     
-        // Obtener el lote de productos a procesar
+
         $productBatch = array_slice($productsData, $offset, $tamano_lote);
         
         $actualizados = 0;
@@ -131,7 +124,7 @@ class cMulticatalogoGNUStock {
     
         foreach ($productBatch as $productData) {
 
-            // Verificar que 'id' existe
+
             if (!isset($productData['id'])) {
                 continue;
             }
@@ -139,7 +132,7 @@ class cMulticatalogoGNUStock {
             $product_id = $productData['id'];
             $parent_sku = "ZT0" . $product_id;
     
-            // Obtener el producto por SKU
+
             $parent_product_id = wc_get_product_id_by_sku($parent_sku);
             if (!$parent_product_id) {
                 continue;
@@ -150,12 +143,12 @@ class cMulticatalogoGNUStock {
                 continue;
             }
     
-            // Verificar si 'products' existe y es un array
+
             if (!isset($productData['products']) || !is_array($productData['products'])) {
                 continue;
             }
     
-            // Verificar el stock de las variantes
+
             $hay_existencia = false;
             foreach ($productData['products'] as $variant) {
                 if (isset($variant['stock']) && intval($variant['stock']) > 0) {
@@ -165,26 +158,26 @@ class cMulticatalogoGNUStock {
             }
     
             if ($hay_existencia) {
-                // Hay stock disponible
+
                 $parent_product->set_stock_status('instock');
-                // Opcional: Establecer 'stock_quantity' a 1000
-                // Nota: Solo se debe establecer si 'manage_stock' está habilitado
+
+
                 $parent_product->set_manage_stock(true);
                 $parent_product->set_stock_quantity(1000);
             } else {
-                // No hay stock disponible
+
                 $parent_product->set_stock_status('outofstock');
-                // Opcional: Desactivar la gestión de stock
+
                 $parent_product->set_manage_stock(false);
-                // Opcional: Establecer 'stock_quantity' a 0
-                // $parent_product->set_stock_quantity(0);
+
+
             }
     
-            // Guardar los cambios
+
             $save_result = $parent_product->save();
     
             if ($save_result) {
-                // Registrar la actualización exitosa
+
                 $actualizados++;
             } else {
                 }
@@ -192,7 +185,7 @@ class cMulticatalogoGNUStock {
             
         }
     
-        // Devolver la respuesta JSON con el progreso
+
         wp_send_json_success(array(
             'total' => $total_productos,
             'actualizados' => $actualizados,
@@ -211,28 +204,28 @@ class cMulticatalogoGNUStock {
         $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
         $tamano_lote = isset($_POST['tamano_lote']) ? intval($_POST['tamano_lote']) : 2;
     
-        // Ruta al archivo JSON de Zecat
+
         $filePathCDO = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/cdo_products.json';
     
-        // Verificar si el archivo existe
+
         if (!file_exists($filePathCDO)) {
             wp_send_json_error('Archivo JSON no encontrado.');
         }
     
-        // Obtener y decodificar el contenido JSON
+
         $jsonContent = file_get_contents($filePathCDO);
         $jsonContentUtf8 = mb_convert_encoding($jsonContent, 'UTF-8', 'auto');
         $productsData = json_decode($jsonContentUtf8, true);
     
-        // Verificar si la decodificación fue exitosa
+
         if (json_last_error() !== JSON_ERROR_NONE) {
             wp_send_json_error('Error al decodificar JSON.');
         }
     
-        // Total de productos
+
         $total_productos = count($productsData);
     
-        // Obtener el lote de productos a procesar
+
         $productBatch = array_slice($productsData, $offset, $tamano_lote);
         
         $actualizados = 0;
@@ -240,14 +233,14 @@ class cMulticatalogoGNUStock {
     
         foreach ($productBatch as $productData) {
 
-            // Generar el SKU utilizado en la función de creación
+
             $sku = "SS" . $productData['id'];
                         
-            // Obtener el ID del producto existente por SKU
+
             $existingProductId = wc_get_product_id_by_sku($sku);
 
             if ($existingProductId) {
-                // Obtener el objeto del producto
+
                 $product = wc_get_product($existingProductId);
                 if (!$product) {
                     continue;
@@ -255,11 +248,11 @@ class cMulticatalogoGNUStock {
 
                 $new_stock = 0; // Inicializar el stock
 
-                // Caso 1: stock_available en el nivel del producto
+
                 if (isset($productData['stock_available'])) {
                     $new_stock = intval($productData['stock_available']);
                 }
-                // Caso 2: stock_available dentro de variantes
+
                 elseif (!empty($productData['variants']) && is_array($productData['variants'])) {
                     foreach ($productData['variants'] as $variant) {
                         if (isset($variant['stock_available'])) {
@@ -267,37 +260,37 @@ class cMulticatalogoGNUStock {
                         }
                     }
                 } else {
-                    // Si no se encuentra stock_available ni en el producto ni en variantes
+
                     continue;
                 }
 
-                // Actualizar el stock del producto
+
                 $product->set_stock_quantity($new_stock);
                 $product->set_manage_stock(true); // Asegurar que la gestión de stock está habilitada
 
-                // Actualizar el estado del stock basado en la cantidad
+
                 if ($new_stock > 0) {
                     $product->set_stock_status('instock');
                 } else {
                     $product->set_stock_status('outofstock');
                 }
 
-                // Guardar los cambios
+
                 $save_result = $product->save();
 
                 if ($save_result) {
-                    // Registrar la actualización exitosa
+
                     $actualizados++;
                 } else {
                     }
             } else {
-                // El producto con el SKU no existe
+
                 }            
     
             
         }
     
-        // Devolver la respuesta JSON con el progreso
+
         wp_send_json_success(array(
             'total' => $total_productos,
             'actualizados' => $actualizados,
@@ -343,13 +336,11 @@ class cMulticatalogoGNUStock {
 
 
 
-    /**
-     * Función principal unificada para actualizar stock
-     */
+    
     public static function fUpdateStockGlobo() {
         $provider = isset($_POST['provider']) ? sanitize_text_field($_POST['provider']) : '';
         
-        // Verificar nonce según el proveedor
+
         $nonce_actions = [
             'promoimport' => 'stock_promoimport_nonce',
             'zecat' => 'stock_zecat_nonce', 
@@ -369,7 +360,7 @@ class cMulticatalogoGNUStock {
         $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
         $tamano_lote = isset($_POST['tamano_lote']) ? intval($_POST['tamano_lote']) : 10;
     
-        // Ruta al archivo JSON unificado
+
         $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
     
         if (!file_exists($filePath)) {
@@ -384,17 +375,17 @@ class cMulticatalogoGNUStock {
             wp_send_json_error('Error al decodificar JSON.');
         }
 
-        // Verificar estructura del JSON (con array 'data')
+
         if (!isset($allProductsData['data']) || !is_array($allProductsData['data'])) {
             wp_send_json_error('Estructura JSON inválida. Se esperaba array "data".');
         }
     
-        // Filtrar productos por proveedor
+
         $providerProducts = array_filter($allProductsData['data'], function($product) use ($provider) {
             return isset($product['proveedor']) && strtoupper($product['proveedor']) === strtoupper($provider);
         });
     
-        // Reindexar array después del filtro
+
         $providerProducts = array_values($providerProducts);
     
         $total_productos = count($providerProducts);
@@ -416,11 +407,9 @@ class cMulticatalogoGNUStock {
         ));
     }
 
-    /**
-     * Lógica centralizada para actualizar stock de un producto
-     */
+    
     public static function update_product_stock($productData) {
-        // Determinar SKU según proveedor
+
         $sku = self::generate_sku($productData);
         
         if (!$sku) {
@@ -438,7 +427,7 @@ class cMulticatalogoGNUStock {
             return false;
         }
 
-        // Manejar stock según tipo de producto
+
         $isVariable = isset($productData['isVariable']) ? ($productData['isVariable'] == true ? true : false) : false;
         
         if ($isVariable && $product->is_type('variable')) {
@@ -448,14 +437,12 @@ class cMulticatalogoGNUStock {
         }
     }
 
-    /**
-     * Actualizar stock para productos variables
-     */
+    
     private static function update_variable_product_stock($parent_product, $productData, $parent_sku) {
         $has_stock = false;
         $total_variations_updated = 0;
         
-        // Verificar si hay stock en las variaciones
+
         if (!empty($productData['variations']) && is_array($productData['variations'])) {
             foreach ($productData['variations'] as $variation) {
                 $variation_stock = self::get_variation_stock($variation);
@@ -464,7 +451,7 @@ class cMulticatalogoGNUStock {
                     $has_stock = true;
                 }
                 
-                // Actualizar variación individual si existe
+
                 if (isset($variation['sku'])) {
                     $variation_updated = self::update_variation_stock($variation['sku'], $variation_stock);
                     if ($variation_updated) {
@@ -474,7 +461,7 @@ class cMulticatalogoGNUStock {
             }
         }
 
-        // Actualizar producto padre
+
         $parent_product->set_manage_stock(false); // No gestionar stock a nivel padre
         $parent_product->set_stock_status($has_stock ? 'instock' : 'outofstock');
 
@@ -487,20 +474,16 @@ class cMulticatalogoGNUStock {
         }
     }
 
-    /**
-     * Obtener stock para una variación según proveedor
-     */
+    
     private static function get_variation_stock($variation) {
         return isset($variation['Stock']) ? intval($variation['Stock']) : 0;
     }
 
-    /**
-     * Actualizar stock para productos simples
-     */
+    
     private static function update_simple_product_stock($product, $productData, $sku) {
         $new_stock = self::get_simple_stock($productData);
 
-        // Actualizar producto
+
         $product->set_manage_stock(true);
         $product->set_stock_quantity($new_stock);
         $product->set_stock_status($new_stock > 0 ? 'instock' : 'outofstock');
@@ -514,16 +497,12 @@ class cMulticatalogoGNUStock {
         }
     }
 
-    /**
-     * Calcular stock para productos simples según proveedor
-     */
+    
     private static function get_simple_stock($productData) {
         return isset($productData['Stock']) ? intval($productData['Stock']) : 0;
     }
 
-    /**
-     * Actualizar stock de variación individual
-     */
+    
     private static function update_variation_stock($variation_sku, $stock) {
         $variation_id = wc_get_product_id_by_sku($variation_sku);
         
@@ -545,9 +524,7 @@ class cMulticatalogoGNUStock {
         return false;
     }
 
-    /**
-     * Generar SKU según proveedor
-     */
+    
     private static function generate_sku($productData) {
         if (!isset($productData['proveedor'])) {
             return false;
@@ -564,7 +541,7 @@ class cMulticatalogoGNUStock {
             return false;
         }
 
-        // Usar ID o sku_proveedor según disponibilidad
+
         if (isset($productData['ID']) && !empty($productData['ID'])) {
             $id = $productData['ID'];
         } elseif (isset($productData['sku_proveedor']) && !empty($productData['sku_proveedor'])) {
@@ -573,7 +550,7 @@ class cMulticatalogoGNUStock {
             return false;
         }
 
-        // Remover prefijo si ya existe (para evitar duplicados)
+
         foreach ($prefixes as $prefijo) {
             if (strpos($id, $prefijo) === 0) {
                 $id = substr($id, strlen($prefijo));

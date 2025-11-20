@@ -1,18 +1,9 @@
 <?php
-/**
- * MultiCatalogo Configuration Management
- * @link        https://josecortesia.cl
- * @since       2.0.0
- * 
- * @package     base
- * @subpackage  base/include
- */
+
 
 class cMulticatalogoGNUConfig {
 
-    /**
-     * Obtener el porcentaje de ganancia configurado
-     */
+    
     public static function get_profit_margin() {
         global $wpdb;
         $table = $wpdb->prefix . 'multicatalogo_config';
@@ -25,9 +16,7 @@ class cMulticatalogoGNUConfig {
         return $result ? floatval($result) : 50.0;
     }
 
-    /**
-     * Obtener la tasa de conversión USD a CLP
-     */
+    
     public static function get_usd_to_clp_rate() {
         global $wpdb;
         $table = $wpdb->prefix . 'multicatalogo_config';
@@ -40,9 +29,7 @@ class cMulticatalogoGNUConfig {
         return $result ? floatval($result) : 950.0;
     }
 
-    /**
-     * Obtener el tipo de moneda (clp o usd)
-     */
+    
     public static function get_currency_type() {
         global $wpdb;
         $table = $wpdb->prefix . 'multicatalogo_config';
@@ -55,9 +42,7 @@ class cMulticatalogoGNUConfig {
         return $result ? $result : 'usd';
     }
 
-    /**
-     * Actualizar el porcentaje de ganancia
-     */
+    
     public static function update_profit_margin($percentage) {
         global $wpdb;
         $table = $wpdb->prefix . 'multicatalogo_config';
@@ -74,9 +59,7 @@ class cMulticatalogoGNUConfig {
         return true;
     }
 
-    /**
-     * Actualizar la tasa de conversión USD a CLP
-     */
+    
     public static function update_usd_to_clp_rate($rate) {
         global $wpdb;
         $table = $wpdb->prefix . 'multicatalogo_config';
@@ -93,9 +76,7 @@ class cMulticatalogoGNUConfig {
         return true;
     }
 
-    /**
-     * Actualizar el tipo de moneda
-     */
+    
     public static function update_currency_type($currency) {
         global $wpdb;
         $table = $wpdb->prefix . 'multicatalogo_config';
@@ -112,30 +93,26 @@ class cMulticatalogoGNUConfig {
         return true;
     }
 
-    /**
-     * Calcular precio final con margen de ganancia (considerando moneda base)
-     */
+    
     public static function calculate_final_price($base_price) {
         $currency_type = self::get_currency_type();
         $profit_margin = self::get_profit_margin();
         
         if ($currency_type === 'clp') {
-            // Si el precio base ya está en CLP, solo aplicar ganancia
+
             $final_price = $base_price * (1 + ($profit_margin / 100));
         } else {
-            // Si el precio está en USD, convertir a CLP y aplicar ganancia
+
             $clp_rate = self::get_usd_to_clp_rate();
             $price_clp = $base_price * $clp_rate;
             $final_price = $price_clp * (1 + ($profit_margin / 100));
         }
         
-        // Redondear al entero más cercano
+
         return round($final_price, 0, PHP_ROUND_HALF_UP);
     }
 
-    /**
-     * Get auto updates enabled status
-     */
+    
     public static function get_auto_updates_enabled() {
         global $wpdb;
         $table = $wpdb->prefix . 'multicatalogo_config';
@@ -148,9 +125,7 @@ class cMulticatalogoGNUConfig {
         return $result ? $result : '0';
     }
 
-    /**
-     * Update auto updates enabled status
-     */
+    
     public static function update_auto_updates_enabled($enabled) {
         global $wpdb;
         $table = $wpdb->prefix . 'multicatalogo_config';
@@ -167,9 +142,7 @@ class cMulticatalogoGNUConfig {
         return true;
     }
 
-    /**
-     * AJAX: Toggle auto updates
-     */
+    
     public static function ajax_toggle_auto_updates() {
         check_ajax_referer('multicatalogo_auto_updates_nonce', 'nonce');
         
@@ -181,7 +154,7 @@ class cMulticatalogoGNUConfig {
         $enabled = isset($_POST['enabled']) ? sanitize_text_field($_POST['enabled']) : '0';
         
         if ($enabled === '1') {
-            // Activar los cron jobs
+
             if (!wp_next_scheduled('multicatalogo_hourly_update_json')) {
                 wp_schedule_event(time(), 'hourly', 'multicatalogo_hourly_update_json');
             }
@@ -192,7 +165,7 @@ class cMulticatalogoGNUConfig {
                 wp_schedule_event(time(), 'hourly', 'multicatalogo_hourly_update_prices_stock');
             }
         } else {
-            // Desactivar los cron jobs
+
             wp_clear_scheduled_hook('multicatalogo_hourly_update_json');
             wp_clear_scheduled_hook('multicatalogo_hourly_upload_products');
             wp_clear_scheduled_hook('multicatalogo_hourly_update_prices_stock');
@@ -204,9 +177,7 @@ class cMulticatalogoGNUConfig {
         wp_send_json_success(array('message' => $status));
     }
 
-    /**
-     * AJAX: Guardar configuración
-     */
+    
     public static function ajax_save_config() {
         check_ajax_referer('multicatalogo_config_nonce', 'nonce');
         

@@ -1,12 +1,5 @@
 <?php
-/**
- * WooIntcomex Admin Clases plugin
- * @link        https://josecortesia.cl
- * @since       1.0.0
- * 
- * @package     base
- * @subpackage  base/include
- */
+
 
 
 
@@ -25,28 +18,28 @@ class cMulticatalogoGNUPrice {
         $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
         $tamano_lote = isset($_POST['tamano_lote']) ? intval($_POST['tamano_lote']) : 2;
     
-        // Ruta al archivo JSON de Zecat
+
         $filePathZecat = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/zecat_products.json';
     
-        // Verificar si el archivo existe
+
         if (!file_exists($filePathZecat)) {
             wp_send_json_error('Archivo JSON no encontrado.');
         }
     
-        // Obtener y decodificar el contenido JSON
+
         $jsonContent = file_get_contents($filePathZecat);
         $jsonContentUtf8 = mb_convert_encoding($jsonContent, 'UTF-8', 'auto');
         $productsData = json_decode($jsonContentUtf8, true);
     
-        // Verificar si la decodificación fue exitosa
+
         if (json_last_error() !== JSON_ERROR_NONE) {
             wp_send_json_error('Error al decodificar JSON.');
         }
     
-        // Total de productos
+
         $total_productos = count($productsData);
     
-        // Obtener el lote de productos a procesar
+
         $productBatch = array_slice($productsData, $offset, $tamano_lote);
         
         $actualizados = 0;
@@ -58,7 +51,7 @@ class cMulticatalogoGNUPrice {
             
         }
     
-        // Devolver la respuesta JSON con el progreso
+
         wp_send_json_success(array(
             'total' => $total_productos,
             'actualizados' => $actualizados,
@@ -80,28 +73,28 @@ class cMulticatalogoGNUPrice {
         $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
         $tamano_lote = isset($_POST['tamano_lote']) ? intval($_POST['tamano_lote']) : 2;
     
-        // Ruta al archivo JSON de Zecat
+
         $filePathCDO = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/cdo_products.json';
     
-        // Verificar si el archivo existe
+
         if (!file_exists($filePathCDO)) {
             wp_send_json_error('Archivo JSON no encontrado.');
         }
     
-        // Obtener y decodificar el contenido JSON
+
         $jsonContent = file_get_contents($filePathCDO);
         $jsonContentUtf8 = mb_convert_encoding($jsonContent, 'UTF-8', 'auto');
         $productsData = json_decode($jsonContentUtf8, true);
     
-        // Verificar si la decodificación fue exitosa
+
         if (json_last_error() !== JSON_ERROR_NONE) {
             wp_send_json_error('Error al decodificar JSON.');
         }
     
-        // Total de productos
+
         $total_productos = count($productsData);
     
-        // Obtener el lote de productos a procesar
+
         $productBatch = array_slice($productsData, $offset, $tamano_lote);
         
         $actualizados = 0;
@@ -113,7 +106,7 @@ class cMulticatalogoGNUPrice {
             
         }
     
-        // Devolver la respuesta JSON con el progreso
+
         wp_send_json_success(array(
             'total' => $total_productos,
             'actualizados' => $actualizados,
@@ -149,7 +142,7 @@ class cMulticatalogoGNUPrice {
     public static function fUpdatePriceGlobo() {
         $provider = isset($_POST['provider']) ? sanitize_text_field($_POST['provider']) : '';
         
-        // Verificar nonce según el proveedor
+
         $nonce_actions = [
             'promoimport' => 'price_promoimport_nonce',
             'zecat' => 'price_zecat_nonce', 
@@ -169,7 +162,7 @@ class cMulticatalogoGNUPrice {
         $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
         $tamano_lote = isset($_POST['tamano_lote']) ? intval($_POST['tamano_lote']) : 10;
     
-        // Ruta al archivo JSON unificado
+
         $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
     
         if (!file_exists($filePath)) {
@@ -184,17 +177,17 @@ class cMulticatalogoGNUPrice {
             wp_send_json_error('Error al decodificar JSON.');
         }
 
-        // Verificar estructura del JSON (con array 'data')
+
         if (!isset($allProductsData['data']) || !is_array($allProductsData['data'])) {
             wp_send_json_error('Estructura JSON inválida. Se esperaba array "data".');
         }
     
-        // Filtrar productos por proveedor
+
         $providerProducts = array_filter($allProductsData['data'], function($product) use ($provider) {
             return isset($product['proveedor']) && strtoupper($product['proveedor']) === strtoupper($provider);
         });
     
-        // Reindexar array después del filtro
+
         $providerProducts = array_values($providerProducts);
     
         $total_productos = count($providerProducts);
@@ -216,11 +209,9 @@ class cMulticatalogoGNUPrice {
         ));
     }
 
-    /**
-     * Lógica centralizada para actualizar precio de un producto
-     */
+    
     public static function update_product_price($productData) {
-        // Determinar SKU según proveedor
+
         $sku = self::generate_sku($productData);
         
         if (!$sku) {
@@ -238,7 +229,7 @@ class cMulticatalogoGNUPrice {
             return false;
         }
 
-        // Manejar precio según tipo de producto
+
         $isVariable = isset($productData['isVariable']) ? ($productData['isVariable'] == true ? true : false) : false;
         
         if ($isVariable && $product->is_type('variable')) {
@@ -248,18 +239,16 @@ class cMulticatalogoGNUPrice {
         }
     }
 
-    /**
-     * Actualizar precio para productos variables
-     */
+    
     private static function update_variable_product_price($parent_product, $productData, $parent_sku) {
         $total_variations_updated = 0;
         
-        // Verificar si hay variaciones para actualizar
+
         if (!empty($productData['variations']) && is_array($productData['variations'])) {
             foreach ($productData['variations'] as $variation) {
                 $variation_price = self::get_variation_price($variation);
                 
-                // Actualizar variación individual si existe
+
                 if (isset($variation['sku']) && $variation_price > 0) {
                     $variation_updated = self::update_variation_price($variation['sku'], $variation_price);
                     if ($variation_updated) {
@@ -283,27 +272,21 @@ class cMulticatalogoGNUPrice {
         }
     }
 
-    /**
-     * Obtener precio para una variación según proveedor
-     */
+    
     private static function get_variation_price($variation) {
         return isset($variation['Precio']) ? floatval($variation['Precio']) : 0;
     }
 
-    /**
-     * Obtener precio para producto padre
-     */
+    
     private static function get_parent_price($productData) {
         return isset($productData['precio']) ? floatval($productData['precio']) : 0;
     }
 
-    /**
-     * Actualizar precio para productos simples
-     */
+    
     private static function update_simple_product_price($product, $productData, $sku) {
         $new_price = self::get_simple_price($productData);
 
-        // Actualizar producto
+
         if ($new_price > 0) {
             $product->set_price($new_price);
             $product->set_regular_price($new_price);
@@ -318,16 +301,12 @@ class cMulticatalogoGNUPrice {
         }
     }
 
-    /**
-     * Obtener precio para productos simples según proveedor
-     */
+    
     private static function get_simple_price($productData) {
         return isset($productData['precio']) ? floatval($productData['precio']) : 0;
     }
 
-    /**
-     * Actualizar precio de variación individual
-     */
+    
     private static function update_variation_price($variation_sku, $price) {
         $variation_id = wc_get_product_id_by_sku($variation_sku);
         
@@ -348,9 +327,7 @@ class cMulticatalogoGNUPrice {
         return false;
     }
 
-    /**
-     * Generar SKU según proveedor (misma función que en stock)
-     */
+    
     private static function generate_sku($productData) {
         if (!isset($productData['proveedor'])) {
             return false;
@@ -367,7 +344,7 @@ class cMulticatalogoGNUPrice {
             return false;
         }
 
-        // Usar ID o sku_proveedor según disponibilidad
+
         if (isset($productData['ID']) && !empty($productData['ID'])) {
             $id = $productData['ID'];
         } elseif (isset($productData['sku_proveedor']) && !empty($productData['sku_proveedor'])) {
@@ -376,7 +353,7 @@ class cMulticatalogoGNUPrice {
             return false;
         }
 
-        // Remover prefijo si ya existe (para evitar duplicados)
+
         foreach ($prefixes as $prefijo) {
             if (strpos($id, $prefijo) === 0) {
                 $id = substr($id, strlen($prefijo));

@@ -1,77 +1,64 @@
 <?php
-/**
- * MultiCatalogo Cron Jobs
- * @link        https://josecortesia.cl
- * @since       2.0.0
- * 
- * @package     base
- * @subpackage  base/include
- */
+
 
 class cMulticatalogoGNUCron {
 
-    /**
-     * Inicializar los hooks de cron
-     */
+    
     public static function init() {
-        // Hook para actualizar JSON cada hora
+
         add_action('multicatalogo_hourly_update_json', array('cMulticatalogoGNUCron', 'update_all_json'));
         
-        // Hook para actualizar precios y stock cada hora
+
         add_action('multicatalogo_hourly_update_prices_stock', array('cMulticatalogoGNUCron', 'update_all_prices_stock'));
 
-        // Hook para subir productos cada hora
+
         add_action('multicatalogo_hourly_upload_products', array('cMulticatalogoGNUCron', 'upload_all_products'));
 
-        // Registrar hooks separados para cada proveedor
+
         add_action('multicatalogo_batch_upload_zecat', array('cMulticatalogoGNUCron', 'handle_batch_upload'), 10, 2);
         add_action('multicatalogo_batch_upload_cdo', array('cMulticatalogoGNUCron', 'handle_batch_upload'), 10, 2);
         add_action('multicatalogo_batch_upload_promoimport', array('cMulticatalogoGNUCron', 'handle_batch_upload'), 10, 2);
 
-        // ===== NUEVOS HOOKS PARA ACTUALIZACIÓN DE STOCK =====
+
         add_action('multicatalogo_batch_stock_zecat', array('cMulticatalogoGNUCron', 'handle_batch_stock'), 10, 2);
         add_action('multicatalogo_batch_stock_cdo', array('cMulticatalogoGNUCron', 'handle_batch_stock'), 10, 2);
         add_action('multicatalogo_batch_stock_promoimport', array('cMulticatalogoGNUCron', 'handle_batch_stock'), 10, 2);
 
-        // En cMulticatalogoGNUCron::init() agregar:
+
         add_action('multicatalogo_batch_price_zecat', array('cMulticatalogoGNUCron', 'handle_batch_price'), 10, 2);
         add_action('multicatalogo_batch_price_cdo', array('cMulticatalogoGNUCron', 'handle_batch_price'), 10, 2);
         add_action('multicatalogo_batch_price_promoimport', array('cMulticatalogoGNUCron', 'handle_batch_price'), 10, 2);
 
     }
 
-    /**
-     * Actualizar todos los JSON de los proveedores
-     */
+    
     public static function update_all_json() {
         error_log('[MultiCatalogo Cron] Iniciando actualización de JSON - ' . current_time('mysql'));
         
         try {
-            // Actualizar Zecat
+
             cMultiCatalogoGNUApiRequest::fgetProductsZecat();
             
-            // Actualizar CDO
+
             cMultiCatalogoGNUApiRequest::fgetProductsCdo();
             
-            // Actualizar PromoImport
+
             cMultiCatalogoGNUApiRequest::fgetProductsPromoImport();
             
-            // Combinar JSON
+
             self::combine_json_silent();
             
             } catch (Exception $e) {
             }
     }
 
-    /**
-     * Subir nuevos productos
-     */
+    
     public static function upload_all_products() {
         error_log('[MultiCatalogo Cron] Iniciando subida de productos - ' . current_time('mysql'));
         
         try {
 
-            // Primero ejecutar limpiezas
+
             self::clean_duplicate_products();
             self::clean_products_without_images();
 
@@ -85,22 +72,20 @@ class cMulticatalogoGNUCron {
             }
     }
 
-    /**
-     * Actualizar todos los precios y stock
-     */
+    
     public static function update_all_prices_stock() {
         error_log('[MultiCatalogo Cron] Iniciando actualización de precios y stock - ' . current_time('mysql'));
         
         try {
-            // Actualizar Zecat
+
             self::update_stock_from_json('ZECAT');
             self::update_price_from_json('ZECAT');
             
-            // Actualizar CDO
+
             self::update_stock_from_json('CDO');
             self::update_price_from_json('CDO');
             
-            // Actualizar PromoImport
+
             self::update_stock_from_json('promoimport');
             self::update_price_from_json('promoimport');
             
@@ -108,9 +93,7 @@ class cMulticatalogoGNUCron {
             }
     }
 
-    /**
-     * Combinar JSON sin respuesta AJAX (para cron)
-     */
+    
     private static function combine_json_silent() {
         $filePathZecat = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/zecat_products.json';
         $filePathCDO = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/cdo_products.json';
@@ -124,14 +107,14 @@ class cMulticatalogoGNUCron {
         $productsCDO = json_decode(file_get_contents($filePathCDO), true);
         $productsPromo = json_decode(file_get_contents($filePathPromoImport), true);
 
-        // Verificar errores de decodificación
+
         if (json_last_error() !== JSON_ERROR_NONE) {
             return false;
         }
 
         $mergedProducts = [];
 
-        // --- Zecat ---
+
         foreach ($productsZecat as $zecatProduct) {
             $families = [];
             $images = [];
@@ -192,7 +175,7 @@ class cMulticatalogoGNUCron {
             ];
         }
 
-        // --- CDO ---
+
         foreach ($productsCDO as $cdoProduct) {
 
             $images = [];
@@ -223,13 +206,13 @@ class cMulticatalogoGNUCron {
                         'sku_proveedor' => $variant['sku']
                     ];
                 } elseif (isset($variant['colors'])){
-                    // Crear array con todos los nombres de colores
+
                     $color_names = [];
                     foreach ($variant['colors'] as $color) {
                         $color_names[] = mb_convert_case(trim($color['name']), MB_CASE_TITLE, "UTF-8");
                     }
                     
-                    // Combinar colores en un string separado por "/"
+
                     $colors_string = implode(' / ', $color_names);
                     
                     $variableAttributes['Color'][] = $colors_string;
@@ -282,7 +265,7 @@ class cMulticatalogoGNUCron {
             ];
         }
 
-        // --- PromoImport ---
+
         foreach ($productsPromo as $promoProduct) {
             $images = [$promoProduct['fotoPrincipal']];
             foreach ($promoProduct['images'] as $image) {
@@ -307,36 +290,36 @@ class cMulticatalogoGNUCron {
                 ];
             }
 
-            // EXTRAER ATRIBUTOS DE LA DESCRIPCIÓN
+
             $infoAttributes = [];
             $descripcion = $promoProduct['descripcion'];
             
-            // Buscar todos los atributos que comienzan con • y terminan con :
+
             if (preg_match_all('/•\s*([^:]+):(.*?)(?=<br\s*\/>|$)/s', $descripcion, $matches, PREG_SET_ORDER)) {
                 foreach ($matches as $match) {
                     $clave = trim($match[1]);
                     $valor = trim($match[2]);
                     
-                    // Ignorar claves relacionadas con colores
+
                     if (stripos($clave, 'color') !== false) {
                         continue;
                     }
                     
-                    // Si el valor está vacío, saltar
+
                     if (empty($valor)) {
                         continue;
                     }
                     
-                    // Procesar el valor para dividir en array si tiene separadores
+
                     $valorProcesado = $valor;
                     
-                    // Si contiene separadores, dividir en array
+
                     if (preg_match('/\s*[\/\\\\,]\s*/', $valor)) {
                         $partes = preg_split('/\s*[\/\\\\,]\s*/', $valor);
                         $partes = array_map('trim', $partes);
                         $partes = array_filter($partes);
                         
-                        // Eliminar puntos finales de CADA elemento
+
                         $partes = array_map(function($item) {
                             return rtrim($item, '.');
                         }, $partes);
@@ -347,7 +330,7 @@ class cMulticatalogoGNUCron {
                             $valorProcesado = reset($partes);
                         }
                     } else {
-                        // Si no hay separadores, eliminar punto final del string completo
+
                         $valorProcesado = rtrim($valor, '.');
                     }
                     
@@ -392,169 +375,18 @@ class cMulticatalogoGNUCron {
         }
     }
 
-    /**
-     * Actualizar stock y precios de Zecat (versión silenciosa para cron)
-     */
-    private static function update_zecat_silent() {
-        $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/zecat_products.json';
-        
-        if (!file_exists($filePath)) {
-            return false;
-        }
+    
+    private static 
 
-        $jsonContent = file_get_contents($filePath);
-        $productsData = json_decode($jsonContent, true);
-        
-        if (!$productsData) {
-            return false;
-        }
+    
+    private static 
 
-        $updated = 0;
-        foreach ($productsData as $productData) {
-            $sku = "ZT0" . $productData['id'];
-            $product_id = wc_get_product_id_by_sku($sku);
-            
-            if (!$product_id) {
-                continue;
-            }
+    
+    private static 
 
-            $product = wc_get_product($product_id);
-            
-            // Actualizar precio con configuración
-            if (isset($productData['price'])) {
-                $final_price = cMulticatalogoGNUConfig::calculate_final_price($productData['price']);
-                $product->set_regular_price($final_price);
-            }
-            
-            // Actualizar stock
-            if (!empty($productData['products'])) {
-                $totalStock = 0;
-                foreach ($productData['products'] as $variant) {
-                    $totalStock += isset($variant['stock']) ? intval($variant['stock']) : 0;
-                }
-                $product->set_stock_quantity($totalStock);
-                $product->set_stock_status($totalStock > 0 ? 'instock' : 'outofstock');
-            }
-            
-            $product->save();
-            $updated++;
-        }
-        
-        return $updated;
-    }
-
-    /**
-     * Actualizar stock y precios de CDO (versión silenciosa para cron)
-     */
-    private static function update_cdo_silent() {
-        $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/cdo_products.json';
-        
-        if (!file_exists($filePath)) {
-            return false;
-        }
-
-        $jsonContent = file_get_contents($filePath);
-        $productsData = json_decode($jsonContent, true);
-        
-        if (!$productsData) {
-            return false;
-        }
-
-        $updated = 0;
-        foreach ($productsData as $productData) {
-            $sku = "SS" . $productData['id'];
-            $product_id = wc_get_product_id_by_sku($sku);
-            
-            if (!$product_id) {
-                continue;
-            }
-
-            $product = wc_get_product($product_id);
-            
-            // Actualizar precio y stock
-            if (!empty($productData['variants'])) {
-                $totalStock = 0;
-                $price = 0;
-                
-                foreach ($productData['variants'] as $variant) {
-                    $totalStock += isset($variant['stock_available']) ? intval($variant['stock_available']) : 0;
-                    if (isset($variant['list_price']) && $price == 0) {
-                        $price = floatval($variant['list_price']);
-                    }
-                }
-                
-                if ($price > 0) {
-                    $final_price = cMulticatalogoGNUConfig::calculate_final_price($price);
-                    $product->set_regular_price($final_price);
-                }
-                
-                $product->set_stock_quantity($totalStock);
-                $product->set_stock_status($totalStock > 0 ? 'instock' : 'outofstock');
-            }
-            
-            $product->save();
-            $updated++;
-        }
-        
-        return $updated;
-    }
-
-    /**
-     * Actualizar stock y precios de PromoImport (versión silenciosa para cron)
-     */
-    private static function update_promoimport_silent() {
-        $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/promoimport_products.json';
-        
-        if (!file_exists($filePath)) {
-            return false;
-        }
-
-        $jsonContent = file_get_contents($filePath);
-        $productsData = json_decode($jsonContent, true);
-        
-        if (!$productsData) {
-            return false;
-        }
-
-        $updated = 0;
-        foreach ($productsData as $productData) {
-            $sku = "PI0" . $productData['sku'];
-            $product_id = wc_get_product_id_by_sku($sku);
-            
-            if (!$product_id) {
-                continue;
-            }
-
-            $product = wc_get_product($product_id);
-            
-            // Actualizar precio
-            if (isset($productData['precio'])) {
-                $final_price = cMulticatalogoGNUConfig::calculate_final_price($productData['precio']);
-                $product->set_regular_price($final_price);
-            }
-            
-            // Actualizar stock
-            if (!empty($productData['atributos'])) {
-                $totalStock = 0;
-                foreach ($productData['atributos'] as $attr) {
-                    $totalStock += isset($attr['stock']) ? intval($attr['stock']) : 0;
-                }
-                $product->set_stock_quantity($totalStock);
-                $product->set_stock_status($totalStock > 0 ? 'instock' : 'outofstock');
-            }
-            
-            $product->save();
-            $updated++;
-        }
-        
-        return $updated;
-    }
-
-    /**
-     * Subir productos desde JSON (versión silenciosa para cron)
-     */
+    
     private static function upload_from_json($provider, $offset = 0, $batch_size = 5) {
-        // Ruta al archivo JSON normalizado
+
         $filePathZecat = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
 
         if (!file_exists($filePathZecat)) {
@@ -572,7 +404,7 @@ class cMulticatalogoGNUCron {
             $productsData = $productsData['data'];
         }
 
-        // Filtrar solo productos del proveedor
+
         $productsFilter = array_filter($productsData, function($product) use ($provider) {
             return isset($product['proveedor']) && $product['proveedor'] === $provider;
         });
@@ -584,7 +416,7 @@ class cMulticatalogoGNUCron {
             return false;
         }
 
-        // Procesar lote actual
+
         $productBatch = array_slice($productsFilter, $offset, $batch_size);
         $creados = 0;
         $errors = [];
@@ -603,12 +435,12 @@ class cMulticatalogoGNUCron {
         $nuevo_offset = $offset + $batch_size;
         $progreso = round(($nuevo_offset / $total_productos) * 100, 2);
 
-        // Log del progreso
-        // Si hay más productos, programar siguiente lote
+
+
         if ($nuevo_offset < $total_productos) {
             $next_batch_time = time() + 0; // 10 segundos de delay
 
-            // Al programar el siguiente lote, usa el hook específico del proveedor
+
             $cron_hook = 'multicatalogo_batch_upload_' . strtolower($provider);
 
             if (!wp_next_scheduled($cron_hook, array($provider, $nuevo_offset))) {
@@ -616,7 +448,7 @@ class cMulticatalogoGNUCron {
                 }
             
         } else {
-            // Proceso completado
+
             }
     }
 
@@ -624,13 +456,11 @@ class cMulticatalogoGNUCron {
         self::upload_from_json($provider, $offset);
     }
 
-    /**
-     * Eliminar productos duplicados (mantener el más antiguo por ID)
-     */
+    
     private static function clean_duplicate_products() {
         global $wpdb;
         
-        // Consulta corregida - usar MAX(ID) en lugar de MAX(post_date)
+
         $query = "
             SELECT p1.ID as duplicate_id, p1.post_date, pm1.meta_value as sku
             FROM {$wpdb->posts} p1
@@ -653,7 +483,7 @@ class cMulticatalogoGNUCron {
         
         if (!empty($duplicates)) {
             foreach ($duplicates as $duplicate) {
-                // Eliminar producto y sus meta datos
+
                 wp_delete_post($duplicate->duplicate_id, true);
                 
                 }
@@ -661,9 +491,7 @@ class cMulticatalogoGNUCron {
             }
     }
 
-    /**
-     * Eliminar productos padres sin imagen principal con SKUs específicos
-     */
+    
     private static function clean_products_without_images() {
         global $wpdb;
         
@@ -682,7 +510,7 @@ class cMulticatalogoGNUCron {
         
         if (!empty($products_without_images)) {
             foreach ($products_without_images as $product) {
-                // Eliminar producto y sus meta datos
+
                 wp_delete_post($product->ID, true);
                 
                 }
@@ -691,7 +519,7 @@ class cMulticatalogoGNUCron {
     }
 
     private static function update_stock_from_json($provider, $offset = 0, $batch_size = 50) {
-        // Ruta al archivo JSON unificado
+
         $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
 
         if (!file_exists($filePath)) {
@@ -709,7 +537,7 @@ class cMulticatalogoGNUCron {
             $productsData = $productsData['data'];
         }
 
-        // Filtrar solo productos del proveedor
+
         $productsFilter = array_filter($productsData, function($product) use ($provider) {
             return isset($product['proveedor']) && $product['proveedor'] === $provider;
         });
@@ -721,7 +549,7 @@ class cMulticatalogoGNUCron {
             return false;
         }
 
-        // Procesar lote actual
+
         $productBatch = array_slice($productsFilter, $offset, $batch_size);
         $actualizados = 0;
         $errors = [];
@@ -740,12 +568,12 @@ class cMulticatalogoGNUCron {
         $nuevo_offset = $offset + $batch_size;
         $progreso = round(($nuevo_offset / $total_productos) * 100, 2);
 
-        // Log del progreso
-        // Si hay más productos, programar siguiente lote
+
+
         if ($nuevo_offset < $total_productos) {
             $next_batch_time = time() + 0; // 5 segundos de delay
 
-            // Al programar el siguiente lote, usa el hook específico del proveedor
+
             $cron_hook = 'multicatalogo_batch_stock_' . strtolower($provider);
 
             if (!wp_next_scheduled($cron_hook, array($provider, $nuevo_offset))) {
@@ -753,7 +581,7 @@ class cMulticatalogoGNUCron {
                 }
             
         } else {
-            // Proceso completado
+
             }
 
         return [
@@ -769,24 +597,13 @@ class cMulticatalogoGNUCron {
         return self::update_stock_from_json($provider, $offset);
     }
 
-    /**
-     * Ejecutar actualización para todos los proveedores via Cron
-     */
-    public static function update_all_providers_stock_cron() {
-        $providers = ['PROMOIMPORT', 'ZECAT', 'CDO'];
-        $results = [];
-        
-        foreach ($providers as $provider) {
-            $results[$provider] = self::update_stock_from_json($provider);
-        }
-        
-        return $results;
-    }
+    
+    public static 
 
 
-    // Función para procesamiento por lotes de precios
+
     private static function update_price_from_json($provider, $offset = 0, $batch_size = 50) {
-        // Misma estructura que update_stock_from_json pero llamando a update_product_price
+
         $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
 
         if (!file_exists($filePath)) {
@@ -804,7 +621,7 @@ class cMulticatalogoGNUCron {
             $productsData = $productsData['data'];
         }
 
-        // Filtrar solo productos del proveedor
+
         $productsFilter = array_filter($productsData, function($product) use ($provider) {
             return isset($product['proveedor']) && $product['proveedor'] === $provider;
         });
@@ -816,7 +633,7 @@ class cMulticatalogoGNUCron {
             return false;
         }
 
-        // Procesar lote actual
+
         $productBatch = array_slice($productsFilter, $offset, $batch_size);
         $actualizados = 0;
         $errors = [];
@@ -835,8 +652,8 @@ class cMulticatalogoGNUCron {
         $nuevo_offset = $offset + $batch_size;
         $progreso = round(($nuevo_offset / $total_productos) * 100, 2);
 
-        // Log del progreso
-        // Si hay más productos, programar siguiente lote
+
+
         if ($nuevo_offset < $total_productos) {
             $next_batch_time = time() + 5; // 5 segundos de delay
 
@@ -862,18 +679,9 @@ class cMulticatalogoGNUCron {
         return self::update_price_from_json($provider, $offset);
     }
 
-    public static function update_all_providers_price_cron() {
-        $providers = ['PROMOIMPORT', 'ZECAT', 'CDO'];
-        $results = [];
-        
-        foreach ($providers as $provider) {
-            $results[$provider] = self::update_price_from_json($provider);
-        }
-        
-        return $results;
-    }
+    public static 
 
 }
 
-// Inicializar los hooks de cron
+
 cMulticatalogoGNUCron::init();

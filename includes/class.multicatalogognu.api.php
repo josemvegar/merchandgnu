@@ -1,12 +1,5 @@
 <?php
-/**
- * MultiCatalogo API Conexión Clases plugin
- * @link        https://josecortesia.cl
- * @since       1.0.0
- * 
- * @package     base
- * @subpackage  base/include
- */
+
 
 
 class cMultiCatalogoGNUApiRequest {
@@ -24,7 +17,7 @@ class cMultiCatalogoGNUApiRequest {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     
-            // Agregar el encabezado de autorización con el token Bearer
+
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
                 'Authorization: Bearer ' . $bearerToken
             ]);
@@ -39,7 +32,7 @@ class cMultiCatalogoGNUApiRequest {
                 if (!empty($data['generic_products'])) {
                     $allProducts = array_merge($allProducts, $data['generic_products']);
     
-                    // Actualizar el total de páginas después de la primera solicitud
+
                     if ($page === 1) {
                         $totalPages = $data['total_pages'] ?? $totalPages;
                     }
@@ -51,16 +44,16 @@ class cMultiCatalogoGNUApiRequest {
             }
         }
     
-        // Convertir el array de todos los productos a JSON
+
         $jsonData = json_encode($allProducts, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     
-        // Asegúrate de que el directorio exista o de manejar adecuadamente la posibilidad de que no exista.
+
         $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/zecat_products.json';
         if (!file_exists(dirname($filePath))) {
             mkdir(dirname($filePath), 0755, true); // Crear el directorio si no existe
         }
     
-        // Guardar los datos en un archivo JSON
+
         file_put_contents($filePath, $jsonData);
     
         return $allProducts;
@@ -101,16 +94,16 @@ class cMultiCatalogoGNUApiRequest {
         } while ($currentPage <= $totalPages);
     
 
-            // Convertir el array de todos los productos a JSON
+
             $jsonData = json_encode($allProducts, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     
-            // Asegúrate de que el directorio exista o de manejar adecuadamente la posibilidad de que no exista.
+
             $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/cdo_products.json';
             if (!file_exists(dirname($filePath))) {
                 mkdir(dirname($filePath), 0755, true); // Crear el directorio si no existe
             }
     
-            // Guardar los datos en un archivo JSON
+
             file_put_contents($filePath, $jsonData);
     
         return $allProducts;
@@ -134,16 +127,16 @@ class cMultiCatalogoGNUApiRequest {
             }
         }
     
-        // Convertir el array de todos los productos a JSON
+
         $jsonData = json_encode($allProducts, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     
-        // Asegurarse de que el directorio exista
+
         $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/promoimport_products.json';
         if (!file_exists(dirname($filePath))) {
             mkdir(dirname($filePath), 0755, true);
         }
     
-        // Guardar en archivo
+
         file_put_contents($filePath, $jsonData);
     
         return $allProducts;
