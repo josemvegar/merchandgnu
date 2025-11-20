@@ -47,22 +47,11 @@ class cMulticatalogoGNUCron {
         error_log('[MultiCatalogo Cron] Iniciando actualización de JSON - ' . current_time('mysql'));
         
         try {
-            // Actualizar Zecat
-            error_log('[MultiCatalogo Cron] Actualizando Zecat...');
+            // Actualizar proveedores y combinar JSON (silencioso)
             cMultiCatalogoGNUApiRequest::fgetProductsZecat();
-            
-            // Actualizar CDO
-            error_log('[MultiCatalogo Cron] Actualizando CDO...');
             cMultiCatalogoGNUApiRequest::fgetProductsCdo();
-            
-            // Actualizar PromoImport
-            error_log('[MultiCatalogo Cron] Actualizando PromoImport...');
             cMultiCatalogoGNUApiRequest::fgetProductsPromoImport();
-            
-            // Combinar JSON
-            error_log('[MultiCatalogo Cron] Combinando JSON...');
             self::combine_json_silent();
-            
             error_log('[MultiCatalogo Cron] Actualización de JSON completada exitosamente');
             
         } catch (Exception $e) {
@@ -77,22 +66,16 @@ class cMulticatalogoGNUCron {
         error_log('[MultiCatalogo Cron] Iniciando subida de productos - ' . current_time('mysql'));
         
         try {
-
             // Primero ejecutar limpiezas
             self::clean_duplicate_products();
             self::clean_products_without_images();
 
-            error_log('[MultiCatalogo Cron] Subida de productos ZECAT inciada...');
+            // Ejecutar subida por proveedores (silencioso)
             self::upload_from_json("ZECAT");
-
-            error_log('[MultiCatalogo Cron] Subida de productos ZECAT inciada...');
             self::upload_from_json("CDO");
-
-            error_log('[MultiCatalogo Cron] Subida de productos Promo Import inciada...');
             self::upload_from_json("promoimport");
 
             error_log('[MultiCatalogo Cron] Subida de productos completada exitosamente');
-            
         } catch (Exception $e) {
             error_log('[MultiCatalogo Cron] Error al subir productos: ' . $e->getMessage());
         }
@@ -105,23 +88,17 @@ class cMulticatalogoGNUCron {
         error_log('[MultiCatalogo Cron] Iniciando actualización de precios y stock - ' . current_time('mysql'));
         
         try {
-            // Actualizar Zecat
-            error_log('[MultiCatalogo Cron] Actualizando stock y precios Zecat...');
+            // Actualizar proveedores (silencioso)
             self::update_stock_from_json('ZECAT');
             self::update_price_from_json('ZECAT');
-            
-            // Actualizar CDO
-            error_log('[MultiCatalogo Cron] Actualizando stock y precios CDO...');
+
             self::update_stock_from_json('CDO');
             self::update_price_from_json('CDO');
-            
-            // Actualizar PromoImport
-            error_log('[MultiCatalogo Cron] Actualizando stock y precios PromoImport...');
+
             self::update_stock_from_json('promoimport');
             self::update_price_from_json('promoimport');
-            
+
             error_log('[MultiCatalogo Cron] Actualización de precios y stock completada');
-            
         } catch (Exception $e) {
             error_log('[MultiCatalogo Cron] Error al actualizar precios/stock: ' . $e->getMessage());
         }
@@ -407,7 +384,6 @@ class cMulticatalogoGNUCron {
         $mergedFilePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
         
         if (file_put_contents($mergedFilePath, json_encode($finalJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE))) {
-            error_log('[MultiCatalogo Cron] Archivo JSON combinado creado con éxito. Productos: ' . count($mergedProducts));
             return true;
         } else {
             error_log('[MultiCatalogo Cron] Error al guardar el archivo JSON combinado');
@@ -463,7 +439,6 @@ class cMulticatalogoGNUCron {
             $updated++;
         }
         
-        error_log("[MultiCatalogo Cron] Zecat: $updated productos actualizados");
         return $updated;
     }
 
@@ -520,7 +495,6 @@ class cMulticatalogoGNUCron {
             $updated++;
         }
         
-        error_log("[MultiCatalogo Cron] CDO: $updated productos actualizados");
         return $updated;
     }
 
@@ -572,7 +546,6 @@ class cMulticatalogoGNUCron {
             $updated++;
         }
         
-        error_log("[MultiCatalogo Cron] PromoImport: $updated productos actualizados");
         return $updated;
     }
 
@@ -609,7 +582,6 @@ class cMulticatalogoGNUCron {
         $total_productos = count($productsFilter);
         
         if ($total_productos === 0) {
-            error_log('[MultiCatalogo Cron] No se encontraron productos ' . $provider . ' para procesar.');
             return false;
         }
 
@@ -623,19 +595,17 @@ class cMulticatalogoGNUCron {
                 $result = cMulticatalogoGNUCatalog::createOrUpdateProductFromNormalizedData($productData);
                 if ($result) {
                     $creados++;
-                    error_log("✅ PRODUCTO CREADO: {$productData['ID']} - {$productData['nombre_del_producto']}");
                 }
             } catch (Exception $e) {
                 $errors[] = "Error con producto {$productData['ID']}: " . $e->getMessage();
-                error_log("❌ ERROR: {$productData['ID']} - " . $e->getMessage());
+                // exception captured in errors array
             }
         }
 
         $nuevo_offset = $offset + $batch_size;
         $progreso = round(($nuevo_offset / $total_productos) * 100, 2);
 
-        // Log del progreso
-        error_log("[MultiCatalogo Cron] Lote {$provider}: {$offset}-{$nuevo_offset} de {$total_productos} ({$progreso}%) - Creados: {$creados}");
+        // progreso calculado pero no logueado para evitar spam
 
         // Si hay más productos, programar siguiente lote
         if ($nuevo_offset < $total_productos) {
@@ -646,17 +616,14 @@ class cMulticatalogoGNUCron {
 
             if (!wp_next_scheduled($cron_hook, array($provider, $nuevo_offset))) {
                 wp_schedule_single_event($next_batch_time, $cron_hook, array($provider, $nuevo_offset));
-                error_log("[MultiCatalogo Cron] Siguiente lote programado para: " . date('H:i:s', $next_batch_time) . " - Proveedor: " . $provider);
             }
             
         } else {
-            // Proceso completado
-            error_log("[MultiCatalogo Cron] ✅ IMPORTACIÓN {$provider} COMPLETADA: {$total_productos} productos procesados");
+            // Proceso completado (no se loguea cada finalización para evitar llenar logs)
         }
     }
 
     public static function handle_batch_upload($provider, $offset) {
-        error_log("[MultiCatalogo Cron] Ejecutando lote para {$provider} desde offset: {$offset}");
         self::upload_from_json($provider, $offset);
     }
 
@@ -666,7 +633,7 @@ class cMulticatalogoGNUCron {
     private static function clean_duplicate_products() {
         global $wpdb;
         
-        error_log('[MultiCatalogo Clean] Buscando productos duplicados...');
+        // Buscar productos duplicados (no se loguea cada paso)
         
         // Consulta corregida - usar MAX(ID) en lugar de MAX(post_date)
         $query = "
@@ -689,19 +656,17 @@ class cMulticatalogoGNUCron {
         
         $duplicates = $wpdb->get_results($query);
         
+        $deleted = 0;
         if (!empty($duplicates)) {
-            error_log('[MultiCatalogo Clean] Encontrados ' . count($duplicates) . ' productos duplicados a eliminar');
-            
             foreach ($duplicates as $duplicate) {
-                error_log("[MultiCatalogo Clean] Eliminando producto duplicado (más reciente) - ID: {$duplicate->duplicate_id}, SKU: {$duplicate->sku}");
-                
-                // Eliminar producto y sus meta datos
                 wp_delete_post($duplicate->duplicate_id, true);
-                
-                error_log("[MultiCatalogo Clean] Producto eliminado: {$duplicate->duplicate_id}");
+                $deleted++;
             }
-        } else {
-            error_log('[MultiCatalogo Clean] No se encontraron productos duplicados');
+        }
+        // Solo un log resumen si se eliminaron duplicados
+        if ($deleted > 0) {
+            // Resumen de limpieza eliminado para evitar llenar los logs en producción.
+            // error_log('[MultiCatalogo Clean] Productos duplicados eliminados: ' . $deleted);
         }
     }
 
@@ -711,7 +676,7 @@ class cMulticatalogoGNUCron {
     private static function clean_products_without_images() {
         global $wpdb;
         
-        error_log('[MultiCatalogo Clean] Buscando productos sin imagen...');
+        // Buscar productos sin imagen (no se loguea cada paso)
         
         $query = "
             SELECT p.ID, p.post_title, pm_sku.meta_value as sku
@@ -726,19 +691,16 @@ class cMulticatalogoGNUCron {
         
         $products_without_images = $wpdb->get_results($query);
         
+        $deleted = 0;
         if (!empty($products_without_images)) {
-            error_log('[MultiCatalogo Clean] Encontrados ' . count($products_without_images) . ' productos sin imagen');
-            
             foreach ($products_without_images as $product) {
-                error_log("[MultiCatalogo Clean] Eliminando producto sin imagen - ID: {$product->ID}, SKU: {$product->sku}, Título: {$product->post_title}");
-                
-                // Eliminar producto y sus meta datos
                 wp_delete_post($product->ID, true);
-                
-                error_log("[MultiCatalogo Clean] Producto sin imagen eliminado: {$product->ID}");
+                $deleted++;
             }
-        } else {
-            error_log('[MultiCatalogo Clean] No se encontraron productos sin imagen');
+        }
+        if ($deleted > 0) {
+            // Resumen de limpieza eliminado para reducir ruido en error.log
+            // error_log('[MultiCatalogo Clean] Productos sin imagen eliminados: ' . $deleted);
         }
     }
 
@@ -747,7 +709,6 @@ class cMulticatalogoGNUCron {
         $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
 
         if (!file_exists($filePath)) {
-            error_log('[Stock Cron] Archivo JSON no encontrado: ' . $filePath);
             return false;
         }
 
@@ -755,7 +716,6 @@ class cMulticatalogoGNUCron {
         $productsData = json_decode($jsonContent, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            error_log('[Stock Cron] Error al decodificar JSON: ' . json_last_error_msg());
             return false;
         }
 
@@ -772,7 +732,8 @@ class cMulticatalogoGNUCron {
         $total_productos = count($productsFilter);
         
         if ($total_productos === 0) {
-            error_log('[Stock Cron] No se encontraron productos ' . $provider . ' para actualizar stock.');
+            // No se encontraron productos para actualizar — evitar log por cada ejecución vacía
+            // error_log('[Stock Cron] No se encontraron productos ' . $provider . ' para actualizar stock.');
             return false;
         }
 
@@ -786,19 +747,16 @@ class cMulticatalogoGNUCron {
                 $result = cMulticatalogoGNUStock::update_product_stock($productData);
                 if ($result) {
                     $actualizados++;
-                    error_log("✅ STOCK ACTUALIZADO: {$productData['ID']} - {$productData['nombre_del_producto']}");
                 }
             } catch (Exception $e) {
                 $errors[] = "Error actualizando stock producto {$productData['ID']}: " . $e->getMessage();
-                error_log("❌ ERROR STOCK: {$productData['ID']} - " . $e->getMessage());
             }
         }
 
         $nuevo_offset = $offset + $batch_size;
         $progreso = round(($nuevo_offset / $total_productos) * 100, 2);
 
-        // Log del progreso
-        error_log("[Stock Cron] Lote {$provider}: {$offset}-{$nuevo_offset} de {$total_productos} ({$progreso}%) - Actualizados: {$actualizados}");
+        // progreso calculado pero no logueado para evitar spam
 
         // Si hay más productos, programar siguiente lote
         if ($nuevo_offset < $total_productos) {
@@ -809,12 +767,10 @@ class cMulticatalogoGNUCron {
 
             if (!wp_next_scheduled($cron_hook, array($provider, $nuevo_offset))) {
                 wp_schedule_single_event($next_batch_time, $cron_hook, array($provider, $nuevo_offset));
-                error_log("[Stock Cron] Siguiente lote programado para: " . date('H:i:s', $next_batch_time) . " - Proveedor: " . $provider);
             }
             
         } else {
-            // Proceso completado
-            error_log("[Stock Cron] ✅ ACTUALIZACIÓN STOCK {$provider} COMPLETADA: {$total_productos} productos actualizados");
+            // Proceso completado (sin log para evitar crecimiento de logs)
         }
 
         return [
@@ -827,7 +783,6 @@ class cMulticatalogoGNUCron {
     }
 
     public static function handle_batch_stock($provider, $offset = 0) {
-        error_log("[Stock Cron] Ejecutando lote stock para {$provider} desde offset: {$offset}");
         return self::update_stock_from_json($provider, $offset);
     }
 
@@ -841,8 +796,6 @@ class cMulticatalogoGNUCron {
         foreach ($providers as $provider) {
             $results[$provider] = self::update_stock_from_json($provider);
         }
-        
-        error_log("[Stock Cron] Resumen actualización: " . print_r($results, true));
         return $results;
     }
 
@@ -853,7 +806,6 @@ class cMulticatalogoGNUCron {
         $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
 
         if (!file_exists($filePath)) {
-            error_log('[Price Cron] Archivo JSON no encontrado: ' . $filePath);
             return false;
         }
 
@@ -861,7 +813,6 @@ class cMulticatalogoGNUCron {
         $productsData = json_decode($jsonContent, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            error_log('[Price Cron] Error al decodificar JSON: ' . json_last_error_msg());
             return false;
         }
 
@@ -878,7 +829,6 @@ class cMulticatalogoGNUCron {
         $total_productos = count($productsFilter);
         
         if ($total_productos === 0) {
-            error_log('[Price Cron] No se encontraron productos ' . $provider . ' para actualizar precios.');
             return false;
         }
 
@@ -892,19 +842,16 @@ class cMulticatalogoGNUCron {
                 $result = cMulticatalogoGNUPrice::update_product_price($productData);
                 if ($result) {
                     $actualizados++;
-                    error_log("✅ PRECIO ACTUALIZADO: {$productData['ID']} - {$productData['nombre_del_producto']}");
                 }
             } catch (Exception $e) {
                 $errors[] = "Error actualizando precio producto {$productData['ID']}: " . $e->getMessage();
-                error_log("❌ ERROR PRECIO: {$productData['ID']} - " . $e->getMessage());
             }
         }
 
         $nuevo_offset = $offset + $batch_size;
         $progreso = round(($nuevo_offset / $total_productos) * 100, 2);
 
-        // Log del progreso
-        error_log("[Price Cron] Lote {$provider}: {$offset}-{$nuevo_offset} de {$total_productos} ({$progreso}%) - Actualizados: {$actualizados}");
+        // progreso calculado pero no logueado para evitar spam
 
         // Si hay más productos, programar siguiente lote
         if ($nuevo_offset < $total_productos) {
@@ -914,11 +861,10 @@ class cMulticatalogoGNUCron {
 
             if (!wp_next_scheduled($cron_hook, array($provider, $nuevo_offset))) {
                 wp_schedule_single_event($next_batch_time, $cron_hook, array($provider, $nuevo_offset));
-                error_log("[Price Cron] Siguiente lote programado para: " . date('H:i:s', $next_batch_time) . " - Proveedor: " . $provider);
             }
             
         } else {
-            error_log("[Price Cron] ✅ ACTUALIZACIÓN PRECIOS {$provider} COMPLETADA: {$total_productos} productos actualizados");
+            // completado (sin log para minimizar ruido)
         }
 
         return [
@@ -931,7 +877,6 @@ class cMulticatalogoGNUCron {
     }
 
     public static function handle_batch_price($provider, $offset = 0) {
-        error_log("[Price Cron] Ejecutando lote precios para {$provider} desde offset: {$offset}");
         return self::update_price_from_json($provider, $offset);
     }
 
@@ -942,8 +887,6 @@ class cMulticatalogoGNUCron {
         foreach ($providers as $provider) {
             $results[$provider] = self::update_price_from_json($provider);
         }
-        
-        error_log("[Stock Cron] Resumen actualización: " . print_r($results, true));
         return $results;
     }
 

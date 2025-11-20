@@ -224,20 +224,17 @@ class cMulticatalogoGNUPrice {
         $sku = self::generate_sku($productData);
         
         if (!$sku) {
-            error_log("No se pudo generar SKU para producto (precio): " . print_r($productData['ID'] ?? 'Sin ID', true));
             return false;
         }
 
         $existingProductId = wc_get_product_id_by_sku($sku);
         
         if (!$existingProductId) {
-            error_log("Producto no encontrado con SKU (precio): " . $sku);
             return false;
         }
 
         $product = wc_get_product($existingProductId);
         if (!$product) {
-            error_log("No se pudo obtener el objeto del producto con SKU (precio): " . $sku);
             return false;
         }
 
@@ -280,10 +277,8 @@ class cMulticatalogoGNUPrice {
         $save_result = $parent_product->save();
 
         if ($save_result) {
-            error_log("Precio producto variable actualizado - SKU: " . $parent_sku . " - Precio: " . $parent_price . " - Variaciones actualizadas: " . $total_variations_updated);
             return true;
         } else {
-            error_log("Error al guardar precio producto variable con SKU: " . $parent_sku);
             return false;
         }
     }
@@ -317,10 +312,8 @@ class cMulticatalogoGNUPrice {
         $save_result = $product->save();
 
         if ($save_result) {
-            error_log("Precio actualizado para SKU: " . $sku . " - Precio: " . $new_price . " - Proveedor: " . $productData['proveedor']);
             return true;
         } else {
-            error_log("Error al guardar el precio para el producto con SKU: " . $sku);
             return false;
         }
     }
@@ -346,12 +339,9 @@ class cMulticatalogoGNUPrice {
                 $save_result = $variation->save();
                 
                 if ($save_result) {
-                    error_log("Precio variación actualizado - SKU: " . $variation_sku . " - Precio: " . $price);
                     return true;
                 }
             }
-        } else {
-            error_log("Variación no encontrada con SKU (precio): " . $variation_sku);
         }
         
         return false;
