@@ -326,7 +326,6 @@ class cMulticatalogoGNUCatalog {
                             ));
 
                             if (is_wp_error($term)) {
-                                error_log("Error al crear la categoría: " . $category_name . " - " . $term->get_error_message());
                                 continue;
                             }
                         }
@@ -503,8 +502,7 @@ class cMulticatalogoGNUCatalog {
                             $basePrice = isset($variant['list_price']) ? floatval($variant['list_price']) : 0;
                             $precio_con_margen = round($basePrice * 1.5, 0, PHP_ROUND_HALF_UP); // Aplicamos 50% de ganancia
                             $product->set_regular_price($precio_con_margen);
-                            error_log("Precio: " . $precio_con_margen);
-                        }
+                            }
                         $product->set_stock_quantity($totalStock);
                     }
                 }
@@ -528,7 +526,6 @@ class cMulticatalogoGNUCatalog {
                             ));
 
                             if (is_wp_error($term)) {
-                                error_log("Error al crear la categoría: " . $category_name . " - " . $term->get_error_message());
                                 continue;
                             }
                         }
@@ -541,8 +538,7 @@ class cMulticatalogoGNUCatalog {
                 // Asignar imágenes
                 if (!empty($productData)) {
                     cMulticatalogoGNUCatalog::asignarImagenesProducto($product_id, $productData);
-                    error_log("Entro ");
-                }
+                    }
                 $actualizados++;
             }
                 
@@ -608,7 +604,6 @@ class cMulticatalogoGNUCatalog {
         curl_close($ch);
     
         if ($http_code !== 200 || empty($image_data)) {
-            error_log("Error al descargar imagen: $image_url (HTTP $http_code)");
             return false;
         }
     
@@ -831,13 +826,11 @@ public static function fcreateWooCommerceProductsFromJsonGlobo() {
             if ($result) {
                 $creados++;
                 // ✅ SOLO log cuando se crea exitosamente
-                error_log("✅ PRODUCTO CREADO: {$productData['ID']} - {$productData['nombre_del_producto']}");
-            }
+                }
         } catch (Exception $e) {
             $errors[] = "Error con producto {$productData['ID']}: " . $e->getMessage();
             // ✅ SOLO log de errores reales
-            error_log("❌ ERROR: {$productData['ID']} - " . $e->getMessage());
-        }
+            }
     }
 
     $response = [

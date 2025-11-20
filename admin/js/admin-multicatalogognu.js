@@ -673,13 +673,7 @@ jQuery(document).ready(() => {
       success: (data) => {
         jQuery("#actualizarstockcdoglobo .fa-spin").remove()
         jQuery("#actualizarstockcdoglobo").removeClass("disabled")
-        console.log(data)
-
-        alert("Actualización completada")
-        jQuery(".loadermerchan").show()
-        jQuery(".popup-overlay-merchan").fadeIn("slow")
-        //location.reload();
-      },
+        },
     })
   })
 
@@ -704,13 +698,7 @@ jQuery(document).ready(() => {
       success: (data) => {
         jQuery("#actualizarstockzecatglobo .fa-spin").remove()
         jQuery("#actualizarstockzecatglobo").removeClass("disabled")
-        console.log(data)
-
-        alert("Actualización completada")
-        jQuery(".loadermerchan").show()
-        jQuery(".popup-overlay-merchan").fadeIn("slow")
-        //location.reload();
-      },
+        },
     })
   })
 
@@ -735,13 +723,7 @@ jQuery(document).ready(() => {
       success: (data) => {
         jQuery("#actualizarpreciozecatcdo .fa-spin").remove()
         jQuery("#actualizarpreciozecatcdo").removeClass("disabled")
-        console.log(data)
-
-        alert("Actualización completada")
-        jQuery(".loadermerchan").show()
-        jQuery(".popup-overlay-merchan").fadeIn("slow")
-        //location.reload();
-      },
+        },
     })
   })
 
@@ -766,13 +748,7 @@ jQuery(document).ready(() => {
       success: (data) => {
         jQuery("#actualizarpreciozecatcdov1 .fa-spin").remove()
         jQuery("#actualizarpreciozecatcdov1").removeClass("disabled")
-        console.log(data)
-
-        alert("Actualización completada")
-        jQuery(".loadermerchan").show()
-        jQuery(".popup-overlay-merchan").fadeIn("slow")
-        //location.reload();
-      },
+        },
     })
   })
 
@@ -799,7 +775,6 @@ jQuery(document).ready(() => {
                   if (data && data.success) {
                       // Si quedan más páginas por procesar, continuar con la siguiente
                       if (data.data && data.data.hasMorePages) {
-                          console.log(`Procesando página ${page + 1} de ${totalPages}`);
                           sessionStorage.setItem('currentPricePage', page + 1);
                           loadPriceBatch(page + 1, totalPages); // Llamar de nuevo para procesar la siguiente página
                       } else {
@@ -838,11 +813,8 @@ jQuery(document).ready(() => {
               page: 0
           },
           success: function(data) {
-            console.log(data);
-              if (data && data.success) {
+            if (data && data.success) {
                   var totalPages = Math.ceil(data.total_products / 5); // Cambiado a procesar 1 producto por página
-                  console.log(`Total de páginas a procesar: ${totalPages}`);
-                  
                   var currentPage = parseInt(sessionStorage.getItem('currentPricePage')) || 0;
                   loadPriceBatch(currentPage, totalPages); // Iniciar el proceso de actualización por lotes
               } else {
@@ -876,13 +848,7 @@ jQuery(document).ready(() => {
       success: (data) => {
         jQuery("#publicarproductoszecatcdo .fa-spin").remove()
         jQuery("#publicarproductoszecatcdo").removeClass("disabled")
-        console.log(data)
-
-        alert("Actualización completada")
-        jQuery(".loadermerchan").show()
-        jQuery(".popup-overlay-merchan").fadeIn("slow")
-        //location.reload();
-      },
+        },
     })
   })
 
@@ -907,13 +873,7 @@ jQuery(document).ready(() => {
       success: (data) => {
         jQuery("#publicarproductoszecatcdov1 .fa-spin").remove()
         jQuery("#publicarproductoszecatcdov1").removeClass("disabled")
-        console.log(data)
-
-        alert("Actualización completada")
-        jQuery(".loadermerchan").show()
-        jQuery(".popup-overlay-merchan").fadeIn("slow")
-        //location.reload();
-      },
+        },
     })
   })
 

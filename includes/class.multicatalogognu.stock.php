@@ -43,7 +43,6 @@ class cMulticatalogoGNUStock {
     
         foreach ($productBatch as $productData) {
             if (!isset($productData['sku'])) {
-                error_log("Falta SKU en producto PromoImport: " . print_r($productData, true));
                 continue;
             }
     
@@ -51,13 +50,11 @@ class cMulticatalogoGNUStock {
             $existingProductId = wc_get_product_id_by_sku($sku);
     
             if (!$existingProductId) {
-                error_log("Producto no encontrado con SKU: " . $sku);
                 continue;
             }
     
             $product = wc_get_product($existingProductId);
             if (!$product) {
-                error_log("No se pudo obtener el objeto del producto con SKU: " . $sku);
                 continue;
             }
     
@@ -82,11 +79,9 @@ class cMulticatalogoGNUStock {
             $save_result = $product->save();
     
             if ($save_result) {
-                error_log("Stock actualizado para SKU: $sku con cantidad: $total_stock");
                 $actualizados++;
             } else {
-                error_log("Error al guardar el stock para el producto con SKU: $sku");
-            }
+                }
         }
     
         wp_send_json_success(array(
@@ -138,7 +133,6 @@ class cMulticatalogoGNUStock {
 
             // Verificar que 'id' existe
             if (!isset($productData['id'])) {
-                error_log("Campo 'id' no encontrado en el producto: " . print_r($productData, true));
                 continue;
             }
     
@@ -148,19 +142,16 @@ class cMulticatalogoGNUStock {
             // Obtener el producto por SKU
             $parent_product_id = wc_get_product_id_by_sku($parent_sku);
             if (!$parent_product_id) {
-                error_log("Producto no encontrado con SKU: " . $parent_sku);
                 continue;
             }
     
             $parent_product = wc_get_product($parent_product_id);
             if (!$parent_product) {
-                error_log("No se pudo obtener el objeto del producto con SKU: " . $parent_sku);
                 continue;
             }
     
             // Verificar si 'products' existe y es un array
             if (!isset($productData['products']) || !is_array($productData['products'])) {
-                error_log("Campo 'products' no encontrado o no es un array para el producto ID: " . $product_id);
                 continue;
             }
     
@@ -194,11 +185,9 @@ class cMulticatalogoGNUStock {
     
             if ($save_result) {
                 // Registrar la actualización exitosa
-                error_log("Stock actualizado para SKU: " . $parent_sku . " a " . ($hay_existencia ? "instock (1000)" : "outofstock"));
                 $actualizados++;
             } else {
-                error_log("Error al guardar los cambios para el producto con SKU: " . $parent_sku);
-            }
+                }
     
             
         }
@@ -261,7 +250,6 @@ class cMulticatalogoGNUStock {
                 // Obtener el objeto del producto
                 $product = wc_get_product($existingProductId);
                 if (!$product) {
-                    error_log("No se pudo obtener el objeto del producto con SKU: " . $sku);
                     continue;
                 }
 
@@ -280,7 +268,6 @@ class cMulticatalogoGNUStock {
                     }
                 } else {
                     // Si no se encuentra stock_available ni en el producto ni en variantes
-                    error_log("Campo 'stock_available' no encontrado para el producto con SKU: " . $sku);
                     continue;
                 }
 
@@ -300,15 +287,12 @@ class cMulticatalogoGNUStock {
 
                 if ($save_result) {
                     // Registrar la actualización exitosa
-                    error_log("Stock actualizado para SKU: " . $sku . " a " . $new_stock);
                     $actualizados++;
                 } else {
-                    error_log("Error al guardar los cambios para el producto con SKU: " . $sku);
-                }
+                    }
             } else {
                 // El producto con el SKU no existe
-                error_log("Producto no encontrado con SKU: " . $sku);
-            }            
+                }            
     
             
         }
@@ -440,20 +424,17 @@ class cMulticatalogoGNUStock {
         $sku = self::generate_sku($productData);
         
         if (!$sku) {
-            error_log("No se pudo generar SKU para producto: " . print_r($productData['ID'] ?? 'Sin ID', true));
             return false;
         }
 
         $existingProductId = wc_get_product_id_by_sku($sku);
         
         if (!$existingProductId) {
-            error_log("Producto no encontrado con SKU: " . $sku);
             return false;
         }
 
         $product = wc_get_product($existingProductId);
         if (!$product) {
-            error_log("No se pudo obtener el objeto del producto con SKU: " . $sku);
             return false;
         }
 
@@ -500,10 +481,8 @@ class cMulticatalogoGNUStock {
         $save_result = $parent_product->save();
 
         if ($save_result) {
-            error_log("Producto variable actualizado - SKU: " . $parent_sku . " - Estado: " . ($has_stock ? "instock" : "outofstock") . " - Variaciones actualizadas: " . $total_variations_updated);
             return true;
         } else {
-            error_log("Error al guardar producto variable con SKU: " . $parent_sku);
             return false;
         }
     }
@@ -529,10 +508,8 @@ class cMulticatalogoGNUStock {
         $save_result = $product->save();
 
         if ($save_result) {
-            error_log("Stock actualizado para SKU: " . $sku . " - Cantidad: " . $new_stock . " - Proveedor: " . $productData['proveedor']);
             return true;
         } else {
-            error_log("Error al guardar el stock para el producto con SKU: " . $sku);
             return false;
         }
     }
@@ -559,13 +536,11 @@ class cMulticatalogoGNUStock {
                 $save_result = $variation->save();
                 
                 if ($save_result) {
-                    error_log("Variación actualizada - SKU: " . $variation_sku . " - Stock: " . $stock);
                     return true;
                 }
             }
         } else {
-            error_log("Variación no encontrada con SKU: " . $variation_sku);
-        }
+            }
         
         return false;
     }

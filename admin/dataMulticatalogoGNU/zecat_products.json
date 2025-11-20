@@ -47685,7 +47685,7 @@
                 "primary_color": "#bdac7a",
                 "secondary_color": "#bdac7a",
                 "achromatic": false,
-                "stock": 0,
+                "stock": 85,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -51485,7 +51485,7 @@
                 "primary_color": "#bdac7a",
                 "secondary_color": "#bdac7a",
                 "achromatic": false,
-                "stock": 6483,
+                "stock": 6412,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -100170,7 +100170,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 649,
+                "stock": 698,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
