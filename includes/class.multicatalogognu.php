@@ -58,6 +58,8 @@ class cMultiCatalogoGNU {
 
 		add_action( 'wp_ajax_multicatalogo_save_config', array( 'cMulticatalogoGNUConfig', 'ajax_save_config' ));
 
+		add_action( 'wp_ajax_multicatalogo_toggle_auto_updates', array( 'cMulticatalogoGNUConfig', 'ajax_toggle_auto_updates' ));
+
 		add_action( 'wp_ajax_multicatalogo_save_mapping', array( 'cMulticatalogoGNUCategories', 'ajax_save_mapping' ));
 		add_action( 'wp_ajax_multicatalogo_delete_mapping', array( 'cMulticatalogoGNUCategories', 'ajax_delete_mapping' ));
 
@@ -220,6 +222,15 @@ class cMultiCatalogoGNU {
 				'ajax_url' => admin_url('admin-ajax.php'),
 				'nonce'    => wp_create_nonce('multicatalogo_save_config_nonce'),
 				'action'   => 'multicatalogo_save_config',
+			)
+		);
+
+		// Localize script para toggle de actualizaciones automáticas
+		wp_localize_script('admin-multicatalogognu', 'multicatalogo_toggle_auto_updates',
+			array(
+				'ajax_url' => admin_url('admin-ajax.php'),
+				'nonce'    => wp_create_nonce('multicatalogo_toggle_auto_updates_nonce'),
+				'action'   => 'multicatalogo_toggle_auto_updates',
 			)
 		);
 
