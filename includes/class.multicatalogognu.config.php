@@ -134,6 +134,59 @@ class cMulticatalogoGNUConfig {
     }
 
     /**
+     * Get auto updates enabled status
+     */
+    public static function get_auto_updates_enabled() {
+        global $wpdb;
+        $table = $wpdb->prefix . 'multicatalogo_config';
+        $result = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT config_value FROM $table WHERE config_key = %s",
+                'auto_updates_enabled'
+            )
+        );
+        return $result ? $result : '0';
+    }
+
+    /**
+     * Update auto updates enabled status
+     */
+    public static function update_auto_updates_enabled($enabled) {
+        global $wpdb;
+        $table = $wpdb->prefix . 'multicatalogo_config';
+        
+        $wpdb->replace(
+            $table,
+            array(
+                'config_key' => 'auto_updates_enabled',
+                'config_value' => $enabled
+            ),
+            array('%s', '%s')
+        );
+        
+        return true;
+    }
+
+    /**
+     * AJAX: Toggle auto updates
+     */
+    public static function ajax_toggle_auto_updates() {
+        check_ajax_referer('multicatalogo_auto_updates_nonce', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(array('message' => 'Permisos insuficientes.'));
+            return;
+        }
+
+        $enabled = isset($_POST['enabled']) ? sanitize_text_field($_POST['enabled']) : '0';
+        
+        self::update_auto_updates_enabled($enabled);
+        
+        $status = $enabled === '1' ? 'Actualizaciones automáticas activadas' : 'Actualizaciones automáticas desactivadas';
+        wp_send_json_success(array('message' => $status));
+    }
+
+    /**
      * AJAX: Guardar configuración
      */
     public static function ajax_save_config() {
