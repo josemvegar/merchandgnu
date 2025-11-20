@@ -57,9 +57,6 @@ class cMultiCatalogoGNU {
 		add_action( 'wp_ajax_ActualizarListaProductos', 	array( 'cMulticatalogoGNUAdmin',	  'combinar_json_zecat_cdo')); 
 
 		add_action( 'wp_ajax_multicatalogo_save_config', array( 'cMulticatalogoGNUConfig', 'ajax_save_config' ));
-		
-		// Agregar acción AJAX para toggle de actualizaciones automáticas
-		add_action( 'wp_ajax_multicatalogo_toggle_auto_updates', array( 'cMulticatalogoGNUConfig', 'ajax_toggle_auto_updates' ));
 
 		add_action( 'wp_ajax_multicatalogo_save_mapping', array( 'cMulticatalogoGNUCategories', 'ajax_save_mapping' ));
 		add_action( 'wp_ajax_multicatalogo_delete_mapping', array( 'cMulticatalogoGNUCategories', 'ajax_delete_mapping' ));

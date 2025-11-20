@@ -180,6 +180,24 @@ class cMulticatalogoGNUConfig {
 
         $enabled = isset($_POST['enabled']) ? sanitize_text_field($_POST['enabled']) : '0';
         
+        if ($enabled === '1') {
+            // Activar los cron jobs
+            if (!wp_next_scheduled('multicatalogo_hourly_update_json')) {
+                wp_schedule_event(time(), 'hourly', 'multicatalogo_hourly_update_json');
+            }
+            if (!wp_next_scheduled('multicatalogo_hourly_upload_products')) {
+                wp_schedule_event(time(), 'hourly', 'multicatalogo_hourly_upload_products');
+            }
+            if (!wp_next_scheduled('multicatalogo_hourly_update_prices_stock')) {
+                wp_schedule_event(time(), 'hourly', 'multicatalogo_hourly_update_prices_stock');
+            }
+        } else {
+            // Desactivar los cron jobs
+            wp_clear_scheduled_hook('multicatalogo_hourly_update_json');
+            wp_clear_scheduled_hook('multicatalogo_hourly_upload_products');
+            wp_clear_scheduled_hook('multicatalogo_hourly_update_prices_stock');
+        }
+        
         self::update_auto_updates_enabled($enabled);
         
         $status = $enabled === '1' ? 'Actualizaciones automáticas activadas' : 'Actualizaciones automáticas desactivadas';
