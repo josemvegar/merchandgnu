@@ -5710,6 +5710,17 @@
         ],
         "images": [
             {
+                "id": "34417",
+                "image_url": "https:\/\/images-cdn.zecat.cl\/generic_products\/c7uct0wcsvg-1762203047.webp",
+                "small_image_url": null,
+                "medium_image_url": null,
+                "main": false,
+                "main_integrator": false,
+                "created_at": "2025-11-03T20:50:47.065Z",
+                "variant": null,
+                "order": 4
+            },
+            {
                 "id": "34073",
                 "image_url": "https:\/\/images-cdn.zecat.cl\/generic_products\/ysx8f8xjo7m-1761768183.webp",
                 "small_image_url": null,
@@ -5718,7 +5729,7 @@
                 "main_integrator": false,
                 "created_at": "2025-10-29T20:03:03.614Z",
                 "variant": "Blanco \/ Blanco \/ Poliestileno",
-                "order": 0
+                "order": 2
             },
             {
                 "id": "34074",
@@ -5729,29 +5740,18 @@
                 "main_integrator": false,
                 "created_at": "2025-10-29T20:03:03.616Z",
                 "variant": "Blanco \/ Blanco \/ Poliestileno",
-                "order": 1
+                "order": 3
             },
             {
-                "id": "34417",
-                "image_url": "https:\/\/images-cdn.zecat.cl\/generic_products\/c7uct0wcsvg-1762203047.webp",
-                "small_image_url": null,
-                "medium_image_url": null,
-                "main": false,
-                "main_integrator": false,
-                "created_at": "2025-11-03T20:50:47.065Z",
-                "variant": null,
-                "order": 2
-            },
-            {
-                "id": "34418",
-                "image_url": "https:\/\/images-cdn.zecat.cl\/generic_products\/g65pvihpebc-1762203046.webp",
+                "id": "34952",
+                "image_url": "https:\/\/images-cdn.zecat.cl\/generic_products\/54dj23jxzww-1763666821.webp",
                 "small_image_url": null,
                 "medium_image_url": null,
                 "main": true,
                 "main_integrator": true,
-                "created_at": "2025-11-03T20:50:47.077Z",
+                "created_at": "2025-11-20T19:27:01.308Z",
                 "variant": null,
-                "order": 3
+                "order": 1
             }
         ],
         "featured": false,
@@ -10642,7 +10642,7 @@
                 "primary_color": "#008000",
                 "secondary_color": "#008000",
                 "achromatic": false,
-                "stock": 6042,
+                "stock": 5859,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -15531,7 +15531,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 8561,
+                "stock": 8373,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -16250,7 +16250,7 @@
                 "primary_color": "#440fd7",
                 "secondary_color": "#440fd7",
                 "achromatic": false,
-                "stock": 14850,
+                "stock": 14790,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -36170,7 +36170,7 @@
                 "primary_color": "#0000FF",
                 "secondary_color": "#0000FF",
                 "achromatic": false,
-                "stock": 6034,
+                "stock": 5984,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -39996,7 +39996,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 1322,
+                "stock": 1014,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -42474,7 +42474,7 @@
                 "primary_color": "#FFFFFF",
                 "secondary_color": "#FFFFFF",
                 "achromatic": true,
-                "stock": 1007,
+                "stock": 960,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -58959,7 +58959,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 5717,
+                "stock": 5709,
                 "size": "Large",
                 "color": "Negro",
                 "product_stock_arrival": []
@@ -60770,7 +60770,7 @@
                 "primary_color": "#FFFFFF",
                 "secondary_color": "#FFFFFF",
                 "achromatic": true,
-                "stock": 357,
+                "stock": 387,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -75129,7 +75129,7 @@
                 "primary_color": "#D3D3D3",
                 "secondary_color": "#D3D3D3",
                 "achromatic": true,
-                "stock": 2021,
+                "stock": 1991,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -79660,7 +79660,7 @@
                 "primary_color": "#0000FF",
                 "secondary_color": "#0000FF",
                 "achromatic": false,
-                "stock": 3324,
+                "stock": 3314,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -81057,7 +81057,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 9083,
+                "stock": 9082,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -95204,7 +95204,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 1570,
+                "stock": 1510,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -104122,7 +104122,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 1113,
+                "stock": 1112,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -113933,7 +113933,7 @@
                 "primary_color": "#FFFFFF",
                 "secondary_color": "#FFFFFF",
                 "achromatic": false,
-                "stock": 1953,
+                "stock": 1943,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -114828,7 +114828,7 @@
                 "primary_color": "#000000",
                 "secondary_color": "#000000",
                 "achromatic": true,
-                "stock": 2152,
+                "stock": 2132,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -116339,7 +116339,7 @@
                 "primary_color": "#D3D3D3",
                 "secondary_color": "#D3D3D3",
                 "achromatic": true,
-                "stock": 1067,
+                "stock": 1047,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -117024,7 +117024,7 @@
                 "primary_color": "#D3D3D3",
                 "secondary_color": "#D3D3D3",
                 "achromatic": true,
-                "stock": 2342,
+                "stock": 2334,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []
@@ -119413,7 +119413,7 @@
                 "primary_color": "#D3D3D3",
                 "secondary_color": "#D3D3D3",
                 "achromatic": true,
-                "stock": 489,
+                "stock": 305,
                 "size": "",
                 "color": "",
                 "product_stock_arrival": []

@@ -60,6 +60,9 @@ class cMultiCatalogoGNU {
 
 		add_action( 'wp_ajax_multicatalogo_toggle_auto_updates', array( 'cMulticatalogoGNUConfig', 'ajax_toggle_auto_updates' ));
 
+		// Toggle para reverse sync (eliminar productos no presentes en JSON)
+		add_action( 'wp_ajax_multicatalogo_toggle_reverse_sync', array( 'cMulticatalogoGNUConfig', 'ajax_toggle_reverse_sync' ));
+
 		add_action( 'wp_ajax_multicatalogo_save_mapping', array( 'cMulticatalogoGNUCategories', 'ajax_save_mapping' ));
 		add_action( 'wp_ajax_multicatalogo_delete_mapping', array( 'cMulticatalogoGNUCategories', 'ajax_delete_mapping' ));
 
@@ -217,6 +220,15 @@ class cMultiCatalogoGNU {
 				'ajax_url' => admin_url('admin-ajax.php'),
 				'nonce'    => wp_create_nonce('multicatalogo_toggle_auto_updates_nonce'),
 				'action'   => 'multicatalogo_toggle_auto_updates',
+			)
+		);
+
+		// Localize script para toggle reverse sync
+		wp_localize_script('admin-multicatalogognu', 'multicatalogo_toggle_reverse_sync',
+			array(
+				'ajax_url' => admin_url('admin-ajax.php'),
+				'nonce'    => wp_create_nonce('multicatalogo_toggle_reverse_sync_nonce'),
+				'action'   => 'multicatalogo_toggle_reverse_sync',
 			)
 		);
 

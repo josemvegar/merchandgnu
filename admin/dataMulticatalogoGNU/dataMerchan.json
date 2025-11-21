@@ -1149,12 +1149,12 @@
             "nombre_del_producto": "Lanyard Pass",
             "descripcion": "Cinta porta credencial blanca de poliéster con gancho metálico, fabricada en poliéster y aleación de zinc. Cuenta con doble mosquetón metálico resistente que asegura credenciales e identificaciones de manera práctica y segura. Es ideal para empresas, instituciones educativas, ferias, congresos y todo tipo de eventos donde se requiera portar identificación visible.\n\nTAHG.",
             "precio": 515,
-            "image": "<a href=\"https:\/\/images-cdn.zecat.cl\/generic_products\/ysx8f8xjo7m-1761768183.webp\" target=\"_blank\">Ver imagen<\/a>",
+            "image": "<a href=\"https:\/\/images-cdn.zecat.cl\/generic_products\/c7uct0wcsvg-1762203047.webp\" target=\"_blank\">Ver imagen<\/a>",
             "galery": [
+                "https:\/\/images-cdn.zecat.cl\/generic_products\/c7uct0wcsvg-1762203047.webp",
                 "https:\/\/images-cdn.zecat.cl\/generic_products\/ysx8f8xjo7m-1761768183.webp",
                 "https:\/\/images-cdn.zecat.cl\/generic_products\/d6c3ndn3k3e-1761768183.webp",
-                "https:\/\/images-cdn.zecat.cl\/generic_products\/c7uct0wcsvg-1762203047.webp",
-                "https:\/\/images-cdn.zecat.cl\/generic_products\/g65pvihpebc-1762203046.webp"
+                "https:\/\/images-cdn.zecat.cl\/generic_products\/54dj23jxzww-1763666821.webp"
             ],
             "stock": 29699,
             "proveedor": "ZECAT",
@@ -2170,7 +2170,7 @@
                     "Combinations": {
                         "Variante": "Verde Pistacho \/ Verde Pistacho \/ ."
                     },
-                    "Stock": 6042,
+                    "Stock": 5859,
                     "Precio": 851,
                     "sku": "zt04331",
                     "sku_proveedor": "10097000022088088000"
@@ -3227,7 +3227,7 @@
                     "Combinations": {
                         "Variante": "Negro \/ Negro \/ ."
                     },
-                    "Stock": 8561,
+                    "Stock": 8373,
                     "Precio": 1106,
                     "sku": "zt01583",
                     "sku_proveedor": "10094000031062062000"
@@ -3385,7 +3385,7 @@
                     "Combinations": {
                         "Variante": "Azul \/ Azul \/ Papel"
                     },
-                    "Stock": 14850,
+                    "Stock": 14790,
                     "Precio": 1120,
                     "sku": "zt05127",
                     "sku_proveedor": "99030778211D09D09D05"
@@ -7537,7 +7537,7 @@
                     "Combinations": {
                         "Variante": "Azul \/ Azul \/ ."
                     },
-                    "Stock": 6034,
+                    "Stock": 5984,
                     "Precio": 2706,
                     "sku": "zt04817",
                     "sku_proveedor": "04037000006009009000"
@@ -8285,7 +8285,7 @@
                     "Combinations": {
                         "Variante": "Negro \/ Negro \/ ."
                     },
-                    "Stock": 1322,
+                    "Stock": 1014,
                     "Precio": 3070,
                     "sku": "zt04547",
                     "sku_proveedor": "99030777136062062000"
@@ -8744,7 +8744,7 @@
                     "Combinations": {
                         "Variante": "Blanco \/ Blanco \/ ."
                     },
-                    "Stock": 1007,
+                    "Stock": 960,
                     "Precio": 3272,
                     "sku": "zt0224",
                     "sku_proveedor": "05047000012022022000"
@@ -12445,7 +12445,7 @@
                         "Tamaño": "Large",
                         "Color": "Negro"
                     },
-                    "Stock": 5717,
+                    "Stock": 5709,
                     "Precio": 5464,
                     "sku": "zt033014000000003062000"
                 },
@@ -12996,7 +12996,7 @@
                     "Combinations": {
                         "Variante": "Blanco \/ Blanco \/ ."
                     },
-                    "Stock": 357,
+                    "Stock": 387,
                     "Precio": 5841,
                     "sku": "zt02102",
                     "sku_proveedor": "05017000005022022000"
@@ -16658,7 +16658,7 @@
                     "Combinations": {
                         "Variante": "Gris Claro \/ Gris Claro \/ ."
                     },
-                    "Stock": 2021,
+                    "Stock": 1991,
                     "Precio": 8260,
                     "sku": "zt04318",
                     "sku_proveedor": "10094000028055055000"
@@ -17511,7 +17511,7 @@
                 "https:\/\/images-cdn.zecat.cl\/generic_products\/odarrecorgeNrengaWmmuDsaugaraP1580434600-1729463457.webp",
                 "https:\/\/d2xqp1jvb71b9m.cloudfront.net\/generic_products\/iqvxoycyc0h-1752696767.webp"
             ],
-            "stock": 3324,
+            "stock": 3314,
             "proveedor": "ZECAT",
             "categorias": [
                 "Tiempo Libre",
@@ -17537,7 +17537,7 @@
                     "Combinations": {
                         "Variante": "Azul \/ Azul \/ ."
                     },
-                    "Stock": 3324,
+                    "Stock": 3314,
                     "Precio": 9800,
                     "sku": "zt04558",
                     "sku_proveedor": "17104000000009009000"
@@ -17798,7 +17798,7 @@
                 "https:\/\/images-cdn.zecat.cl\/generic_products\/Notebook200SeetRayadoBlack06-1729448392.webp",
                 "https:\/\/images-cdn.zecat.cl\/generic_products\/Notebook200SeetRayadoBlack08-1729448392.webp"
             ],
-            "stock": 9083,
+            "stock": 9082,
             "proveedor": "ZECAT",
             "categorias": [
                 "Campaña del mes",
@@ -17819,7 +17819,7 @@
                     "Combinations": {
                         "Variante": "Negro \/ Negro \/ ."
                     },
-                    "Stock": 9083,
+                    "Stock": 9082,
                     "Precio": 10083,
                     "sku": "zt04383",
                     "sku_proveedor": "13099000011062062000"
@@ -20885,7 +20885,7 @@
                     "Combinations": {
                         "Variante": "Negro \/ Negro \/ ."
                     },
-                    "Stock": 1570,
+                    "Stock": 1510,
                     "Precio": 16317,
                     "sku": "zt04782",
                     "sku_proveedor": "99030777144062062000"
@@ -22442,7 +22442,7 @@
                 "https:\/\/images-cdn.zecat.cl\/generic_products\/PortadaAuricularesNexus-1729456997.webp",
                 "https:\/\/d2xqp1jvb71b9m.cloudfront.net\/generic_products\/u15jn02wgy-1750968927.webp"
             ],
-            "stock": 1113,
+            "stock": 1112,
             "proveedor": "ZECAT",
             "categorias": [
                 "Tiempo Libre",
@@ -22463,7 +22463,7 @@
                     "Combinations": {
                         "Variante": "Negro \/ Negro \/ ."
                     },
-                    "Stock": 1113,
+                    "Stock": 1112,
                     "Precio": 18904,
                     "sku": "zt01863",
                     "sku_proveedor": "02002400001062062000"
@@ -24597,7 +24597,7 @@
                 "https:\/\/images-cdn.zecat.cl\/generic_products\/LamparaFungi1copia-1747943211.webp",
                 "https:\/\/images-cdn.zecat.cl\/generic_products\/LamparaFungi17copia-1747943211.webp"
             ],
-            "stock": 1953,
+            "stock": 1943,
             "proveedor": "ZECAT",
             "categorias": [
                 "Tecnología",
@@ -24619,7 +24619,7 @@
                     "Combinations": {
                         "Variante": "Blanco \/ Blanco \/ ABS"
                     },
-                    "Stock": 1953,
+                    "Stock": 1943,
                     "Precio": 21700,
                     "sku": "zt04961",
                     "sku_proveedor": "99030777351D22D22D06"
@@ -24759,7 +24759,7 @@
                 "https:\/\/d2xqp1jvb71b9m.cloudfront.net\/generic_products\/mibpbzc38ur-1750343918.webp",
                 "https:\/\/d2xqp1jvb71b9m.cloudfront.net\/generic_products\/ok545787ujf-1750863852.webp"
             ],
-            "stock": 2152,
+            "stock": 2132,
             "proveedor": "ZECAT",
             "categorias": [
                 "Tecnología"
@@ -24779,7 +24779,7 @@
                     "Combinations": {
                         "Variante": "ABS \/ Negro \/  "
                     },
-                    "Stock": 2152,
+                    "Stock": 2132,
                     "Precio": 22351,
                     "sku": "zt04886",
                     "sku_proveedor": "99030777262D06D62"
@@ -25012,7 +25012,7 @@
                 "https:\/\/images-cdn.zecat.cl\/generic_products\/BolsoHarderChile3-1729517793.webp",
                 "https:\/\/images-cdn.zecat.cl\/generic_products\/BolsoHarderChile5-1729517793.webp"
             ],
-            "stock": 1067,
+            "stock": 1047,
             "proveedor": "ZECAT",
             "categorias": [
                 "Mochilas y Bolsas",
@@ -25036,7 +25036,7 @@
                     "Combinations": {
                         "Variante": "Gris Claro \/ Gris Claro \/ ."
                     },
-                    "Stock": 1067,
+                    "Stock": 1047,
                     "Precio": 23135,
                     "sku": "zt04551",
                     "sku_proveedor": "99030777158055055000"
@@ -25161,7 +25161,7 @@
                 "https:\/\/images-cdn.zecat.cl\/generic_products\/CoolerAuroraGris05altajpg1591290033-1729515859.jpg",
                 "https:\/\/d2xqp1jvb71b9m.cloudfront.net\/generic_products\/kj9z9t5mrvh-1751307067.webp"
             ],
-            "stock": 2342,
+            "stock": 2334,
             "proveedor": "ZECAT",
             "categorias": [
                 "Mochilas y Bolsas",
@@ -25183,7 +25183,7 @@
                     "Combinations": {
                         "Variante": "Gris Claro \/ Gris Claro \/ ."
                     },
-                    "Stock": 2342,
+                    "Stock": 2334,
                     "Precio": 23719,
                     "sku": "zt01882",
                     "sku_proveedor": "99030769635055055000"
@@ -25726,7 +25726,7 @@
                 "https:\/\/images-cdn.zecat.cl\/generic_products\/carrusel_coolergrand_3-1729437641.webp",
                 "https:\/\/images-cdn.zecat.cl\/generic_products\/carrusel_coolergrand_4-1729437641.webp"
             ],
-            "stock": 489,
+            "stock": 305,
             "proveedor": "ZECAT",
             "categorias": [
                 "Mochilas y Bolsas",
@@ -25748,7 +25748,7 @@
                     "Combinations": {
                         "Variante": "Gris Claro \/ Gris Claro \/ ."
                     },
-                    "Stock": 489,
+                    "Stock": 305,
                     "Precio": 27003,
                     "sku": "zt04417",
                     "sku_proveedor": "20098000000055055000"
@@ -27966,7 +27966,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 0,
+                    "Stock": 2,
                     "Precio": 1036,
                     "sku": "SS6111",
                     "sku_proveedor": "001-00193-02"
@@ -28297,7 +28297,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/123\/371\/original\/alt__promocional_publicitario_boligrafo_naranja_BP228_frente_.jpg?1691418344",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/123\/375\/original\/alt__promocional_publicitario_boligrafo_naranja_BP228_frente_logo.jpg?1691418372"
             ],
-            "stock": 19557,
+            "stock": 19307,
             "proveedor": "CDO",
             "categorias": [
                 "Escritura",
@@ -28329,7 +28329,7 @@
                     "Combinations": {
                         "Color": "Blanco"
                     },
-                    "Stock": 19557,
+                    "Stock": 19307,
                     "Precio": 252,
                     "sku": "SS11071",
                     "sku_proveedor": "001-00228-19"
@@ -28750,7 +28750,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/102\/654\/original\/alt__promocional_publicitario_boligrafo_naranja_BP241_perfil__%281%29.jpg?1673033706",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/102\/655\/original\/alt__promocional_publicitario_boligrafo_naranja_BP241_perfil__%281%29_logo.jpg?1673033715"
             ],
-            "stock": 289282,
+            "stock": 289162,
             "proveedor": "CDO",
             "categorias": [
                 "Escritura",
@@ -28784,7 +28784,7 @@
                     "Combinations": {
                         "Color": "Blanco"
                     },
-                    "Stock": 289282,
+                    "Stock": 289162,
                     "Precio": 87,
                     "sku": "SS37439",
                     "sku_proveedor": "001-00241-01TA"
@@ -29585,7 +29585,7 @@
                     "Combinations": {
                         "Color": "Azul"
                     },
-                    "Stock": 59775,
+                    "Stock": 59625,
                     "Precio": 83,
                     "sku": "SS37354",
                     "sku_proveedor": "001-00268-13TA"
@@ -29603,7 +29603,7 @@
                     "Combinations": {
                         "Color": "Amarillo"
                     },
-                    "Stock": 29150,
+                    "Stock": 29000,
                     "Precio": 83,
                     "sku": "SS37352",
                     "sku_proveedor": "001-00268-111TA"
@@ -30293,7 +30293,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/081\/625\/original\/alt_%22promocional_publicitario_boligrafo_negro_BP289_caja%22.jpg?1623690302",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/123\/668\/original\/alt__promocional_publicitario_boligrafo_negro_BP289_perfil_logo.jpg?1691498729"
             ],
-            "stock": 26059,
+            "stock": 26009,
             "proveedor": "CDO",
             "categorias": [
                 "Escritura",
@@ -30322,7 +30322,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 26059,
+                    "Stock": 26009,
                     "Precio": 3570,
                     "sku": "SS38640",
                     "sku_proveedor": "001-00289-02TA"
@@ -30388,7 +30388,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/070\/498\/original\/promocional_publicitario_boligrafo_BP292_caja_abierta.jpg?1610373673",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/067\/219\/original\/boligrafo_negro_BP292_frente.jpg?1597260996"
             ],
-            "stock": 3327,
+            "stock": 3326,
             "proveedor": "CDO",
             "categorias": [
                 "Escritura",
@@ -30416,7 +30416,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 3327,
+                    "Stock": 3326,
                     "Precio": 3080,
                     "sku": "SS38953",
                     "sku_proveedor": "001-00292-02"
@@ -31911,7 +31911,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 84247,
+                    "Stock": 84237,
                     "Precio": 140,
                     "sku": "SS41352",
                     "sku_proveedor": "001-00311-02TA"
@@ -31920,7 +31920,7 @@
                     "Combinations": {
                         "Color": "Azul"
                     },
-                    "Stock": 82881,
+                    "Stock": 82871,
                     "Precio": 140,
                     "sku": "SS41351",
                     "sku_proveedor": "001-00311-03TA"
@@ -31929,7 +31929,7 @@
                     "Combinations": {
                         "Color": "Rojo"
                     },
-                    "Stock": 30250,
+                    "Stock": 30240,
                     "Precio": 140,
                     "sku": "SS41346",
                     "sku_proveedor": "001-00311-05TA"
@@ -31938,7 +31938,7 @@
                     "Combinations": {
                         "Color": "Amarillo"
                     },
-                    "Stock": 10425,
+                    "Stock": 10125,
                     "Precio": 140,
                     "sku": "SS41348",
                     "sku_proveedor": "001-00311-11TA"
@@ -31947,7 +31947,7 @@
                     "Combinations": {
                         "Color": "Naranja"
                     },
-                    "Stock": 50442,
+                    "Stock": 50142,
                     "Precio": 140,
                     "sku": "SS41347",
                     "sku_proveedor": "001-00311-20TA"
@@ -31956,7 +31956,7 @@
                     "Combinations": {
                         "Color": "Rosa"
                     },
-                    "Stock": 15546,
+                    "Stock": 15046,
                     "Precio": 140,
                     "sku": "SS41345",
                     "sku_proveedor": "001-00311-55TA"
@@ -31965,7 +31965,7 @@
                     "Combinations": {
                         "Color": "Verde Manzana"
                     },
-                    "Stock": 11108,
+                    "Stock": 10798,
                     "Precio": 140,
                     "sku": "SS41349",
                     "sku_proveedor": "001-00311-04MZT"
@@ -32056,7 +32056,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 18372,
+                    "Stock": 18167,
                     "Precio": 574,
                     "sku": "SS41364",
                     "sku_proveedor": "001-00312-02"
@@ -32101,7 +32101,7 @@
                     "Combinations": {
                         "Color": "Royal Blue"
                     },
-                    "Stock": 10206,
+                    "Stock": 10203,
                     "Precio": 574,
                     "sku": "SS41366",
                     "sku_proveedor": "001-00312-07"
@@ -32120,7 +32120,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/132\/623\/original\/alt__promocional_publicitario_estuche_boligrafos_Kraft_BP313_1.jpg?1704729206",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/132\/624\/original\/alt__promocional_publicitario_estuche_boligrafos_Kraft_BP313_1_logo.jpg?1704729213"
             ],
-            "stock": 45160,
+            "stock": 45140,
             "proveedor": "CDO",
             "categorias": [
                 "Escritura",
@@ -32148,7 +32148,7 @@
                     "Combinations": {
                         "Color": "Cartón"
                     },
-                    "Stock": 45160,
+                    "Stock": 45140,
                     "Precio": 45,
                     "sku": "SS41398",
                     "sku_proveedor": "001-00313-00"
@@ -32330,7 +32330,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/138\/692\/original\/alt__promocional_publicitario_boligrafo_metalico_BP317_caja-abierta.jpg?1722286830",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/141\/673\/original\/alt__promocional_publicitario_boligrafo_metalico_BP317_2_logo_2.jpg?1728419099"
             ],
-            "stock": 7338,
+            "stock": 5238,
             "proveedor": "CDO",
             "categorias": [
                 "Escritura",
@@ -32358,7 +32358,7 @@
                     "Combinations": {
                         "Color": "Negro + Cobre"
                     },
-                    "Stock": 7338,
+                    "Stock": 5238,
                     "Precio": 4816,
                     "sku": "SS41616",
                     "sku_proveedor": "001-00317-02TA"
@@ -32565,7 +32565,7 @@
                     "Combinations": {
                         "Color": "Rojo"
                     },
-                    "Stock": 0,
+                    "Stock": 44193,
                     "Precio": 119,
                     "sku": "SS41600",
                     "sku_proveedor": "001-00319-05TA"
@@ -32728,7 +32728,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/146\/943\/original\/alt__promocional_publicitario_boligrafo_aluminio_BP322_azul_2.jpg?1738691742",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/146\/945\/original\/alt__promocional_publicitario_boligrafo_aluminio_BP322_azul_2_logo.jpg?1738691752"
             ],
-            "stock": 600,
+            "stock": 100,
             "proveedor": "CDO",
             "categorias": [
                 "Escritura",
@@ -32764,7 +32764,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 600,
+                    "Stock": 100,
                     "Precio": 651,
                     "sku": "SS42031",
                     "sku_proveedor": "001-00322-02"
@@ -33005,7 +33005,7 @@
                     "Combinations": {
                         "Color": "Royal Blue"
                     },
-                    "Stock": 4162,
+                    "Stock": 4161,
                     "Precio": 504,
                     "sku": "SS42150",
                     "sku_proveedor": "001-00324-07TA"
@@ -33285,7 +33285,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/154\/815\/original\/alt__promocional_publicitario_estuche_boligrafo_Aluminio-Reciclado-BP328_royal_2.jpg?1751658571",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/157\/037\/original\/alt__promocional_publicitario_estuche_boligrafo_Aluminio-Reciclado-BP328_royal_2_logo.jpg?1754672450"
             ],
-            "stock": 1542,
+            "stock": 1512,
             "proveedor": "CDO",
             "categorias": [
                 "Escritura",
@@ -33321,7 +33321,7 @@
                     "Combinations": {
                         "Color": "Blanco"
                     },
-                    "Stock": 1542,
+                    "Stock": 1512,
                     "Precio": 574,
                     "sku": "SS42229",
                     "sku_proveedor": "001-00328-01"
@@ -34322,7 +34322,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/077\/007\/original\/alt_%22promocional_publicitario_mochila_C520_frente%22.jpg?1617130483",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/077\/009\/original\/alt_%22promocional_publicitario_mochila_C520_perfil%22.jpg?1617130494"
             ],
-            "stock": 2923,
+            "stock": 2918,
             "proveedor": "CDO",
             "categorias": [
                 "Mochilas y Bolsas",
@@ -34351,7 +34351,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 2923,
+                    "Stock": 2918,
                     "Precio": 25200,
                     "sku": "SS37081",
                     "sku_proveedor": "004-00520-02"
@@ -34914,7 +34914,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/105\/476\/original\/alt__promocional_publicitario_bolso_azul_C554_azul_frente.jpg?1677078111",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/143\/268\/original\/alt__promocional_publicitario_bolso_C554_azul_frente_logo.jpg?1731434400"
             ],
-            "stock": 4506,
+            "stock": 5506,
             "proveedor": "CDO",
             "categorias": [
                 "Mochilas y Bolsas",
@@ -34950,7 +34950,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 4506,
+                    "Stock": 5506,
                     "Precio": 4340,
                     "sku": "SS38944",
                     "sku_proveedor": "004-00554-02"
@@ -35071,7 +35071,7 @@
                     "Combinations": {
                         "Color": "Gris"
                     },
-                    "Stock": 1145,
+                    "Stock": 1144,
                     "Precio": 9240,
                     "sku": "SS39540",
                     "sku_proveedor": "004-00556-06"
@@ -35699,7 +35699,7 @@
                     "Combinations": {
                         "Color": "Rojo"
                     },
-                    "Stock": 4040,
+                    "Stock": 4039,
                     "Precio": 5670,
                     "sku": "SS42044",
                     "sku_proveedor": "004-00570-52"
@@ -35885,7 +35885,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/147\/303\/original\/alt_promocional_publicitario_ri%C3%B1onera_C572_Navy-1.jpg?1739211716",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/147\/305\/original\/alt_promocional_publicitario_ri%C3%B1onera_C572_Navy-1_logo.jpg?1739211726"
             ],
-            "stock": 1881,
+            "stock": 1811,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -35916,7 +35916,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 1881,
+                    "Stock": 1811,
                     "Precio": 2800,
                     "sku": "SS42050",
                     "sku_proveedor": "004-00572-02"
@@ -36443,7 +36443,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/078\/994\/original\/alt_%22promocional_publicitario_adaptador_azul_EC731_frente%22.jpg?1618512624",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/078\/996\/original\/alt_%22promocional_publicitario_adaptador_azul_EC731_detalle%22.jpg?1618512630"
             ],
-            "stock": 4582,
+            "stock": 4532,
             "proveedor": "CDO",
             "categorias": [
                 "Tecnología",
@@ -36471,7 +36471,7 @@
                     "Combinations": {
                         "Color": "Azul"
                     },
-                    "Stock": 4582,
+                    "Stock": 4532,
                     "Precio": 1680,
                     "sku": "SS38308",
                     "sku_proveedor": "006-00731-03"
@@ -36493,7 +36493,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/141\/796\/original\/alt_promocional_publicitario_adaptador_negro_EC736_cerrado.jpg?1728504903",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/141\/797\/original\/alt_promocional_publicitario_adaptador_negro_EC736_cerrado_logo.jpg?1728504907"
             ],
-            "stock": 9558,
+            "stock": 9557,
             "proveedor": "CDO",
             "categorias": [
                 "Tecnología",
@@ -36524,7 +36524,7 @@
                     "Combinations": {
                         "Color": "Blanco"
                     },
-                    "Stock": 9558,
+                    "Stock": 9557,
                     "Precio": 3500,
                     "sku": "SS39793",
                     "sku_proveedor": "006-00736-01"
@@ -36732,7 +36732,7 @@
                     "Combinations": {
                         "Color": "Gris Y Negro"
                     },
-                    "Stock": 2380,
+                    "Stock": 2358,
                     "Precio": 4480,
                     "sku": "SS40031",
                     "sku_proveedor": "006-00742-62"
@@ -37114,7 +37114,7 @@
                     "Combinations": {
                         "Color": "Plata"
                     },
-                    "Stock": 2392,
+                    "Stock": 412,
                     "Precio": 9100,
                     "sku": "SS40019",
                     "sku_proveedor": "006-00755-09"
@@ -37601,7 +37601,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/136\/859\/original\/alt_promocional_publicitario_Auriculares-Bluetooth_HiFi-EC766-2.jpg?1717429172",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/138\/166\/original\/alt_promocional_publicitario_Auriculares-Bluetooth_EC766-dorso-logo.jpg?1721742880"
             ],
-            "stock": 804,
+            "stock": 803,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -37634,7 +37634,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 804,
+                    "Stock": 803,
                     "Precio": 20468,
                     "sku": "SS41574",
                     "sku_proveedor": "006-00766-02"
@@ -37854,7 +37854,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/141\/272\/original\/alt_promocional_publicitario_Auriculares-Bluetooth_EC771_2.jpg?1727903410",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/141\/275\/original\/alt_promocional_publicitario_Auriculares-Bluetooth_EC771_2_logo.jpg?1727903415"
             ],
-            "stock": 1644,
+            "stock": 1643,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -37885,7 +37885,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 1644,
+                    "Stock": 1643,
                     "Precio": 14000,
                     "sku": "SS41842",
                     "sku_proveedor": "006-00771-02"
@@ -38008,7 +38008,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/150\/370\/original\/alt_promocional_publicitario_cable_cargador_retractil_EC774_negro_1.jpg?1743440365",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/150\/372\/original\/alt_promocional_publicitario_cable_cargador_retractil_EC774_negro_1_logo.jpg?1743440370"
             ],
-            "stock": 2229,
+            "stock": 2179,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -38042,7 +38042,7 @@
                     "Combinations": {
                         "Color": "Blanco"
                     },
-                    "Stock": 2229,
+                    "Stock": 2179,
                     "Precio": 4550,
                     "sku": "SS42114",
                     "sku_proveedor": "006-00774-01"
@@ -38455,7 +38455,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/161\/769\/original\/alt_promocional_publicitario-cable_de_carga_EC782_negro_5.jpg?1760453021",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/161\/785\/original\/alt_promocional_publicitario-cable_de_carga_EC782_negro_1_logo.jpg?1760453268"
             ],
-            "stock": 0,
+            "stock": 2681,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -38486,7 +38486,7 @@
                     "Combinations": {
                         "Color": "Blanco"
                     },
-                    "Stock": 0,
+                    "Stock": 2681,
                     "Precio": 4284,
                     "sku": "SS42584",
                     "sku_proveedor": "006-00782-01"
@@ -38495,7 +38495,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 4681,
+                    "Stock": 4680,
                     "Precio": 4284,
                     "sku": "SS42583",
                     "sku_proveedor": "006-00782-02"
@@ -38563,7 +38563,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/162\/950\/original\/alt_promocional_publicitario-parlante_bluetooth_EC785_1.jpg?1761681586",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/162\/956\/original\/alt_promocional_publicitario-parlante_bluetooth_EC785_1_logo.jpg?1761681622"
             ],
-            "stock": 2887,
+            "stock": 2886,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -38592,7 +38592,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 2887,
+                    "Stock": 2886,
                     "Precio": 11116,
                     "sku": "SS42624",
                     "sku_proveedor": "006-00785-02"
@@ -40181,7 +40181,7 @@
                     "Combinations": {
                         "Color": "Rojo"
                     },
-                    "Stock": 0,
+                    "Stock": 3694,
                     "Precio": 1736,
                     "sku": "SS42642",
                     "sku_proveedor": "002-00223-05"
@@ -40221,7 +40221,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/163\/372\/original\/alt_promocional_publicitario-gorra_G224_gris_2.jpg?1761929704",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/163\/373\/original\/alt_promocional_publicitario-gorra_G224_gris_2_logo.jpg?1761929709"
             ],
-            "stock": 3946,
+            "stock": 3865,
             "proveedor": "CDO",
             "categorias": [
                 "Ropa",
@@ -40251,7 +40251,7 @@
                     "Combinations": {
                         "Color": "Azul"
                     },
-                    "Stock": 3946,
+                    "Stock": 3865,
                     "Precio": 2366,
                     "sku": "SS42644",
                     "sku_proveedor": "002-00224-03"
@@ -41375,7 +41375,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 3670,
+                    "Stock": 3700,
                     "Precio": 11060,
                     "sku": "SS40028",
                     "sku_proveedor": "008-00106-02"
@@ -41832,7 +41832,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/138\/147\/original\/alt_-promocional_publicitario_mochila_nomawalk__K13_gris1.jpg?1721739434",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/138\/152\/original\/alt_-promocional_publicitario_mochila_nomawalk__K13_gris1_logo.jpg?1721739451"
             ],
-            "stock": 5691,
+            "stock": 5680,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -41866,7 +41866,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 5691,
+                    "Stock": 5680,
                     "Precio": 21000,
                     "sku": "SS41577",
                     "sku_proveedor": "008-00013-02"
@@ -43027,7 +43027,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/073\/503\/original\/promocional_publicitario_llavero_T183_abierto.jpg?1612291038",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/160\/371\/original\/T183-cerrado-argollita.jpg?1758740992"
             ],
-            "stock": 13791,
+            "stock": 13040,
             "proveedor": "CDO",
             "categorias": [
                 "Oficina y Negocios",
@@ -43056,7 +43056,7 @@
                     "Combinations": {
                         "Color": "Plata"
                     },
-                    "Stock": 13791,
+                    "Stock": 13040,
                     "Precio": 1540,
                     "sku": "SS2753",
                     "sku_proveedor": "000-00183-09"
@@ -43451,7 +43451,7 @@
                     "Combinations": {
                         "Color": "Azul"
                     },
-                    "Stock": 16871,
+                    "Stock": 16782,
                     "Precio": 2170,
                     "sku": "SS7851",
                     "sku_proveedor": "000-00327-03"
@@ -45140,7 +45140,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/093\/441\/original\/alt__promocional_publicitario_set_clips_T518_cerrado_.jpg?1661868267",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/128\/061\/original\/alt__promocional_publicitario_set_clips_T518_cerrado_.jpg?1695819215"
             ],
-            "stock": 6620,
+            "stock": 6519,
             "proveedor": "CDO",
             "categorias": [
                 "Oficina y Negocios",
@@ -45170,7 +45170,7 @@
                     "Combinations": {
                         "Color": "Cobre"
                     },
-                    "Stock": 6620,
+                    "Stock": 6519,
                     "Precio": 1260,
                     "sku": "SS37385",
                     "sku_proveedor": "000-00518-00"
@@ -45352,7 +45352,7 @@
                     "Combinations": {
                         "Color": "Rojo"
                     },
-                    "Stock": 7282,
+                    "Stock": 7272,
                     "Precio": 1106,
                     "sku": "SS37553",
                     "sku_proveedor": "000-00525-05"
@@ -45915,7 +45915,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Negro"
                     },
-                    "Stock": 5852,
+                    "Stock": 4762,
                     "Precio": 994,
                     "sku": "SS39057",
                     "sku_proveedor": "009-00538-00+009-00521T-02"
@@ -45924,7 +45924,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Azul Translúcido"
                     },
-                    "Stock": 5852,
+                    "Stock": 4762,
                     "Precio": 994,
                     "sku": "SS39294",
                     "sku_proveedor": "009-00538-00+009-00521T-300"
@@ -45933,7 +45933,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Transparente"
                     },
-                    "Stock": 5852,
+                    "Stock": 4762,
                     "Precio": 994,
                     "sku": "SS39312",
                     "sku_proveedor": "009-00538-00+009-00521T-00"
@@ -45942,7 +45942,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Rojo Translucido"
                     },
-                    "Stock": 5852,
+                    "Stock": 4762,
                     "Precio": 994,
                     "sku": "SS39342",
                     "sku_proveedor": "009-00538-00+009-00521T-500"
@@ -46028,7 +46028,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Naranja"
                     },
-                    "Stock": 4966,
+                    "Stock": 4762,
                     "Precio": 1460,
                     "sku": "SS39320",
                     "sku_proveedor": "009-00538-00+T540K-20"
@@ -46037,7 +46037,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Negro"
                     },
-                    "Stock": 5852,
+                    "Stock": 4762,
                     "Precio": 1460,
                     "sku": "SS39321",
                     "sku_proveedor": "009-00538-00+T540K-02"
@@ -46046,7 +46046,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Azul"
                     },
-                    "Stock": 5852,
+                    "Stock": 4762,
                     "Precio": 1460,
                     "sku": "SS39322",
                     "sku_proveedor": "009-00538-00+T540K-03"
@@ -46071,7 +46071,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/142\/740\/original\/alt__promocional_publicitario_botella_T538_verde_frente_.jpg?1730985081",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/142\/915\/original\/alt__promocional_publicitario_botella_T538_verde_frente_logo.jpg?1730987342"
             ],
-            "stock": 5852,
+            "stock": 4762,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -46105,7 +46105,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Azul"
                     },
-                    "Stock": 5852,
+                    "Stock": 4762,
                     "Precio": 994,
                     "sku": "SS41873",
                     "sku_proveedor": "009-00538-00+009-00542T-03"
@@ -46154,7 +46154,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/142\/842\/original\/alt__promocional_publicitario_botella_T538_T542_frente.jpg?1730986805",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/142\/844\/original\/alt__promocional_publicitario_botella_T538_T542_frente_logocolor.jpg?1730986810"
             ],
-            "stock": 5852,
+            "stock": 4762,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -46190,7 +46190,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Verde Manzana Mate"
                     },
-                    "Stock": 5852,
+                    "Stock": 4762,
                     "Precio": 994,
                     "sku": "SS41898",
                     "sku_proveedor": "009-00538-00+009-00542T-400M"
@@ -46199,7 +46199,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Rojo Mate"
                     },
-                    "Stock": 5852,
+                    "Stock": 4762,
                     "Precio": 994,
                     "sku": "SS41899",
                     "sku_proveedor": "009-00538-00+009-00542T-500"
@@ -46208,7 +46208,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Azul Mate"
                     },
-                    "Stock": 5852,
+                    "Stock": 4762,
                     "Precio": 994,
                     "sku": "SS41900",
                     "sku_proveedor": "009-00538-00+009-00542T-300"
@@ -46217,7 +46217,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Negro Mate"
                     },
-                    "Stock": 5852,
+                    "Stock": 4762,
                     "Precio": 994,
                     "sku": "SS41901",
                     "sku_proveedor": "009-00538-00+009-00542T-02"
@@ -46226,7 +46226,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Transparente Mate"
                     },
-                    "Stock": 5852,
+                    "Stock": 4762,
                     "Precio": 994,
                     "sku": "SS41902",
                     "sku_proveedor": "009-00538-00+009-00542T-00"
@@ -46302,7 +46302,7 @@
                     "Combinations": {
                         "Color": "Azul"
                     },
-                    "Stock": 19447,
+                    "Stock": 19442,
                     "Precio": 1960,
                     "sku": "SS38331",
                     "sku_proveedor": "000-00545-03"
@@ -46526,7 +46526,7 @@
                     "Combinations": {
                         "Color": "Azul"
                     },
-                    "Stock": 10058,
+                    "Stock": 10056,
                     "Precio": 1610,
                     "sku": "SS38241",
                     "sku_proveedor": "000-00550-03"
@@ -47131,7 +47131,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 6288,
+                    "Stock": 6283,
                     "Precio": 2268,
                     "sku": "SS38958",
                     "sku_proveedor": "000-00569-02"
@@ -47140,7 +47140,7 @@
                     "Combinations": {
                         "Color": "Gris"
                     },
-                    "Stock": 4947,
+                    "Stock": 4942,
                     "Precio": 2268,
                     "sku": "SS42493",
                     "sku_proveedor": "000-00569-06"
@@ -47292,7 +47292,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/154\/123\/original\/alt_-promocional_publicitario_mug_T575_aqua_frente.jpg?1750273945",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/154\/124\/original\/alt_-promocional_publicitario_mug_T575_aqua_frente_logo_360.jpg?1750273950"
             ],
-            "stock": 12680,
+            "stock": 12675,
             "proveedor": "CDO",
             "categorias": [
                 "Tazones Termos y Botellas",
@@ -47335,7 +47335,7 @@
                     "Combinations": {
                         "Color": "Blanco"
                     },
-                    "Stock": 12680,
+                    "Stock": 12675,
                     "Precio": 3290,
                     "sku": "SS39722",
                     "sku_proveedor": "000-00575-01"
@@ -47542,7 +47542,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/098\/555\/original\/alt__promocional_publicitario_botella_T591_celeste_agua_.jpg?1668439921",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/098\/559\/original\/alt__promocional_publicitario_botella_T591_celeste_destapada_.jpg?1668439946"
             ],
-            "stock": 9183,
+            "stock": 9083,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -47574,7 +47574,7 @@
                     "Combinations": {
                         "Color": "Transparente"
                     },
-                    "Stock": 9183,
+                    "Stock": 9083,
                     "Precio": 1890,
                     "sku": "SS39224",
                     "sku_proveedor": "000-00591-00"
@@ -47951,7 +47951,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/090\/534\/original\/T601_imagen_principal.jpg?1653926895",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/096\/358\/original\/T601_imagen_principal_logo.jpg?1666300208"
             ],
-            "stock": 5933,
+            "stock": 6531,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -47980,7 +47980,7 @@
                     "Combinations": {
                         "Color": "Transparente"
                     },
-                    "Stock": 5933,
+                    "Stock": 6531,
                     "Precio": 3500,
                     "sku": "SS39607",
                     "sku_proveedor": "000-00601-00"
@@ -48008,7 +48008,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/086\/215\/original\/T602-rojo-perfil.png?1646240428",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/086\/217\/original\/T602-rojo-destapada.png?1646240439"
             ],
-            "stock": 7700,
+            "stock": 6395,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -48046,7 +48046,7 @@
                     "Combinations": {
                         "Color": "Blanco"
                     },
-                    "Stock": 7700,
+                    "Stock": 6395,
                     "Precio": 2100,
                     "sku": "SS39538",
                     "sku_proveedor": "000-00602-01-00"
@@ -48132,7 +48132,7 @@
                     "Combinations": {
                         "Color": "Blanco + Plata"
                     },
-                    "Stock": 7619,
+                    "Stock": 7819,
                     "Precio": 1316,
                     "sku": "SS41354",
                     "sku_proveedor": "000-00603-01"
@@ -48198,7 +48198,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/086\/924\/original\/alt_promocional_publicitario_tabla_T605_frente.jpg?1649450794",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/086\/925\/original\/alt_promocional_publicitario_tabla_T605_perfil.jpg?1649450812"
             ],
-            "stock": 989,
+            "stock": 956,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -48227,7 +48227,7 @@
                     "Combinations": {
                         "Color": "Madera"
                     },
-                    "Stock": 989,
+                    "Stock": 956,
                     "Precio": 8820,
                     "sku": "SS39612",
                     "sku_proveedor": "000-00605-00"
@@ -48707,7 +48707,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/138\/316\/original\/alt_promocional_publicitario_mug_T614_rojo_2.jpg?1722262323",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/138\/318\/original\/alt_promocional_publicitario_mug_T614_rojo_1_logo.jpg?1722262329"
             ],
-            "stock": 2021,
+            "stock": 1999,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -48744,7 +48744,7 @@
                     "Combinations": {
                         "Color": "Blanco"
                     },
-                    "Stock": 2021,
+                    "Stock": 1999,
                     "Precio": 7910,
                     "sku": "SS41591",
                     "sku_proveedor": "000-00614-01"
@@ -48753,7 +48753,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 5547,
+                    "Stock": 5546,
                     "Precio": 7910,
                     "sku": "SS39810",
                     "sku_proveedor": "000-00614-02"
@@ -48998,7 +48998,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/095\/242\/original\/alt__promocional_publicitario_set_asado_T623_2.jpg?1664829339",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/095\/243\/original\/alt__promocional_publicitario_set_asado_T623_1.jpg?1664829362"
             ],
-            "stock": 132,
+            "stock": 137,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -49028,7 +49028,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 132,
+                    "Stock": 137,
                     "Precio": 16100,
                     "sku": "SS39820",
                     "sku_proveedor": "000-00623-02"
@@ -49736,7 +49736,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/115\/057\/original\/alt_promocional_publicitario_libreta_boligrafo_T638_frente_boligrafo.jpg?1685395366",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/115\/059\/original\/alt_promocional_publicitario_libreta_boligrafo_T638_frente_boligrafo_logo.jpg?1685395370"
             ],
-            "stock": 1927,
+            "stock": 1922,
             "proveedor": "CDO",
             "categorias": [
                 "Escritura",
@@ -49768,7 +49768,7 @@
                     "Combinations": {
                         "Color": "Cartón"
                     },
-                    "Stock": 1927,
+                    "Stock": 1922,
                     "Precio": 2520,
                     "sku": "SS40015",
                     "sku_proveedor": "000-00638-00"
@@ -50244,7 +50244,7 @@
                     "Combinations": {
                         "Color": "Navy Blue"
                     },
-                    "Stock": 2799,
+                    "Stock": 2797,
                     "Precio": 7280,
                     "sku": "SS39914",
                     "sku_proveedor": "000-00650-03"
@@ -50814,7 +50814,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/129\/747\/original\/alt_promocional_publicitario_set_adhesivos_T666_cerrado.jpg?1697564469",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/129\/748\/original\/alt_promocional_publicitario_set_adhesivos_T666_cerrado_logo.jpg?1697564478"
             ],
-            "stock": 5531,
+            "stock": 5428,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -50845,7 +50845,7 @@
                     "Combinations": {
                         "Color": "Natural"
                     },
-                    "Stock": 5531,
+                    "Stock": 5428,
                     "Precio": 532,
                     "sku": "SS41355",
                     "sku_proveedor": "000-00666-00"
@@ -51646,7 +51646,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/156\/382\/original\/alt_promocional_publicitario_botella_PET_T680K_T665T_1.jpg?1753977362",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/156\/389\/original\/alt_promocional_publicitario_botella_PET_T680K_T665T_1_logo.jpg?1753978470"
             ],
-            "stock": 14,
+            "stock": 0,
             "proveedor": "CDO",
             "categorias": [
                 "Tazones Termos y Botellas",
@@ -51676,7 +51676,7 @@
                     "Combinations": {
                         "Color": "Humo \/ Plata"
                     },
-                    "Stock": 14,
+                    "Stock": 0,
                     "Precio": 1358,
                     "sku": "SS42273",
                     "sku_proveedor": "009-00680-02+000-00665T-09"
@@ -51698,7 +51698,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/140\/174\/original\/alt_promocional_publicitario_botella_PET_T680_T665T-cobre-1.jpg?1724761165",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/140\/179\/original\/alt_promocional_publicitario_botella_PET_T680_T665T-cobre-1_logo.jpg?1724761174"
             ],
-            "stock": 14,
+            "stock": 0,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -51732,7 +51732,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Plata"
                     },
-                    "Stock": 14,
+                    "Stock": 0,
                     "Precio": 1358,
                     "sku": "SS41395",
                     "sku_proveedor": "009-00680-00+000-00665T-09"
@@ -51741,7 +51741,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Cobre"
                     },
-                    "Stock": 146,
+                    "Stock": 20,
                     "Precio": 1358,
                     "sku": "SS41396",
                     "sku_proveedor": "009-00680-00+000-00665T-40"
@@ -51839,7 +51839,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Transparente Mate \/ Negro"
                     },
-                    "Stock": 17228,
+                    "Stock": 17088,
                     "Precio": 1229,
                     "sku": "SS42391",
                     "sku_proveedor": "009-00680-00+009-00720T-00+000-00720J-02"
@@ -51848,7 +51848,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Transparente Mate \/ Navy Blue"
                     },
-                    "Stock": 17228,
+                    "Stock": 17088,
                     "Precio": 1229,
                     "sku": "SS42392",
                     "sku_proveedor": "009-00680-00+009-00720T-00+000-00720J-03"
@@ -51857,7 +51857,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Transparente Mate \/ Royal Blue"
                     },
-                    "Stock": 17228,
+                    "Stock": 17088,
                     "Precio": 1229,
                     "sku": "SS42393",
                     "sku_proveedor": "009-00680-00+009-00720T-00+000-00720J-07"
@@ -51920,7 +51920,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Transparente Mate \/ Rosa"
                     },
-                    "Stock": 17228,
+                    "Stock": 17088,
                     "Precio": 1229,
                     "sku": "SS42400",
                     "sku_proveedor": "009-00680-00+009-00720T-00+000-00720J-55"
@@ -52019,7 +52019,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Negro \/ Negro"
                     },
-                    "Stock": 17228,
+                    "Stock": 17088,
                     "Precio": 1229,
                     "sku": "SS42435",
                     "sku_proveedor": "009-00680-00+009-00720T-02+000-00720J-02"
@@ -52028,7 +52028,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Negro \/ Navy Blue"
                     },
-                    "Stock": 17228,
+                    "Stock": 17088,
                     "Precio": 1229,
                     "sku": "SS42436",
                     "sku_proveedor": "009-00680-00+009-00720T-02+000-00720J-03"
@@ -52037,7 +52037,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Negro \/ Royal Blue"
                     },
-                    "Stock": 17228,
+                    "Stock": 17088,
                     "Precio": 1229,
                     "sku": "SS42437",
                     "sku_proveedor": "009-00680-00+009-00720T-02+000-00720J-07"
@@ -52100,7 +52100,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Negro \/ Rosa"
                     },
-                    "Stock": 17228,
+                    "Stock": 17088,
                     "Precio": 1229,
                     "sku": "SS42444",
                     "sku_proveedor": "009-00680-00+009-00720T-02+000-00720J-55"
@@ -52197,7 +52197,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Blanco \/ Negro"
                     },
-                    "Stock": 17228,
+                    "Stock": 17088,
                     "Precio": 1229,
                     "sku": "SS42347",
                     "sku_proveedor": "009-00680-00+009-00720T-01+000-00720J-02"
@@ -52206,7 +52206,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Blanco \/ Navy Blue"
                     },
-                    "Stock": 17228,
+                    "Stock": 17088,
                     "Precio": 1229,
                     "sku": "SS42348",
                     "sku_proveedor": "009-00680-00+009-00720T-01+000-00720J-03"
@@ -52215,7 +52215,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Blanco \/ Royal Blue"
                     },
-                    "Stock": 17228,
+                    "Stock": 17088,
                     "Precio": 1229,
                     "sku": "SS42349",
                     "sku_proveedor": "009-00680-00+009-00720T-01+000-00720J-07"
@@ -52278,7 +52278,7 @@
                     "Combinations": {
                         "Color": "Transparente \/ Blanco \/ Rosa"
                     },
-                    "Stock": 17228,
+                    "Stock": 17088,
                     "Precio": 1229,
                     "sku": "SS42356",
                     "sku_proveedor": "009-00680-00+009-00720T-01+000-00720J-55"
@@ -52575,7 +52575,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 6823,
+                    "Stock": 4922,
                     "Precio": 2800,
                     "sku": "SS41441",
                     "sku_proveedor": "000-00682-02"
@@ -52584,7 +52584,7 @@
                     "Combinations": {
                         "Color": "Royal Blue"
                     },
-                    "Stock": 6556,
+                    "Stock": 6456,
                     "Precio": 2800,
                     "sku": "SS41440",
                     "sku_proveedor": "000-00682-07"
@@ -52811,7 +52811,7 @@
                     "Combinations": {
                         "Color": "Azul"
                     },
-                    "Stock": 4479,
+                    "Stock": 4133,
                     "Precio": 3150,
                     "sku": "SS41538",
                     "sku_proveedor": "000-00686-03"
@@ -53087,7 +53087,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/136\/302\/original\/alt_promocional_publicitario_lunchera_T690_rojo-3.jpg?1715974106",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/136\/303\/original\/alt_promocional_publicitario_lunchera_T690_rojo-0_logo.jpg?1715974110"
             ],
-            "stock": 3886,
+            "stock": 4886,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -53118,7 +53118,7 @@
                     "Combinations": {
                         "Color": "Blanco"
                     },
-                    "Stock": 3886,
+                    "Stock": 4886,
                     "Precio": 3220,
                     "sku": "SS41549",
                     "sku_proveedor": "000-00690-01"
@@ -53506,7 +53506,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/141\/814\/original\/alt_promocional_publicitario_Termo_Vacuum_T696_1.jpg?1728508813",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/144\/688\/original\/alt_promocional_publicitario_Termo_Vacuum_T696_1_logo.jpg?1737327026"
             ],
-            "stock": 6430,
+            "stock": 6415,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -53544,7 +53544,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 6430,
+                    "Stock": 6415,
                     "Precio": 9660,
                     "sku": "SS41846",
                     "sku_proveedor": "000-00696-02"
@@ -53880,7 +53880,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/146\/149\/original\/alt_promocional_publicitario_Vaso_acero_inoxidable_T702-gris_2025_1.jpg?1738086499",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/146\/151\/original\/alt_promocional_publicitario_Vaso_acero_inoxidable_T702-gris_1_logo.jpg?1738086505"
             ],
-            "stock": 5055,
+            "stock": 8205,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -53918,7 +53918,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 5055,
+                    "Stock": 8205,
                     "Precio": 9800,
                     "sku": "SS41856",
                     "sku_proveedor": "000-00702-02"
@@ -54359,7 +54359,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/152\/513\/original\/alt_promocional_publicitario_Set-Vino-quesos_T708_4.jpg?1748365170",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/152\/515\/original\/alt_promocional_publicitario_Set-Vino-quesos_T708_1_logo.jpg?1748365176"
             ],
-            "stock": 1445,
+            "stock": 2045,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -54391,7 +54391,7 @@
                     "Combinations": {
                         "Color": "Madera"
                     },
-                    "Stock": 1445,
+                    "Stock": 2045,
                     "Precio": 11200,
                     "sku": "SS41839",
                     "sku_proveedor": "000-00708-00"
@@ -54701,7 +54701,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/149\/506\/original\/alt_promocional_publicitario_llavero_rojo_T716.jpg?1741375797",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/149\/509\/original\/alt_promocional_publicitario_llavero_rojo_T716_logo.jpg?1741375813"
             ],
-            "stock": 1937,
+            "stock": 1837,
             "proveedor": "CDO",
             "categorias": [
                 "Oficina y Negocios",
@@ -54732,7 +54732,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 1937,
+                    "Stock": 1837,
                     "Precio": 1155,
                     "sku": "SS41920",
                     "sku_proveedor": "000-00716-22"
@@ -54864,7 +54864,7 @@
                     "Combinations": {
                         "Color": "Gris"
                     },
-                    "Stock": 1039,
+                    "Stock": 939,
                     "Precio": 2408,
                     "sku": "SS42064",
                     "sku_proveedor": "000-00718-06"
@@ -55740,7 +55740,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/156\/022\/original\/alt_promocional_publicitario_libreta_T723_aqua_2.jpg?1753305830",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/156\/024\/original\/alt_promocional_publicitario_libreta_T723_aqua_1_logo.jpg?1753305849"
             ],
-            "stock": 1657,
+            "stock": 1457,
             "proveedor": "CDO",
             "categorias": [
                 "Oficina y Negocios",
@@ -55776,7 +55776,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 1657,
+                    "Stock": 1457,
                     "Precio": 2002,
                     "sku": "SS42035",
                     "sku_proveedor": "000-00723-02"
@@ -56190,7 +56190,7 @@
                     "Combinations": {
                         "Color": "Azul"
                     },
-                    "Stock": 1539,
+                    "Stock": 1535,
                     "Precio": 5600,
                     "sku": "SS42143",
                     "sku_proveedor": "000-00729-03"
@@ -56275,7 +56275,7 @@
                     "Combinations": {
                         "Color": "Gris Claro"
                     },
-                    "Stock": 2640,
+                    "Stock": 2638,
                     "Precio": 7840,
                     "sku": "SS42102",
                     "sku_proveedor": "000-00730-06cl"
@@ -56912,7 +56912,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/154\/999\/original\/alt__promocional_publicitario_Linterna_T742_1.jpg?1752282757",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/155\/000\/original\/alt__promocional_publicitario_Linterna_T742_1_logo.jpg?1752282797"
             ],
-            "stock": 644,
+            "stock": 594,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -56943,7 +56943,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 644,
+                    "Stock": 594,
                     "Precio": 17500,
                     "sku": "SS42240",
                     "sku_proveedor": "000-00742-02"
@@ -57301,7 +57301,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/155\/260\/original\/alt_promocional_publicitario_botella_aluminio_T751_azul_1.jpg?1752700684",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/155\/261\/original\/alt_promocional_publicitario_botella_aluminio_T751_azul_1_logo.jpg?1752700689"
             ],
-            "stock": 4986,
+            "stock": 4681,
             "proveedor": "CDO",
             "categorias": [
                 "Tazones Termos y Botellas",
@@ -57336,7 +57336,7 @@
                     "Combinations": {
                         "Color": "Blanco"
                     },
-                    "Stock": 4986,
+                    "Stock": 4681,
                     "Precio": 4480,
                     "sku": "SS42247",
                     "sku_proveedor": "000-00751-01"
@@ -57447,7 +57447,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/159\/835\/original\/alt_promocional_publicitario-Cinta-Metrica-T753_1.jpg?1758052692",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/159\/838\/original\/alt_promocional_publicitario-Cinta-Metrica-T753_1_logo.jpg?1758052701"
             ],
-            "stock": 4766,
+            "stock": 4765,
             "proveedor": "CDO",
             "categorias": [
                 "Herramientas y Multiuso"
@@ -57476,7 +57476,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 4766,
+                    "Stock": 4765,
                     "Precio": 1680,
                     "sku": "SS42488",
                     "sku_proveedor": "000-00753-002"
@@ -57908,7 +57908,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/160\/975\/original\/alt_promocional_publicitario-mug_termico_T762_azul_2.jpg?1759337147",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/160\/976\/original\/alt_promocional_publicitario-mug_termico_T762_azul_1_logo.jpg?1759337158"
             ],
-            "stock": 1084,
+            "stock": 1044,
             "proveedor": "CDO",
             "categorias": [
                 "Tazones Termos y Botellas",
@@ -57941,7 +57941,7 @@
                     "Combinations": {
                         "Color": "Blanco"
                     },
-                    "Stock": 1084,
+                    "Stock": 1044,
                     "Precio": 5264,
                     "sku": "SS42552",
                     "sku_proveedor": "000-00762-01"
@@ -58401,7 +58401,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/160\/523\/original\/alt_promocional_publicitario-Linterna_T770_1.jpg?1758813945",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/160\/139\/original\/alt_promocional_publicitario-Linterna_T770_1_logo.jpg?1758649620"
             ],
-            "stock": 405,
+            "stock": 295,
             "proveedor": "CDO",
             "categorias": [
                 "Tiempo Libre",
@@ -58430,7 +58430,7 @@
                     "Combinations": {
                         "Color": "Blanco"
                     },
-                    "Stock": 405,
+                    "Stock": 295,
                     "Precio": 4466,
                     "sku": "SS42496",
                     "sku_proveedor": "000-00770-01"
@@ -58508,7 +58508,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/162\/142\/original\/alt_promocional_publicitario-libreta_T772_3.jpg?1760640263",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/162\/144\/original\/alt_promocional_publicitario-libreta_T772_3_logo2.jpg?1760640283"
             ],
-            "stock": 8855,
+            "stock": 8805,
             "proveedor": "CDO",
             "categorias": [
                 "Línea Ecologica",
@@ -58535,7 +58535,7 @@
                     "Combinations": {
                         "Color": "Gris + Negro"
                     },
-                    "Stock": 8855,
+                    "Stock": 8805,
                     "Precio": 2366,
                     "sku": "SS42594",
                     "sku_proveedor": "000-00772-62"
@@ -58637,7 +58637,7 @@
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/160\/604\/original\/alt_promocional_publicitario-Botella_Deportiva_Medidas_T778_celeste-2B.jpg?1758922874",
                 "https:\/\/d2jygl58194cng.cloudfront.net\/product_images\/pictures\/000\/160\/606\/original\/alt_promocional_publicitario-Botella_Deportiva_Medidas_T778_celeste-2B_logo.jpg?1758922884"
             ],
-            "stock": 2674,
+            "stock": 2514,
             "proveedor": "CDO",
             "categorias": [
                 "Campaña del mes",
@@ -58672,7 +58672,7 @@
                     "Combinations": {
                         "Color": "Gris"
                     },
-                    "Stock": 2674,
+                    "Stock": 2514,
                     "Precio": 3850,
                     "sku": "SS42537",
                     "sku_proveedor": "000-00778-06"
@@ -59016,7 +59016,7 @@
             "galery": [
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/A13-1.jpg"
             ],
-            "stock": 59123,
+            "stock": 59093,
             "proveedor": "promoimport",
             "categorias": [
                 "Oficina y Negocios"
@@ -59035,7 +59035,7 @@
                     "Combinations": {
                         "Color": "Plateado"
                     },
-                    "Stock": 59123,
+                    "Stock": 59093,
                     "Precio": 379,
                     "sku": "pi0A13-PLATEADO"
                 }
@@ -60031,7 +60031,7 @@
                     "Combinations": {
                         "Color": "Naranjo"
                     },
-                    "Stock": 24869,
+                    "Stock": 24839,
                     "Precio": 448,
                     "sku": "pi0A30-NARANJO"
                 },
@@ -60047,7 +60047,7 @@
                     "Combinations": {
                         "Color": "Verde"
                     },
-                    "Stock": 12637,
+                    "Stock": 12680,
                     "Precio": 448,
                     "sku": "pi0A30-VERDE"
                 },
@@ -60336,7 +60336,7 @@
                     "Combinations": {
                         "Color": "Azul"
                     },
-                    "Stock": 16352,
+                    "Stock": 16328,
                     "Precio": 417,
                     "sku": "pi0A34-AZUL"
                 },
@@ -60368,7 +60368,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 23846,
+                    "Stock": 23831,
                     "Precio": 417,
                     "sku": "pi0A34-NEGRO"
                 }
@@ -63826,7 +63826,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/B44-.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/B44-1.jpg"
             ],
-            "stock": 1971,
+            "stock": 1934,
             "proveedor": "promoimport",
             "categorias": [
                 "Línea Ecologica",
@@ -63853,7 +63853,7 @@
                     "Combinations": {
                         "Color": "Plateado"
                     },
-                    "Stock": 1971,
+                    "Stock": 1934,
                     "Precio": 518,
                     "sku": "pi0B44-PLATEADO"
                 }
@@ -71593,7 +71593,7 @@
                     "Combinations": {
                         "Color": "Azul"
                     },
-                    "Stock": 20132,
+                    "Stock": 19951,
                     "Precio": 602,
                     "sku": "pi0D8-AZUL"
                 },
@@ -71601,7 +71601,7 @@
                     "Combinations": {
                         "Color": "Rojo"
                     },
-                    "Stock": 3702,
+                    "Stock": 3402,
                     "Precio": 602,
                     "sku": "pi0D8-ROJO"
                 },
@@ -72233,7 +72233,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 7096,
+                    "Stock": 7078,
                     "Precio": 315,
                     "sku": "pi0E102-NEGRO"
                 },
@@ -72241,7 +72241,7 @@
                     "Combinations": {
                         "Color": "Natural"
                     },
-                    "Stock": 1506,
+                    "Stock": 1461,
                     "Precio": 315,
                     "sku": "pi0E102-NATURAL"
                 }
@@ -72418,7 +72418,7 @@
                     "Combinations": {
                         "Color": "Natural"
                     },
-                    "Stock": 25271,
+                    "Stock": 25247,
                     "Precio": 444,
                     "sku": "pi0E105-NATURAL"
                 }
@@ -73040,7 +73040,7 @@
                     "Combinations": {
                         "Color": "Azul"
                     },
-                    "Stock": 36119,
+                    "Stock": 36118,
                     "Precio": 405,
                     "sku": "pi0E13-AZUL"
                 },
@@ -73588,7 +73588,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 89,
+                    "Stock": 86,
                     "Precio": 210,
                     "sku": "pi0E2-NEGRO"
                 },
@@ -74054,7 +74054,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/E23-verde-pistacho.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/E23-verde.jpg"
             ],
-            "stock": 2168,
+            "stock": 1867,
             "proveedor": "promoimport",
             "categorias": [
                 "Mochilas y Bolsas"
@@ -74082,7 +74082,7 @@
                     "Combinations": {
                         "Color": "Azul"
                     },
-                    "Stock": 2168,
+                    "Stock": 1867,
                     "Precio": 490,
                     "sku": "pi0E23-AZUL"
                 },
@@ -75163,7 +75163,7 @@
                     "Combinations": {
                         "Color": "Rojo"
                     },
-                    "Stock": 6917,
+                    "Stock": 6899,
                     "Precio": 389,
                     "sku": "pi0E38-ROJO"
                 }
@@ -75812,7 +75812,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 16439,
+                    "Stock": 16378,
                     "Precio": 419,
                     "sku": "pi0E45-NEGRO"
                 },
@@ -76027,7 +76027,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 17342,
+                    "Stock": 17264,
                     "Precio": 385,
                     "sku": "pi0E5-NEGRO"
                 },
@@ -76792,7 +76792,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/e62-08.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/e62-09.jpg"
             ],
-            "stock": 9591,
+            "stock": 9530,
             "proveedor": "promoimport",
             "categorias": [
                 "Mochilas y Bolsas"
@@ -76820,7 +76820,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 9591,
+                    "Stock": 9530,
                     "Precio": 1119,
                     "sku": "pi0E62-NEGRO"
                 },
@@ -76902,7 +76902,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 18268,
+                    "Stock": 18208,
                     "Precio": 1347,
                     "sku": "pi0E63-NEGRO"
                 },
@@ -76928,7 +76928,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/e64-02.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/e64-03.jpg"
             ],
-            "stock": 73069,
+            "stock": 72943,
             "proveedor": "promoimport",
             "categorias": [
                 "Mochilas y Bolsas"
@@ -76960,7 +76960,7 @@
                     "Combinations": {
                         "Color": "Natural"
                     },
-                    "Stock": 73069,
+                    "Stock": 72943,
                     "Precio": 1106,
                     "sku": "pi0E64-NATURAL"
                 }
@@ -77662,7 +77662,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 904,
+                    "Stock": 873,
                     "Precio": 1302,
                     "sku": "pi0E73-NEGRO"
                 },
@@ -77913,7 +77913,7 @@
                     "Combinations": {
                         "Color": "Naranjo"
                     },
-                    "Stock": 2588,
+                    "Stock": 2587,
                     "Precio": 3879,
                     "sku": "pi0E76-NARANJO"
                 },
@@ -77921,7 +77921,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 2662,
+                    "Stock": 2719,
                     "Precio": 3879,
                     "sku": "pi0E76-NEGRO"
                 },
@@ -78034,7 +78034,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/E79-03.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/E79-01.jpg"
             ],
-            "stock": 4782,
+            "stock": 4768,
             "proveedor": "promoimport",
             "categorias": [
                 "Mochilas y Bolsas"
@@ -78065,7 +78065,7 @@
                     "Combinations": {
                         "Color": "Natural"
                     },
-                    "Stock": 4782,
+                    "Stock": 4768,
                     "Precio": 3550,
                     "sku": "pi0E79-NATURAL"
                 }
@@ -78154,7 +78154,7 @@
                     "Combinations": {
                         "Color": "Rojo"
                     },
-                    "Stock": 45443,
+                    "Stock": 44842,
                     "Precio": 448,
                     "sku": "pi0E8-ROJO"
                 },
@@ -78178,7 +78178,7 @@
                     "Combinations": {
                         "Color": "Verde"
                     },
-                    "Stock": 3359,
+                    "Stock": 2600,
                     "Precio": 448,
                     "sku": "pi0E8-VERDE"
                 },
@@ -78194,7 +78194,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 48549,
+                    "Stock": 48536,
                     "Precio": 448,
                     "sku": "pi0E8-NEGRO"
                 },
@@ -78507,7 +78507,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 2636,
+                    "Stock": 2576,
                     "Precio": 2862,
                     "sku": "pi0E84-NEGRO"
                 },
@@ -80621,7 +80621,7 @@
                     "Combinations": {
                         "Color": "Azul"
                     },
-                    "Stock": 38210,
+                    "Stock": 38204,
                     "Precio": 1397,
                     "sku": "pi0G1-AZUL"
                 },
@@ -82433,7 +82433,7 @@
                     "Combinations": {
                         "Color": "Rojo"
                     },
-                    "Stock": 6679,
+                    "Stock": 6665,
                     "Precio": 1540,
                     "sku": "pi0G4-ROJO"
                 },
@@ -82854,7 +82854,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 33889,
+                    "Stock": 33828,
                     "Precio": 1232,
                     "sku": "pi0G50-NEGRO"
                 },
@@ -83166,7 +83166,7 @@
                     "Combinations": {
                         "Color": "Rojo"
                     },
-                    "Stock": 5423,
+                    "Stock": 4823,
                     "Precio": 1190,
                     "sku": "pi0G53-ROJO"
                 },
@@ -83198,7 +83198,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 17352,
+                    "Stock": 17342,
                     "Precio": 1190,
                     "sku": "pi0G53-NEGRO"
                 },
@@ -83855,7 +83855,7 @@
             "galery": [
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/H10.jpg"
             ],
-            "stock": 59102,
+            "stock": 59084,
             "proveedor": "promoimport",
             "categorias": [
                 "Belleza y Salud",
@@ -83879,7 +83879,7 @@
                     "Combinations": {
                         "Color": "Plateado"
                     },
-                    "Stock": 59102,
+                    "Stock": 59084,
                     "Precio": 396,
                     "sku": "pi0H10-PLATEADO"
                 }
@@ -83991,7 +83991,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/H13-04.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/H13-06.jpg"
             ],
-            "stock": 964,
+            "stock": 934,
             "proveedor": "promoimport",
             "categorias": [
                 "Tiempo Libre",
@@ -84017,7 +84017,7 @@
                     "Combinations": {
                         "Color": "Plateado"
                     },
-                    "Stock": 964,
+                    "Stock": 934,
                     "Precio": 9730,
                     "sku": "pi0H13-PLATEADO"
                 }
@@ -88863,7 +88863,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/K29-04.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/K29-05.jpg"
             ],
-            "stock": 7178,
+            "stock": 6997,
             "proveedor": "promoimport",
             "categorias": [
                 "Oficina y Negocios"
@@ -88894,7 +88894,7 @@
                     "Combinations": {
                         "Color": "Azul"
                     },
-                    "Stock": 7178,
+                    "Stock": 6997,
                     "Precio": 1008,
                     "sku": "pi0K29-AZUL"
                 },
@@ -89992,7 +89992,7 @@
                     "Combinations": {
                         "Color": "Naranjo"
                     },
-                    "Stock": 10588,
+                    "Stock": 9985,
                     "Precio": 134,
                     "sku": "pi0L1-NARANJO"
                 },
@@ -91841,7 +91841,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/L14-C.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/L14-B.jpg"
             ],
-            "stock": 3049,
+            "stock": 3048,
             "proveedor": "promoimport",
             "categorias": [
                 "Escritura",
@@ -91867,7 +91867,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 3049,
+                    "Stock": 3048,
                     "Precio": 2226,
                     "sku": "pi0L14-NEGRO"
                 }
@@ -91929,7 +91929,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/L16-B.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/L16-C.jpg"
             ],
-            "stock": 20041,
+            "stock": 19860,
             "proveedor": "promoimport",
             "categorias": [
                 "Línea Ecologica",
@@ -91957,7 +91957,7 @@
                     "Combinations": {
                         "Color": "Madera"
                     },
-                    "Stock": 20041,
+                    "Stock": 19860,
                     "Precio": 434,
                     "sku": "pi0L16-MADERA"
                 }
@@ -92519,7 +92519,7 @@
                     "Combinations": {
                         "Color": "Verde Claro"
                     },
-                    "Stock": 8495,
+                    "Stock": 8480,
                     "Precio": 133,
                     "sku": "pi0L2-VERDE CLARO"
                 },
@@ -93087,7 +93087,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 710,
+                    "Stock": 698,
                     "Precio": 123,
                     "sku": "pi0L3-NEGRO"
                 },
@@ -93912,7 +93912,7 @@
                     "Combinations": {
                         "Color": "Rojo"
                     },
-                    "Stock": 42871,
+                    "Stock": 42543,
                     "Precio": 119,
                     "sku": "pi0L4-ROJO"
                 },
@@ -93920,7 +93920,7 @@
                     "Combinations": {
                         "Color": "Naranjo"
                     },
-                    "Stock": 106425,
+                    "Stock": 106362,
                     "Precio": 119,
                     "sku": "pi0L4-NARANJO"
                 },
@@ -95673,7 +95673,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/L64-E.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/L64-F.jpg"
             ],
-            "stock": 42176,
+            "stock": 42156,
             "proveedor": "promoimport",
             "categorias": [
                 "Escritura",
@@ -95702,7 +95702,7 @@
                     "Combinations": {
                         "Color": "Azul"
                     },
-                    "Stock": 42176,
+                    "Stock": 42156,
                     "Precio": 155,
                     "sku": "pi0L64-AZUL"
                 },
@@ -95969,7 +95969,7 @@
                     "Combinations": {
                         "Color": "Azul"
                     },
-                    "Stock": 24182,
+                    "Stock": 23882,
                     "Precio": 220,
                     "sku": "pi0L67-AZUL"
                 },
@@ -97011,7 +97011,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/L77-11.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/L77-12.jpg"
             ],
-            "stock": 4491,
+            "stock": 4311,
             "proveedor": "promoimport",
             "categorias": [
                 "Escritura",
@@ -97048,7 +97048,7 @@
                     "Combinations": {
                         "Color": "Blanco"
                     },
-                    "Stock": 4491,
+                    "Stock": 4311,
                     "Precio": 133,
                     "sku": "pi0L77-BLANCO"
                 },
@@ -97128,7 +97128,7 @@
                     "Combinations": {
                         "Color": "Esmeralda"
                     },
-                    "Stock": 6275,
+                    "Stock": 6200,
                     "Precio": 133,
                     "sku": "pi0L77-ESMERALDA"
                 },
@@ -99350,7 +99350,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/M20-principal.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/M20.jpg"
             ],
-            "stock": 15600,
+            "stock": 15597,
             "proveedor": "promoimport",
             "categorias": [
                 "Tazones Termos y Botellas"
@@ -99372,7 +99372,7 @@
                     "Combinations": {
                         "Color": "Blanco"
                     },
-                    "Stock": 15600,
+                    "Stock": 15597,
                     "Precio": 770,
                     "sku": "pi0M20-BLANCO"
                 }
@@ -102422,7 +102422,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 32436,
+                    "Stock": 32433,
                     "Precio": 1257,
                     "sku": "pi0N23-NEGRO"
                 }
@@ -102589,7 +102589,7 @@
                     "Combinations": {
                         "Color": "Verde"
                     },
-                    "Stock": 25204,
+                    "Stock": 25111,
                     "Precio": 1288,
                     "sku": "pi0N26-VERDE"
                 },
@@ -102617,7 +102617,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/N29-3.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/N29-grupo.jpg"
             ],
-            "stock": 12958,
+            "stock": 12874,
             "proveedor": "promoimport",
             "categorias": [
                 "Oficina y Negocios",
@@ -102645,7 +102645,7 @@
                     "Combinations": {
                         "Color": "Natural"
                     },
-                    "Stock": 12958,
+                    "Stock": 12874,
                     "Precio": 2170,
                     "sku": "pi0N29-NATURAL"
                 }
@@ -102903,7 +102903,7 @@
                     "Combinations": {
                         "Color": "Natural"
                     },
-                    "Stock": 31210,
+                    "Stock": 31150,
                     "Precio": 1330,
                     "sku": "pi0N32-NATURAL"
                 }
@@ -104634,7 +104634,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 13889,
+                    "Stock": 13876,
                     "Precio": 728,
                     "sku": "pi0N66-NEGRO"
                 }
@@ -104790,7 +104790,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 15707,
+                    "Stock": 15704,
                     "Precio": 2786,
                     "sku": "pi0N69-NEGRO"
                 },
@@ -105674,7 +105674,7 @@
                     "Combinations": {
                         "Color": "Beige"
                     },
-                    "Stock": 106,
+                    "Stock": 105,
                     "Precio": 41860,
                     "sku": "pi0P10-BEIGE"
                 },
@@ -107551,7 +107551,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/Q3-03.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/Q3-02.jpg"
             ],
-            "stock": 13727,
+            "stock": 13726,
             "proveedor": "promoimport",
             "categorias": [
                 "Tazones Termos y Botellas",
@@ -107573,7 +107573,7 @@
                     "Combinations": {
                         "Color": "Rojo"
                     },
-                    "Stock": 13727,
+                    "Stock": 13726,
                     "Precio": 1786,
                     "sku": "pi0Q3-ROJO"
                 }
@@ -114929,7 +114929,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/Y22-2.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/Y22-grupo-1.jpg"
             ],
-            "stock": 16703,
+            "stock": 16343,
             "proveedor": "promoimport",
             "categorias": [
                 "Tiempo Libre",
@@ -114954,7 +114954,7 @@
                     "Combinations": {
                         "Color": "Blanco"
                     },
-                    "Stock": 16703,
+                    "Stock": 16343,
                     "Precio": 476,
                     "sku": "pi0Y22-BLANCO"
                 }
@@ -115751,7 +115751,7 @@
             "galery": [
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2021\/04\/Y4.jpg"
             ],
-            "stock": 2572,
+            "stock": 2550,
             "proveedor": "promoimport",
             "categorias": [
                 "Tazones Termos y Botellas",
@@ -115777,7 +115777,7 @@
                     "Combinations": {
                         "Color": "Dorado"
                     },
-                    "Stock": 2572,
+                    "Stock": 2550,
                     "Precio": 1890,
                     "sku": "pi0Y4-DORADO"
                 }
@@ -116271,7 +116271,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 2639,
+                    "Stock": 2636,
                     "Precio": 5250,
                     "sku": "pi0M52-NEGRO"
                 }
@@ -117252,7 +117252,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2024\/08\/E59-11-3-2.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2024\/08\/E59-11-2-2.jpg"
             ],
-            "stock": 12555,
+            "stock": 12529,
             "proveedor": "promoimport",
             "categorias": [
                 "Mochilas y Bolsas",
@@ -117270,7 +117270,7 @@
                     "Combinations": {
                         "Color": "Natural"
                     },
-                    "Stock": 12555,
+                    "Stock": 12529,
                     "Precio": 1050,
                     "sku": "pi0E59-NATURAL"
                 }
@@ -119363,7 +119363,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2024\/11\/B95-12-02.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2024\/11\/B95-12-01.jpg"
             ],
-            "stock": 544,
+            "stock": 542,
             "proveedor": "promoimport",
             "categorias": [
                 "Tecnología",
@@ -119404,7 +119404,7 @@
                     "Combinations": {
                         "Color": "Madera"
                     },
-                    "Stock": 544,
+                    "Stock": 542,
                     "Precio": 9660,
                     "sku": "pi0B95-MADERA"
                 }
@@ -120101,7 +120101,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 251,
+                    "Stock": 214,
                     "Precio": 10500,
                     "sku": "pi0C73-NEGRO"
                 }
@@ -121095,7 +121095,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2025\/01\/N59-2.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2025\/01\/N59-3.jpg"
             ],
-            "stock": 1049,
+            "stock": 1048,
             "proveedor": "promoimport",
             "categorias": [
                 "Oficina y Negocios",
@@ -121122,7 +121122,7 @@
                     "Combinations": {
                         "Color": "Plateado"
                     },
-                    "Stock": 1049,
+                    "Stock": 1048,
                     "Precio": 1680,
                     "sku": "pi0N59-PLATEADO"
                 }
@@ -121293,7 +121293,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 638,
+                    "Stock": 518,
                     "Precio": 1540,
                     "sku": "pi0N85-NEGRO"
                 },
@@ -122882,7 +122882,7 @@
                     "Combinations": {
                         "Color": "Traslucido"
                     },
-                    "Stock": 5047,
+                    "Stock": 5035,
                     "Precio": 2660,
                     "sku": "pi0M38-TRASLUCIDO"
                 }
@@ -123785,7 +123785,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2025\/06\/M80-20-3.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2025\/06\/M80-20-4.jpg"
             ],
-            "stock": 8271,
+            "stock": 8240,
             "proveedor": "promoimport",
             "categorias": [
                 "Tiempo Libre",
@@ -123819,7 +123819,7 @@
                     "Combinations": {
                         "Color": "Azul"
                     },
-                    "Stock": 8271,
+                    "Stock": 8240,
                     "Precio": 1182,
                     "sku": "pi0M80-AZUL"
                 },
@@ -123851,7 +123851,7 @@
                     "Combinations": {
                         "Color": "Verde Claro"
                     },
-                    "Stock": 4648,
+                    "Stock": 4586,
                     "Precio": 1182,
                     "sku": "pi0M80-VERDE CLARO"
                 },
@@ -124212,7 +124212,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2025\/08\/N41-07.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2025\/08\/N41-06.jpg"
             ],
-            "stock": 2420,
+            "stock": 2419,
             "proveedor": "promoimport",
             "categorias": [
                 "Oficina y Negocios",
@@ -124244,7 +124244,7 @@
                     "Combinations": {
                         "Color": "Café"
                     },
-                    "Stock": 2420,
+                    "Stock": 2419,
                     "Precio": 4620,
                     "sku": "pi0N41-CAFÉ"
                 }
@@ -125328,7 +125328,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2025\/09\/Capa-4-copia-2.png",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2025\/09\/Capa-6-copia-2.png"
             ],
-            "stock": 898,
+            "stock": 896,
             "proveedor": "promoimport",
             "categorias": [
                 "Tiempo Libre",
@@ -125361,7 +125361,7 @@
                     "Combinations": {
                         "Color": "Blanco"
                     },
-                    "Stock": 898,
+                    "Stock": 896,
                     "Precio": 18620,
                     "sku": "pi0S66-BLANCO"
                 },
@@ -125385,7 +125385,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 859,
+                    "Stock": 857,
                     "Precio": 18620,
                     "sku": "pi0S66-NEGRO"
                 },
@@ -126059,7 +126059,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2025\/10\/Grupo-2-1.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2025\/10\/Grupo-3-1.jpg"
             ],
-            "stock": 1177,
+            "stock": 1168,
             "proveedor": "promoimport",
             "categorias": [
                 "Oficina y Negocios",
@@ -126095,7 +126095,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 1177,
+                    "Stock": 1168,
                     "Precio": 6860,
                     "sku": "pi0L161-NEGRO"
                 }
@@ -126119,7 +126119,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2025\/10\/Grupo-7.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2025\/10\/Grupo-8.jpg"
             ],
-            "stock": 581,
+            "stock": 580,
             "proveedor": "promoimport",
             "categorias": [
                 "Campaña del mes",
@@ -126156,7 +126156,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 581,
+                    "Stock": 580,
                     "Precio": 10780,
                     "sku": "pi0S41-NEGRO"
                 }
@@ -126300,7 +126300,7 @@
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2025\/10\/L119-03.jpg",
                 "https:\/\/promoimport.cl\/wp-content\/uploads\/2025\/10\/L119-00.jpg"
             ],
-            "stock": 89688,
+            "stock": 89387,
             "proveedor": "promoimport",
             "categorias": [
                 "Escritura",
@@ -126322,7 +126322,7 @@
                     "Combinations": {
                         "Color": "Blanco"
                     },
-                    "Stock": 89688,
+                    "Stock": 89387,
                     "Precio": 186,
                     "sku": "pi0L119-BLANCO"
                 },
@@ -126338,7 +126338,7 @@
                     "Combinations": {
                         "Color": "Rojo"
                     },
-                    "Stock": 59931,
+                    "Stock": 59630,
                     "Precio": 186,
                     "sku": "pi0L119-ROJO"
                 },
@@ -126346,7 +126346,7 @@
                     "Combinations": {
                         "Color": "Negro"
                     },
-                    "Stock": 59811,
+                    "Stock": 59510,
                     "Precio": 186,
                     "sku": "pi0L119-NEGRO"
                 }

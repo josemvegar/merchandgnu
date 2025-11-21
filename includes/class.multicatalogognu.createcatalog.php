@@ -655,6 +655,18 @@ public static function createOrUpdateProductFromNormalizedData($productData) {
     $existingProductId = wc_get_product_id_by_sku($sku);
 
     if ($existingProductId) {
+        // Si el producto ya existe y es variable, intentar agregar variaciones faltantes
+        $existingProduct = wc_get_product($existingProductId);
+        if ($existingProduct && $existingProduct->is_type('variable') && isset($productData['variations']) && is_array($productData['variations'])) {
+            $created = self::addMissingVariations($existingProductId, $productData);
+            if (!empty($created)) {
+                foreach ($created as $c) {
+                    error_log("✅ VARIATION ADDED: Parent SKU {$sku} - Variation SKU {$c['sku']} - PostID {$c['id']}");
+                }
+            }
+        }
+
+        // No crear nuevo producto si ya existe
         return false;
     }
 
@@ -906,6 +918,110 @@ private static function createProductVariations($product_id, $productData, $pare
     if ($product && $product->is_type('variable')) {
         $product->save();
     }
+}
+
+/**
+ * Añadir variaciones faltantes a un producto variable existente
+ * Retorna array de variaciones creadas con claves ['id' => variation_id, 'sku' => sku]
+ */
+private static function addMissingVariations($product_id, $productData) {
+    $created = [];
+
+    $product = wc_get_product($product_id);
+    if (!$product || !$product->is_type('variable')) {
+        return $created;
+    }
+
+    // Obtener SKUs existentes de variaciones
+    $existing_children = $product->get_children();
+    $existing_skus = [];
+    foreach ($existing_children as $child_id) {
+        $child = wc_get_product($child_id);
+        if ($child) {
+            $existing_skus[strtoupper(trim($child->get_sku()))] = $child_id;
+        }
+    }
+
+    // Asegurarse que atributos/términos estén presentes en el producto padre
+    $current_attributes = $product->get_attributes();
+
+    if (!isset($productData['variations']) || !is_array($productData['variations'])) {
+        return $created;
+    }
+
+    foreach ($productData['variations'] as $index => $variationData) {
+        $variationSku = isset($variationData['sku']) ? strtoupper(trim($variationData['sku'])) : '';
+
+        // Si SKU ya existe, saltar
+        if (!empty($variationSku) && isset($existing_skus[$variationSku])) {
+            continue;
+        }
+
+        // Mapear atributos
+        $variationAttributes = [];
+        if (isset($variationData['Combinations']) && is_array($variationData['Combinations'])) {
+            foreach ($variationData['Combinations'] as $attributeName => $attributeValue) {
+                $taxonomy_with_pa = 'pa_' . sanitize_title($attributeName);
+                $taxonomy_to_use = null;
+
+                if (isset($current_attributes[$taxonomy_with_pa])) {
+                    $taxonomy_to_use = $taxonomy_with_pa;
+                } else {
+                    // Intentar crear la taxonomía/termino si no existe
+                    $taxonomy_to_use = self::createGlobalAttribute($attributeName, [$attributeValue]);
+                }
+
+                if ($taxonomy_to_use) {
+                    $cleanedValue = str_replace('\\', '', $attributeValue);
+                    // Asegurar que el término exista
+                    if (!term_exists($cleanedValue, $taxonomy_to_use)) {
+                        wp_insert_term($cleanedValue, $taxonomy_to_use, ['slug' => sanitize_title($cleanedValue)]);
+                    }
+                    $term = get_term_by('name', $cleanedValue, $taxonomy_to_use);
+                    if ($term && !is_wp_error($term)) {
+                        $variationAttributes[$taxonomy_to_use] = $term->slug;
+                    } else {
+                        $variationAttributes[$taxonomy_to_use] = sanitize_title($cleanedValue);
+                    }
+                }
+            }
+        }
+
+        // Crear la variación
+        $variation = new WC_Product_Variation();
+        $variation->set_parent_id($product_id);
+
+        if (!empty($variationAttributes)) {
+            $variation->set_attributes($variationAttributes);
+        }
+
+        $variation_price = $variationData['Precio'] ?? 0;
+        $variation_stock = $variationData['Stock'] ?? 0;
+
+        $variation->set_regular_price($variation_price);
+        $variation->set_manage_stock(true);
+        $variation->set_stock_quantity($variation_stock);
+        $variation->set_stock_status($variation_stock > 0 ? 'instock' : 'outofstock');
+
+        if (!empty($variationSku)) {
+            $variation->set_sku($variationSku);
+        } else {
+            $variation->set_sku($productData['ID'] . '-var-' . ($index + 1));
+        }
+
+        $variation_id = $variation->save();
+        if ($variation_id) {
+            $created[] = ['id' => $variation_id, 'sku' => $variation->get_sku()];
+        }
+    }
+
+    // Guardar producto padre para actualizar datos de variaciones
+    $product = wc_get_product($product_id);
+    if ($product && $product->is_type('variable')) {
+        $product->save();
+    }
+
+    return $created;
 }
 
 private static function extractVariableAttributesFromCombinations($productData) {
@@ -1224,8 +1340,8 @@ public static function fDeleteProductsFromCatalogBatch() {
             continue;
         }
 
-        try {
-            // Si es un producto variable, eliminar todas las variaciones primero
+                try {
+            // Si es un producto variable, eliminar todas las variaciones primero (permanente)
             if ($wc_product->is_type('variable')) {
                 $variations = $wc_product->get_children();
                 foreach ($variations as $variation_id) {
@@ -1233,8 +1349,8 @@ public static function fDeleteProductsFromCatalogBatch() {
                 }
             }
 
-            // Eliminar el producto principal
-            $result = wp_delete_post($product_id, true);
+            // Enviar el producto principal a la papelera (no eliminar permanentemente)
+            $result = wp_delete_post($product_id, false);
 
             if ($result) {
                 $deletedCount++;

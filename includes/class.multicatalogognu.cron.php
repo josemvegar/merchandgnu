@@ -23,20 +23,23 @@ class cMulticatalogoGNUCron {
         // Hook para subir productos cada hora
         add_action('multicatalogo_hourly_upload_products', array('cMulticatalogoGNUCron', 'upload_all_products'));
 
-        // Registrar hooks separados para cada proveedor
-        add_action('multicatalogo_batch_upload_zecat', array('cMulticatalogoGNUCron', 'handle_batch_upload'), 10, 2);
-        add_action('multicatalogo_batch_upload_cdo', array('cMulticatalogoGNUCron', 'handle_batch_upload'), 10, 2);
-        add_action('multicatalogo_batch_upload_promoimport', array('cMulticatalogoGNUCron', 'handle_batch_upload'), 10, 2);
+        // Registrar hooks separados para cada proveedor (usando wrappers seguros)
+        add_action('multicatalogo_batch_upload_zecat', 'multicatalogo_wrapper_handle_batch_upload', 10, 2);
+        add_action('multicatalogo_batch_upload_cdo', 'multicatalogo_wrapper_handle_batch_upload', 10, 2);
+        add_action('multicatalogo_batch_upload_promoimport', 'multicatalogo_wrapper_handle_batch_upload', 10, 2);
 
         // ===== NUEVOS HOOKS PARA ACTUALIZACIÓN DE STOCK =====
-        add_action('multicatalogo_batch_stock_zecat', array('cMulticatalogoGNUCron', 'handle_batch_stock'), 10, 2);
-        add_action('multicatalogo_batch_stock_cdo', array('cMulticatalogoGNUCron', 'handle_batch_stock'), 10, 2);
-        add_action('multicatalogo_batch_stock_promoimport', array('cMulticatalogoGNUCron', 'handle_batch_stock'), 10, 2);
+        add_action('multicatalogo_batch_stock_zecat', 'multicatalogo_wrapper_handle_batch_stock', 10, 2);
+        add_action('multicatalogo_batch_stock_cdo', 'multicatalogo_wrapper_handle_batch_stock', 10, 2);
+        add_action('multicatalogo_batch_stock_promoimport', 'multicatalogo_wrapper_handle_batch_stock', 10, 2);
 
         // En cMulticatalogoGNUCron::init() agregar:
-        add_action('multicatalogo_batch_price_zecat', array('cMulticatalogoGNUCron', 'handle_batch_price'), 10, 2);
-        add_action('multicatalogo_batch_price_cdo', array('cMulticatalogoGNUCron', 'handle_batch_price'), 10, 2);
-        add_action('multicatalogo_batch_price_promoimport', array('cMulticatalogoGNUCron', 'handle_batch_price'), 10, 2);
+        add_action('multicatalogo_batch_price_zecat', 'multicatalogo_wrapper_handle_batch_price', 10, 2);
+        add_action('multicatalogo_batch_price_cdo', 'multicatalogo_wrapper_handle_batch_price', 10, 2);
+        add_action('multicatalogo_batch_price_promoimport', 'multicatalogo_wrapper_handle_batch_price', 10, 2);
+
+        // Hook para reverse sync (tienda -> json) que elimina productos no presentes en dataMerchan.json
+        add_action('multicatalogo_hourly_reverse_sync', array('cMulticatalogoGNUCron', 'reverse_sync_products'));
 
     }
 
@@ -71,9 +74,10 @@ class cMulticatalogoGNUCron {
             self::clean_products_without_images();
 
             // Ejecutar subida por proveedores (silencioso)
-            self::upload_from_json("ZECAT");
-            self::upload_from_json("CDO");
-            self::upload_from_json("promoimport");
+            // Forzar programación inicial para que cada proveedor pueda iniciar desde 0
+            self::upload_from_json("ZECAT", 0, 5, true);
+            self::upload_from_json("CDO", 0, 5, true);
+            self::upload_from_json("promoimport", 0, 5, true);
 
             error_log('[MultiCatalogo Cron] Subida de productos completada exitosamente');
         } catch (Exception $e) {
@@ -89,14 +93,15 @@ class cMulticatalogoGNUCron {
         
         try {
             // Actualizar proveedores (silencioso)
-            self::update_stock_from_json('ZECAT');
-            self::update_price_from_json('ZECAT');
+            // Forzar programación inicial de lotes por proveedor (stock y precio)
+            self::update_stock_from_json('ZECAT', 0, 50, true);
+            self::update_price_from_json('ZECAT', 0, 50, true);
 
-            self::update_stock_from_json('CDO');
-            self::update_price_from_json('CDO');
+            self::update_stock_from_json('CDO', 0, 50, true);
+            self::update_price_from_json('CDO', 0, 50, true);
 
-            self::update_stock_from_json('promoimport');
-            self::update_price_from_json('promoimport');
+            self::update_stock_from_json('promoimport', 0, 50, true);
+            self::update_price_from_json('promoimport', 0, 50, true);
 
             error_log('[MultiCatalogo Cron] Actualización de precios y stock completada');
         } catch (Exception $e) {
@@ -392,6 +397,24 @@ class cMulticatalogoGNUCron {
     }
 
     /**
+     * Simple lock helper para evitar ejecuciones concurrentes de batches
+     */
+    private static function acquire_lock($name, $ttl = 1800) {
+        $transient = 'multicatalogo_lock_' . $name;
+        // Si ya existe, no adquirir
+        if (get_transient($transient)) {
+            return false;
+        }
+        // Intentar fijar el transient
+        return set_transient($transient, time(), $ttl);
+    }
+
+    private static function release_lock($name) {
+        $transient = 'multicatalogo_lock_' . $name;
+        return delete_transient($transient);
+    }
+
+    /**
      * Actualizar stock y precios de Zecat (versión silenciosa para cron)
      */
     private static function update_zecat_silent() {
@@ -552,7 +575,8 @@ class cMulticatalogoGNUCron {
     /**
      * Subir productos desde JSON (versión silenciosa para cron)
      */
-    private static function upload_from_json($provider, $offset = 0, $batch_size = 5) {
+    private static function upload_from_json($provider, $offset = 0, $batch_size = 5, $force_schedule = false) {
+        // start log removed to reduce verbosity
         // Ruta al archivo JSON normalizado
         $filePathZecat = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
 
@@ -580,46 +604,108 @@ class cMulticatalogoGNUCron {
 
         $productsFilter = array_values($productsFilter);
         $total_productos = count($productsFilter);
-        
+
+        // Diagnostic: temporary log to verify provider detection for UPLOAD (renamed below)
+        error_log(sprintf('[MultiCatalogo Debug Upload] provider=%s total_products=%d offset=%d', $provider, $total_productos, $offset));
+
         if ($total_productos === 0) {
             return false;
         }
+
+        // If caller wants to force scheduling the initial batch (e.g. main cron restart),
+        // schedule provider offset=0 regardless of current locks/scheduled state.
+        if ($offset === 0 && $force_schedule) {
+            $cron_hook = 'multicatalogo_batch_upload_' . strtolower($provider);
+            if (!wp_next_scheduled($cron_hook, array($provider, 0))) {
+                wp_schedule_single_event(time() + 5, $cron_hook, array($provider, 0));
+                set_transient('multicatalogo_scheduled_batch_' . strtolower($provider), true, 2 * HOUR_IN_SECONDS);
+                // forced initial schedule log removed
+            } else {
+                // initial batch already scheduled (log removed)
+            }
+            return true;
+        }
+
+        // Intentar adquirir lock para evitar ejecuciones concurrentes
+        $lock_name = 'upload_' . strtolower($provider);
+        $got_lock = self::acquire_lock($lock_name, 1800);
+        if (!$got_lock) {
+            error_log('[MultiCatalogo Cron] Upload lock active for provider: ' . $provider . ' - scheduling retry');
+            // schedule a retry for this same offset after a short delay
+            $cron_hook = 'multicatalogo_batch_upload_' . strtolower($provider);
+            if (!wp_next_scheduled($cron_hook, array($provider, $offset))) {
+                wp_schedule_single_event(time() + 30, $cron_hook, array($provider, $offset));
+                set_transient('multicatalogo_scheduled_batch_' . strtolower($provider), true, 2 * HOUR_IN_SECONDS);
+                // scheduled retry (log removed)
+            } else {
+                // retry already scheduled (log removed)
+            }
+            return false;
+        }
+        // lock acquired (log removed)
 
         // Procesar lote actual
         $productBatch = array_slice($productsFilter, $offset, $batch_size);
         $creados = 0;
         $errors = [];
-
-        foreach ($productBatch as $productData) {
-            try {
-                $result = cMulticatalogoGNUCatalog::createOrUpdateProductFromNormalizedData($productData);
-                if ($result) {
-                    $creados++;
+        try {
+            foreach ($productBatch as $productData) {
+                try {
+                    $result = cMulticatalogoGNUCatalog::createOrUpdateProductFromNormalizedData($productData);
+                    if ($result) {
+                        $creados++;
+                    }
+                } catch (Exception $e) {
+                    $errors[] = "Error con producto {$productData['ID']}: " . $e->getMessage();
                 }
-            } catch (Exception $e) {
-                $errors[] = "Error con producto {$productData['ID']}: " . $e->getMessage();
-                // exception captured in errors array
             }
+
+            // Batch summary log removed to reduce verbosity
+
+        } catch (Exception $e) {
+            // liberar lock y rethrow para entornos PHP sin "finally"
+            self::release_lock($lock_name);
+            error_log('[MultiCatalogo Upload] Lock released for provider (after exception): ' . $provider . ' offset: ' . $offset . ' - Exception: ' . $e->getMessage());
+            throw $e;
         }
+
+        // liberar lock siempre al terminar sin excepción
+        self::release_lock($lock_name);
+        // lock released (log removed)
 
         $nuevo_offset = $offset + $batch_size;
         $progreso = round(($nuevo_offset / $total_productos) * 100, 2);
 
         // progreso calculado pero no logueado para evitar spam
 
-        // Si hay más productos, programar siguiente lote
+        // Si hay más productos, programar siguiente lote (por proveedor)
+        $scheduled_key = 'multicatalogo_scheduled_batch_' . strtolower($provider);
         if ($nuevo_offset < $total_productos) {
-            $next_batch_time = time() + 0; // 10 segundos de delay
+            $next_batch_time = time() + 5; // ejecutar lo antes posible
 
-            // Al programar el siguiente lote, usa el hook específico del proveedor
+            // Hook específico del proveedor
             $cron_hook = 'multicatalogo_batch_upload_' . strtolower($provider);
 
-            if (!wp_next_scheduled($cron_hook, array($provider, $nuevo_offset))) {
+            // Comprobar si existe un evento ya programado para este hook con estos args
+            $already_for_hook = wp_next_scheduled($cron_hook, array($provider, $nuevo_offset));
+
+            if (!$already_for_hook) {
                 wp_schedule_single_event($next_batch_time, $cron_hook, array($provider, $nuevo_offset));
+                // Marcar que hay un batch programado para este proveedor
+                set_transient($scheduled_key, true, 2 * HOUR_IN_SECONDS);
+                // scheduled next batch (log removed)
+            } else {
+                // next batch already scheduled (log removed)
+                // Ensure transient is set for this provider in case it wasn't
+                set_transient($scheduled_key, true, 2 * HOUR_IN_SECONDS);
             }
-            
+
         } else {
-            // Proceso completado (no se loguea cada finalización para evitar llenar logs)
+            // Proceso completado: limpiar marca de programado para este proveedor
+            if (get_transient($scheduled_key)) {
+                delete_transient($scheduled_key);
+                // completed provider cleared scheduled transient (log removed)
+            }
         }
     }
 
@@ -704,7 +790,7 @@ class cMulticatalogoGNUCron {
         }
     }
 
-    private static function update_stock_from_json($provider, $offset = 0, $batch_size = 50) {
+    private static function update_stock_from_json($provider, $offset = 0, $batch_size = 50, $force_schedule = false) {
         // Ruta al archivo JSON unificado
         $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
 
@@ -730,10 +816,39 @@ class cMulticatalogoGNUCron {
 
         $productsFilter = array_values($productsFilter);
         $total_productos = count($productsFilter);
-        
+
+        // Diagnostic: temporary log to verify provider detection for STOCK
+        error_log(sprintf('[MultiCatalogo Debug Stock] provider=%s total_products=%d offset=%d', $provider, $total_productos, $offset));
+
+        // If caller wants to force scheduling the initial batch (e.g. main cron restart),
+        // schedule provider offset=0 regardless of current locks/scheduled state.
+        if ($offset === 0 && $force_schedule) {
+            $cron_hook = 'multicatalogo_batch_stock_' . strtolower($provider);
+            if (!wp_next_scheduled($cron_hook, array($provider, 0))) {
+                wp_schedule_single_event(time() + 5, $cron_hook, array($provider, 0));
+                set_transient('multicatalogo_scheduled_batch_' . strtolower($provider), true, 2 * HOUR_IN_SECONDS);
+                return true;
+            }
+            return true;
+        }
+
         if ($total_productos === 0) {
             // No se encontraron productos para actualizar — evitar log por cada ejecución vacía
             // error_log('[Stock Cron] No se encontraron productos ' . $provider . ' para actualizar stock.');
+            return false;
+        }
+
+        // Intentar adquirir lock para evitar ejecuciones concurrentes
+        $lock_name = 'stock_' . strtolower($provider);
+        $got_lock = self::acquire_lock($lock_name, 1800);
+        if (!$got_lock) {
+            error_log('[MultiCatalogo Cron] Stock lock active for provider: ' . $provider . ' - scheduling retry');
+            // schedule a retry for this same offset after a short delay
+            $cron_hook = 'multicatalogo_batch_stock_' . strtolower($provider);
+            if (!wp_next_scheduled($cron_hook, array($provider, $offset))) {
+                wp_schedule_single_event(time() + 30, $cron_hook, array($provider, $offset));
+                set_transient('multicatalogo_scheduled_batch_' . strtolower($provider), true, 2 * HOUR_IN_SECONDS);
+            }
             return false;
         }
 
@@ -742,16 +857,27 @@ class cMulticatalogoGNUCron {
         $actualizados = 0;
         $errors = [];
 
-        foreach ($productBatch as $productData) {
-            try {
-                $result = cMulticatalogoGNUStock::update_product_stock($productData);
-                if ($result) {
-                    $actualizados++;
+        try {
+            foreach ($productBatch as $productData) {
+                try {
+                    $result = cMulticatalogoGNUStock::update_product_stock($productData);
+                    if ($result) {
+                        $actualizados++;
+                    }
+                } catch (Exception $e) {
+                    $errors[] = "Error actualizando stock producto {$productData['ID']}: " . $e->getMessage();
                 }
-            } catch (Exception $e) {
-                $errors[] = "Error actualizando stock producto {$productData['ID']}: " . $e->getMessage();
             }
+
+        } catch (Exception $e) {
+            // liberar lock y rethrow para entornos PHP sin "finally"
+            self::release_lock($lock_name);
+            error_log('[MultiCatalogo Stock] Lock released for provider (after exception): ' . $provider . ' offset: ' . $offset . ' - Exception: ' . $e->getMessage());
+            throw $e;
         }
+
+        // liberar lock siempre al terminar sin excepción
+        self::release_lock($lock_name);
 
         $nuevo_offset = $offset + $batch_size;
         $progreso = round(($nuevo_offset / $total_productos) * 100, 2);
@@ -790,7 +916,7 @@ class cMulticatalogoGNUCron {
      * Ejecutar actualización para todos los proveedores via Cron
      */
     public static function update_all_providers_stock_cron() {
-        $providers = ['PROMOIMPORT', 'ZECAT', 'CDO'];
+        $providers = ['promoimport', 'CDO', 'ZECAT'];
         $results = [];
         
         foreach ($providers as $provider) {
@@ -801,7 +927,7 @@ class cMulticatalogoGNUCron {
 
 
     // Función para procesamiento por lotes de precios
-    private static function update_price_from_json($provider, $offset = 0, $batch_size = 50) {
+    private static function update_price_from_json($provider, $offset = 0, $batch_size = 50, $force_schedule = false) {
         // Misma estructura que update_stock_from_json pero llamando a update_product_price
         $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
 
@@ -827,8 +953,36 @@ class cMulticatalogoGNUCron {
 
         $productsFilter = array_values($productsFilter);
         $total_productos = count($productsFilter);
-        
+        // Diagnostic: temporary log to verify provider detection
+        error_log(sprintf('[MultiCatalogo Debug Price] provider=%s total_products=%d offset=%d', $provider, $total_productos, $offset));
+
+        // If caller wants to force scheduling the initial batch (e.g. main cron restart),
+        // schedule provider offset=0 regardless of current locks/scheduled state.
+        if ($offset === 0 && $force_schedule) {
+            $cron_hook = 'multicatalogo_batch_price_' . strtolower($provider);
+            if (!wp_next_scheduled($cron_hook, array($provider, 0))) {
+                wp_schedule_single_event(time() + 5, $cron_hook, array($provider, 0));
+                set_transient('multicatalogo_scheduled_batch_' . strtolower($provider), true, 2 * HOUR_IN_SECONDS);
+                return true;
+            }
+            return true;
+        }
+
         if ($total_productos === 0) {
+            return false;
+        }
+
+        // Intentar adquirir lock para evitar ejecuciones concurrentes
+        $lock_name = 'price_' . strtolower($provider);
+        $got_lock = self::acquire_lock($lock_name, 1800);
+        if (!$got_lock) {
+            error_log('[MultiCatalogo Cron] Price lock active for provider: ' . $provider . ' - scheduling retry');
+            // schedule a retry for this same offset after a short delay
+            $cron_hook = 'multicatalogo_batch_price_' . strtolower($provider);
+            if (!wp_next_scheduled($cron_hook, array($provider, $offset))) {
+                wp_schedule_single_event(time() + 30, $cron_hook, array($provider, $offset));
+                set_transient('multicatalogo_scheduled_batch_' . strtolower($provider), true, 2 * HOUR_IN_SECONDS);
+            }
             return false;
         }
 
@@ -837,16 +991,27 @@ class cMulticatalogoGNUCron {
         $actualizados = 0;
         $errors = [];
 
-        foreach ($productBatch as $productData) {
-            try {
-                $result = cMulticatalogoGNUPrice::update_product_price($productData);
-                if ($result) {
-                    $actualizados++;
+        try {
+            foreach ($productBatch as $productData) {
+                try {
+                    $result = cMulticatalogoGNUPrice::update_product_price($productData);
+                    if ($result) {
+                        $actualizados++;
+                    }
+                } catch (Exception $e) {
+                    $errors[] = "Error actualizando precio producto {$productData['ID']}: " . $e->getMessage();
                 }
-            } catch (Exception $e) {
-                $errors[] = "Error actualizando precio producto {$productData['ID']}: " . $e->getMessage();
             }
+
+        } catch (Exception $e) {
+            // liberar lock y rethrow para entornos PHP sin "finally"
+            self::release_lock($lock_name);
+            error_log('[MultiCatalogo Price] Lock released for provider (after exception): ' . $provider . ' offset: ' . $offset . ' - Exception: ' . $e->getMessage());
+            throw $e;
         }
+
+        // liberar lock siempre al terminar sin excepción
+        self::release_lock($lock_name);
 
         $nuevo_offset = $offset + $batch_size;
         $progreso = round(($nuevo_offset / $total_productos) * 100, 2);
@@ -881,16 +1046,215 @@ class cMulticatalogoGNUCron {
     }
 
     public static function update_all_providers_price_cron() {
-        $providers = ['PROMOIMPORT', 'ZECAT', 'CDO'];
+        $providers = ['promoimport', 'CDO', 'ZECAT'];
         $results = [];
         
         foreach ($providers as $provider) {
-            $results[$provider] = self::update_price_from_json($provider);
+            // Force scheduling initial batch for each provider so it runs via the per-provider hook
+            $results[$provider] = self::update_price_from_json($provider, 0, 50, true);
         }
         return $results;
+    }
+
+    /**
+     * Reverse sync: eliminar productos en tienda cuyos SKUs empiezan con zt0, SS o pi0
+     * que no estén presentes en el JSON combinado (padre o variación).
+     */
+    public static function reverse_sync_products($offset = 0, $batch_size = 200) {
+        $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
+
+        if (!file_exists($filePath)) {
+            return false;
+        }
+
+        $jsonContent = file_get_contents($filePath);
+        $productsData = json_decode($jsonContent, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return false;
+        }
+
+        if (isset($productsData['data'])) {
+            $productsData = $productsData['data'];
+        }
+
+        // Construir conjunto de SKUs presentes en JSON (mayúsculas para comparación)
+        $presentSkus = array();
+        foreach ($productsData as $p) {
+            if (isset($p['ID'])) {
+                $presentSkus[strtoupper(trim($p['ID']))] = true;
+            }
+            if (isset($p['variations']) && is_array($p['variations'])) {
+                foreach ($p['variations'] as $v) {
+                    if (isset($v['sku'])) {
+                        $presentSkus[strtoupper(trim($v['sku']))] = true;
+                    }
+                }
+            }
+        }
+
+        global $wpdb;
+
+        // Contar total de entradas relevantes para paginar
+        $count_query = "SELECT COUNT(*) FROM {$wpdb->postmeta} pm JOIN {$wpdb->posts} p ON p.ID = pm.post_id WHERE pm.meta_key = '_sku' AND (pm.meta_value LIKE 'zt0%' OR pm.meta_value LIKE 'SS%' OR pm.meta_value LIKE 'pi0%')";
+        $total_rows = intval($wpdb->get_var($count_query));
+
+        // Intentar adquirir lock para evitar concurrencia
+        $lock_name = 'reverse_sync';
+        $got_lock = self::acquire_lock($lock_name, 3600);
+        if (!$got_lock) {
+            error_log('[MultiCatalogo Reverse Sync] Lock active - skipping concurrent execution');
+            return false;
+        }
+
+        $deleted = 0;
+        $deleted_items = [];
+
+        try {
+            // Obtener lote con JOIN para conocer post_type y post_parent
+            $query = $wpdb->prepare(
+                "SELECT p.ID as post_id, p.post_type, p.post_parent, pm.meta_value as sku_val FROM {$wpdb->postmeta} pm JOIN {$wpdb->posts} p ON p.ID = pm.post_id WHERE pm.meta_key = '_sku' AND (pm.meta_value LIKE %s OR pm.meta_value LIKE %s OR pm.meta_value LIKE %s) ORDER BY p.ID ASC LIMIT %d OFFSET %d",
+                'zt0%', 'SS%', 'pi0%', $batch_size, $offset
+            );
+
+            $rows = $wpdb->get_results($query);
+
+            if (!empty($rows)) {
+                foreach ($rows as $row) {
+                    $post_id = intval($row->post_id);
+                    $post_type = $row->post_type;
+                    $post_parent = intval($row->post_parent);
+                    $sku = strtoupper(trim($row->sku_val));
+
+                    if (!isset($presentSkus[$sku])) {
+                        $post_title = get_the_title($post_id);
+
+                        if ($post_type === 'product') {
+                            // Enviar producto padre a la papelera (no permanente)
+                            $res = wp_delete_post($post_id, false);
+
+                            // Eliminar variaciones permanentemente
+                            $variations = get_children(array(
+                                'post_parent' => $post_id,
+                                'post_type' => 'product_variation',
+                                'fields' => 'ids'
+                            ));
+                            if (!empty($variations)) {
+                                foreach ($variations as $var_id) {
+                                    wp_delete_post($var_id, true);
+                                    $deleted_items[] = [
+                                        'post_id' => $var_id,
+                                        'sku' => get_post_meta($var_id, '_sku', true),
+                                        'title' => get_the_title($var_id),
+                                        'type' => 'product_variation'
+                                    ];
+                                    $deleted++;
+                                }
+                            }
+
+                            if ($res) {
+                                $deleted_items[] = [
+                                    'post_id' => $post_id,
+                                    'sku' => $sku,
+                                    'title' => $post_title,
+                                    'type' => 'product'
+                                ];
+                                $deleted++;
+                            }
+                        } elseif ($post_type === 'product_variation') {
+                            // Eliminar variación permanentemente
+                            $res = wp_delete_post($post_id, true);
+                            if ($res) {
+                                $deleted_items[] = [
+                                    'post_id' => $post_id,
+                                    'sku' => $sku,
+                                    'title' => $post_title,
+                                    'type' => 'product_variation'
+                                ];
+                                $deleted++;
+                            }
+                        } else {
+                            // Otros tipos: eliminar permanentemente por seguridad
+                            $res = wp_delete_post($post_id, true);
+                            if ($res) {
+                                $deleted_items[] = [
+                                    'post_id' => $post_id,
+                                    'sku' => $sku,
+                                    'title' => $post_title,
+                                    'type' => $post_type
+                                ];
+                                $deleted++;
+                            }
+                        }
+                    }
+                }
+            }
+        } finally {
+            // liberar lock siempre
+            self::release_lock($lock_name);
+        }
+
+        if ($deleted > 0) {
+            error_log('[MultiCatalogo Reverse Sync] Productos eliminados en este lote: ' . $deleted);
+            foreach ($deleted_items as $it) {
+                error_log(sprintf("[MultiCatalogo Reverse Sync] Eliminado - PostID: %d - Type: %s - SKU: %s - Title: %s", $it['post_id'], $it['type'], $it['sku'], $it['title']));
+            }
+        }
+
+        // Si hay más filas, programar siguiente lote
+        $next_offset = $offset + $batch_size;
+        if ($next_offset < $total_rows) {
+            $cron_hook = 'multicatalogo_hourly_reverse_sync';
+            $next_time = time() + 5; // delay corto
+            if (!wp_next_scheduled($cron_hook, array($next_offset, $batch_size))) {
+                wp_schedule_single_event($next_time, $cron_hook, array($next_offset, $batch_size));
+            }
+        }
+
+        return $deleted_items;
     }
 
 }
 
 // Inicializar los hooks de cron
 cMulticatalogoGNUCron::init();
+
+// Wrappers seguros para callbacks de cron: evitan fatal si la clase/método no están disponibles
+function multicatalogo_wrapper_handle_batch_upload($provider = null, $offset = 0) {
+    if (class_exists('cMulticatalogoGNUCron') && method_exists('cMulticatalogoGNUCron', 'handle_batch_upload')) {
+        try {
+            return cMulticatalogoGNUCron::handle_batch_upload($provider, $offset);
+        } catch (Exception $e) {
+            error_log('[MultiCatalogo Cron] Exception in handle_batch_upload wrapper: ' . $e->getMessage());
+            return false;
+        }
+    }
+    error_log('[MultiCatalogo Cron] handle_batch_upload not available');
+    return false;
+}
+
+function multicatalogo_wrapper_handle_batch_stock($provider = null, $offset = 0) {
+    if (class_exists('cMulticatalogoGNUCron') && method_exists('cMulticatalogoGNUCron', 'handle_batch_stock')) {
+        try {
+            return cMulticatalogoGNUCron::handle_batch_stock($provider, $offset);
+        } catch (Exception $e) {
+            error_log('[MultiCatalogo Cron] Exception in handle_batch_stock wrapper: ' . $e->getMessage());
+            return false;
+        }
+    }
+    error_log('[MultiCatalogo Cron] handle_batch_stock not available');
+    return false;
+}
+
+function multicatalogo_wrapper_handle_batch_price($provider = null, $offset = 0) {
+    if (class_exists('cMulticatalogoGNUCron') && method_exists('cMulticatalogoGNUCron', 'handle_batch_price')) {
+        try {
+            return cMulticatalogoGNUCron::handle_batch_price($provider, $offset);
+        } catch (Exception $e) {
+            error_log('[MultiCatalogo Cron] Exception in handle_batch_price wrapper: ' . $e->getMessage());
+            return false;
+        }
+    }
+    error_log('[MultiCatalogo Cron] handle_batch_price not available');
+    return false;
+}

@@ -205,6 +205,75 @@ class cMulticatalogoGNUConfig {
     }
 
     /**
+     * Obtener reverse sync enabled status
+     */
+    public static function get_reverse_sync_enabled() {
+        global $wpdb;
+        $table = $wpdb->prefix . 'multicatalogo_config';
+        $result = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT config_value FROM $table WHERE config_key = %s",
+                'reverse_sync_enabled'
+            )
+        );
+        return $result ? $result : '0';
+    }
+
+    /**
+     * Update reverse sync enabled status
+     */
+    public static function update_reverse_sync_enabled($enabled) {
+        global $wpdb;
+        $table = $wpdb->prefix . 'multicatalogo_config';
+        
+        $wpdb->replace(
+            $table,
+            array(
+                'config_key' => 'reverse_sync_enabled',
+                'config_value' => $enabled
+            ),
+            array('%s', '%s')
+        );
+        
+        return true;
+    }
+
+    /**
+     * AJAX: Toggle reverse sync (store -> json deletion)
+     */
+    public static function ajax_toggle_reverse_sync() {
+        check_ajax_referer('multicatalogo_toggle_reverse_sync_nonce', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(array('message' => 'Permisos insuficientes.'));
+            return;
+        }
+
+        $enabled = isset($_POST['enabled']) ? sanitize_text_field($_POST['enabled']) : '0';
+
+        if ($enabled === '1') {
+            if (!wp_next_scheduled('multicatalogo_hourly_reverse_sync')) {
+                wp_schedule_event(time(), 'hourly', 'multicatalogo_hourly_reverse_sync');
+            }
+        } else {
+            // Asegurarse de eliminar todas las ocurrencias programadas (single + recurrentes)
+            while ( $timestamp = wp_next_scheduled('multicatalogo_hourly_reverse_sync') ) {
+                wp_unschedule_event( $timestamp, 'multicatalogo_hourly_reverse_sync' );
+            }
+            // Como respaldo, llamar a wp_clear_scheduled_hook
+            wp_clear_scheduled_hook('multicatalogo_hourly_reverse_sync');
+        }
+
+        self::update_reverse_sync_enabled($enabled);
+
+        // Provide diagnostic info about scheduling so the admin UI can verify
+        $next = wp_next_scheduled('multicatalogo_hourly_reverse_sync');
+        $scheduled = $next ? true : false;
+        $status = $enabled === '1' ? 'Reverse sync activado' : 'Reverse sync desactivado';
+        wp_send_json_success(array('message' => $status, 'scheduled' => $scheduled, 'next_timestamp' => $next));
+    }
+
+    /**
      * AJAX: Guardar configuración
      */
     public static function ajax_save_config() {
