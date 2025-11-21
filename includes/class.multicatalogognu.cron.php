@@ -606,7 +606,7 @@ class cMulticatalogoGNUCron {
         $total_productos = count($productsFilter);
 
         // Diagnostic: temporary log to verify provider detection for UPLOAD (renamed below)
-        error_log(sprintf('[MultiCatalogo Debug Upload] provider=%s total_products=%d offset=%d', $provider, $total_productos, $offset));
+        // error_log(sprintf('[MultiCatalogo Debug Upload] provider=%s total_products=%d offset=%d', $provider, $total_productos, $offset));
 
         if ($total_productos === 0) {
             return false;
@@ -818,7 +818,7 @@ class cMulticatalogoGNUCron {
         $total_productos = count($productsFilter);
 
         // Diagnostic: temporary log to verify provider detection for STOCK
-        error_log(sprintf('[MultiCatalogo Debug Stock] provider=%s total_products=%d offset=%d', $provider, $total_productos, $offset));
+        // error_log(sprintf('[MultiCatalogo Debug Stock] provider=%s total_products=%d offset=%d', $provider, $total_productos, $offset));
 
         // If caller wants to force scheduling the initial batch (e.g. main cron restart),
         // schedule provider offset=0 regardless of current locks/scheduled state.
@@ -954,7 +954,7 @@ class cMulticatalogoGNUCron {
         $productsFilter = array_values($productsFilter);
         $total_productos = count($productsFilter);
         // Diagnostic: temporary log to verify provider detection
-        error_log(sprintf('[MultiCatalogo Debug Price] provider=%s total_products=%d offset=%d', $provider, $total_productos, $offset));
+        // error_log(sprintf('[MultiCatalogo Debug Price] provider=%s total_products=%d offset=%d', $provider, $total_productos, $offset));
 
         // If caller wants to force scheduling the initial batch (e.g. main cron restart),
         // schedule provider offset=0 regardless of current locks/scheduled state.
