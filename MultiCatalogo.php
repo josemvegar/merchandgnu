@@ -256,3 +256,32 @@ function multicatalogognu_deactivate() {
     wp_clear_scheduled_hook('multicatalogo_hourly_upload_products');
     wp_clear_scheduled_hook('multicatalogo_hourly_update_prices_stock');
 }
+
+// Añadir parent_sku a payload de webhooks de WooCommerce cuando sea un pedido
+// Esta función se registra al cargar el plugin, por lo que mientras el plugin
+// esté activo el filtro se aplicará y modificará el payload enviado.
+add_filter('woocommerce_webhook_payload', 'multicatalogognu_add_parent_sku_to_webhook_payload', 10, 4);
+
+function multicatalogognu_add_parent_sku_to_webhook_payload($payload, $resource, $resource_id, $id) {
+    // Verificar que sea un pedido y existan line_items
+    if ($resource === 'order' && isset($payload['line_items']) && function_exists('wc_get_product')) {
+        foreach ($payload['line_items'] as &$line_item) {
+            if (!empty($line_item['variation_id']) && $line_item['variation_id'] > 0) {
+                // Obtener el producto por la variation_id
+                $product = wc_get_product($line_item['variation_id']);
+                if ($product && $product->is_type('variation')) {
+                    $parent_id = $product->get_parent_id();
+                    if ($parent_id) {
+                        $parent_product = wc_get_product($parent_id);
+                        if ($parent_product) {
+                            $line_item['parent_sku'] = $parent_product->get_sku();
+                        }
+                    }
+                }
+            }
+        }
+        unset($line_item);
+    }
+
+    return $payload;
+}
