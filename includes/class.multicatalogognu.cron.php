@@ -1057,10 +1057,10 @@ class cMulticatalogoGNUCron {
     }
 
     /**
-     * Reverse sync: eliminar productos en tienda cuyos SKUs empiezan con zt0, SS o pi0
-     * que no estén presentes en el JSON combinado (padre o variación).
+     * Reverse Sync (Tienda → JSON): eliminar productos en tienda cuyos SKUs empiezan
+     * con zt0, SS o pi0 que no estén presentes en el JSON combinado (padre o variación).
      */
-    public static function reverse_sync_products($offset = 0, $batch_size = 200) {
+    public static function reverse_sync_products($offset = 0, $batch_size = 100) {
         $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
 
         if (!file_exists($filePath)) {
@@ -1077,6 +1077,9 @@ class cMulticatalogoGNUCron {
         if (isset($productsData['data'])) {
             $productsData = $productsData['data'];
         }
+
+        // Permitir ajustar el tamaño de lote por filtro (por ejemplo para reducir carga)
+        $batch_size = max(1, intval(apply_filters('multicatalogo_reverse_sync_batch_size', $batch_size)));
 
         // Construir conjunto de SKUs presentes en JSON (mayúsculas para comparación)
         $presentSkus = array();
@@ -1095,9 +1098,15 @@ class cMulticatalogoGNUCron {
 
         global $wpdb;
 
-        // Contar total de entradas relevantes para paginar
-        $count_query = "SELECT COUNT(*) FROM {$wpdb->postmeta} pm JOIN {$wpdb->posts} p ON p.ID = pm.post_id WHERE pm.meta_key = '_sku' AND (pm.meta_value LIKE 'zt0%' OR pm.meta_value LIKE 'SS%' OR pm.meta_value LIKE 'pi0%')";
+        // Contar total de posts (products + product_variation) para procesar en lotes
+        $count_query = $wpdb->prepare(
+            "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type IN (%s, %s) AND post_status = %s",
+            'product', 'product_variation', 'publish'
+        );
         $total_rows = intval($wpdb->get_var($count_query));
+
+        // Diagnostic: log inicial con contexto
+        error_log(sprintf('[MultiCatalogo Reverse Sync (Tienda → JSON)] Inicio lote offset=%d batch_size=%d total_rows=%d', $offset, $batch_size, $total_rows));
 
         // Intentar adquirir lock para evitar concurrencia
         $lock_name = 'reverse_sync';
@@ -1111,10 +1120,10 @@ class cMulticatalogoGNUCron {
         $deleted_items = [];
 
         try {
-            // Obtener lote con JOIN para conocer post_type y post_parent
+            // Obtener lote de posts (products y variaciones) para procesar
             $query = $wpdb->prepare(
-                "SELECT p.ID as post_id, p.post_type, p.post_parent, pm.meta_value as sku_val FROM {$wpdb->postmeta} pm JOIN {$wpdb->posts} p ON p.ID = pm.post_id WHERE pm.meta_key = '_sku' AND (pm.meta_value LIKE %s OR pm.meta_value LIKE %s OR pm.meta_value LIKE %s) ORDER BY p.ID ASC LIMIT %d OFFSET %d",
-                'zt0%', 'SS%', 'pi0%', $batch_size, $offset
+                "SELECT ID as post_id, post_type, post_parent FROM {$wpdb->posts} WHERE post_type IN (%s, %s) AND post_status = %s ORDER BY ID ASC LIMIT %d OFFSET %d",
+                'product', 'product_variation', 'publish', $batch_size, $offset
             );
 
             $rows = $wpdb->get_results($query);
@@ -1124,8 +1133,22 @@ class cMulticatalogoGNUCron {
                     $post_id = intval($row->post_id);
                     $post_type = $row->post_type;
                     $post_parent = intval($row->post_parent);
-                    $sku = strtoupper(trim($row->sku_val));
 
+                    // Obtener SKU desde postmeta (si existe)
+                    $sku_val = get_post_meta($post_id, '_sku', true);
+                    $sku_val = is_string($sku_val) ? trim($sku_val) : '';
+                    if (empty($sku_val)) {
+                        continue; // sin SKU, saltar
+                    }
+
+                    $sku = strtoupper($sku_val);
+
+                    // Solo procesar SKUs que empiecen con los prefijos objetivo
+                    if (!preg_match('/^(ZT0|SS|PI0)/i', $sku_val)) {
+                        continue;
+                    }
+
+                    // Si no está presente en el JSON combinado, eliminar
                     if (!isset($presentSkus[$sku])) {
                         $post_title = get_the_title($post_id);
 
@@ -1133,7 +1156,7 @@ class cMulticatalogoGNUCron {
                             // Enviar producto padre a la papelera (no permanente)
                             $res = wp_delete_post($post_id, false);
 
-                            // Eliminar variaciones permanentemente
+                            // Eliminar variaciones permanentemente (si quedan)
                             $variations = get_children(array(
                                 'post_parent' => $post_id,
                                 'post_type' => 'product_variation',
@@ -1174,7 +1197,7 @@ class cMulticatalogoGNUCron {
                                 $deleted++;
                             }
                         } else {
-                            // Otros tipos: eliminar permanentemente por seguridad
+                            // Otros tipos (no esperado) — eliminar permanentemente por seguridad
                             $res = wp_delete_post($post_id, true);
                             if ($res) {
                                 $deleted_items[] = [
@@ -1199,6 +1222,8 @@ class cMulticatalogoGNUCron {
             foreach ($deleted_items as $it) {
                 error_log(sprintf("[MultiCatalogo Reverse Sync] Eliminado - PostID: %d - Type: %s - SKU: %s - Title: %s", $it['post_id'], $it['type'], $it['sku'], $it['title']));
             }
+        } else {
+            error_log('[MultiCatalogo Reverse Sync (Tienda → JSON)] Lote procesado sin eliminaciones. offset=' . $offset . ' batch_size=' . $batch_size);
         }
 
         // Si hay más filas, programar siguiente lote
@@ -1208,7 +1233,12 @@ class cMulticatalogoGNUCron {
             $next_time = time() + 5; // delay corto
             if (!wp_next_scheduled($cron_hook, array($next_offset, $batch_size))) {
                 wp_schedule_single_event($next_time, $cron_hook, array($next_offset, $batch_size));
+                error_log(sprintf('[MultiCatalogo Reverse Sync (Tienda → JSON)] Programado siguiente lote offset=%d batch_size=%d', $next_offset, $batch_size));
+            } else {
+                error_log(sprintf('[MultiCatalogo Reverse Sync (Tienda → JSON)] Siguiente lote ya programado offset=%d batch_size=%d', $next_offset, $batch_size));
             }
+        } else {
+            error_log('[MultiCatalogo Reverse Sync (Tienda → JSON)] Proceso completado. offset=' . $offset . ' total_rows=' . $total_rows);
         }
 
         return $deleted_items;
