@@ -169,7 +169,7 @@ jQuery(document).ready(function () {
     var totalProductos = 0
     var productosEliminados = 0
     var offsetActual = 0
-    var tamanoLote = 10
+    var tamanoLote = 5
 
     function eliminarLote(offset) {
       jQuery

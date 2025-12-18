@@ -1,8 +1,9 @@
-/**
+<?php
+/** 
      * Eliminar productos de WooCommerce que coincidan con SKUs del catálogo JSON
      * Procesa en lotes para evitar timeouts
      */
-    public static function fDeleteProductsFromCatalogBatch() {
+    function fDeleteProductsFromCatalogBatch() {
         // Verificar nonce
         if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'eliminar_productos_catalogo_nonce')) {
             wp_send_json_error(['message' => 'Nonce inválido']);
