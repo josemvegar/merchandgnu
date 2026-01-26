@@ -1060,17 +1060,22 @@ class cMulticatalogoGNUCron {
      * Reverse Sync (Tienda → JSON): eliminar productos en tienda cuyos SKUs empiezan
      * con zt0, SS o pi0 que no estén presentes en el JSON combinado (padre o variación).
      */
-    public static function reverse_sync_products($offset = 0, $batch_size = 100) {
-        $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
+    public static function reverse_sync_products($last_id = 0, $batch_size = 100) {
+        // 1. Asegurar Batch Size (Blindaje)
+        if (!is_numeric($batch_size) || $batch_size < 1) {
+            $batch_size = 100;
+        }
 
+        $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
         if (!file_exists($filePath)) {
+            error_log("[MultiCatalogo] Error: Archivo JSON no encontrado.");
             return false;
         }
 
         $jsonContent = file_get_contents($filePath);
         $productsData = json_decode($jsonContent, true);
-
         if (json_last_error() !== JSON_ERROR_NONE) {
+            error_log("[MultiCatalogo] Error: JSON inválido.");
             return false;
         }
 
@@ -1078,170 +1083,132 @@ class cMulticatalogoGNUCron {
             $productsData = $productsData['data'];
         }
 
-        // Permitir ajustar el tamaño de lote por filtro (por ejemplo para reducir carga)
-        $batch_size = max(1, intval(apply_filters('multicatalogo_reverse_sync_batch_size', $batch_size)));
-
-        // Construir conjunto de SKUs presentes en JSON (mayúsculas para comparación)
+        // 2. Mapa de SKUs del JSON
         $presentSkus = array();
         foreach ($productsData as $p) {
-            if (isset($p['ID'])) {
-                $presentSkus[strtoupper(trim($p['ID']))] = true;
-            }
+            if (isset($p['ID'])) $presentSkus[strtoupper(trim($p['ID']))] = true;
             if (isset($p['variations']) && is_array($p['variations'])) {
                 foreach ($p['variations'] as $v) {
-                    if (isset($v['sku'])) {
-                        $presentSkus[strtoupper(trim($v['sku']))] = true;
-                    }
+                    if (isset($v['sku'])) $presentSkus[strtoupper(trim($v['sku']))] = true;
                 }
             }
         }
 
         global $wpdb;
 
-        // Contar total de posts (products + product_variation) para procesar en lotes
-        $count_query = $wpdb->prepare(
-            "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type IN (%s, %s) AND post_status = %s",
-            'product', 'product_variation', 'publish'
-        );
-        $total_rows = intval($wpdb->get_var($count_query));
-
-        // Diagnostic: log inicial con contexto
-        error_log(sprintf('[MultiCatalogo Reverse Sync (Tienda → JSON)] Inicio lote offset=%d batch_size=%d total_rows=%d', $offset, $batch_size, $total_rows));
-
-        // Intentar adquirir lock para evitar concurrencia
+        // Bloqueo de concurrencia
         $lock_name = 'reverse_sync';
-        $got_lock = self::acquire_lock($lock_name, 3600);
-        if (!$got_lock) {
-            error_log('[MultiCatalogo Reverse Sync] Lock active - skipping concurrent execution');
+        if (!self::acquire_lock($lock_name, 3600)) {
+            error_log("[MultiCatalogo] Salto: Lock activo.");
             return false;
         }
 
-        $deleted = 0;
-        $deleted_items = [];
-
-        try {
-            // Obtener lote de posts (products y variaciones) para procesar
-            $query = $wpdb->prepare(
-                "SELECT ID as post_id, post_type, post_parent FROM {$wpdb->posts} WHERE post_type IN (%s, %s) AND post_status = %s ORDER BY ID ASC LIMIT %d OFFSET %d",
-                'product', 'product_variation', 'publish', $batch_size, $offset
-            );
-
-            $rows = $wpdb->get_results($query);
-
-            if (!empty($rows)) {
-                foreach ($rows as $row) {
-                    $post_id = intval($row->post_id);
-                    $post_type = $row->post_type;
-                    $post_parent = intval($row->post_parent);
-
-                    // Obtener SKU desde postmeta (si existe)
-                    $sku_val = get_post_meta($post_id, '_sku', true);
-                    $sku_val = is_string($sku_val) ? trim($sku_val) : '';
-                    if (empty($sku_val)) {
-                        continue; // sin SKU, saltar
+        // Función para eliminar imágenes de un post/producto
+        function delete_post_images($post_id, $post_type = 'product') {
+            // Eliminar imagen destacada
+            $featured_image_id = get_post_thumbnail_id($post_id);
+            if ($featured_image_id) {
+                wp_delete_attachment($featured_image_id, true);
+                error_log("[MultiCatalogo] Imagen destacada eliminada para ID: $post_id");
+            }
+            
+            // Para productos, eliminar también imágenes de la galería
+            if ($post_type === 'product') {
+                $product = wc_get_product($post_id);
+                if ($product) {
+                    $gallery_ids = $product->get_gallery_image_ids();
+                    foreach ($gallery_ids as $gallery_image_id) {
+                        wp_delete_attachment($gallery_image_id, true);
                     }
-
-                    $sku = strtoupper($sku_val);
-
-                    // Solo procesar SKUs que empiecen con los prefijos objetivo
-                    if (!preg_match('/^(ZT0|SS|PI0)/i', $sku_val)) {
-                        continue;
-                    }
-
-                    // Si no está presente en el JSON combinado, eliminar
-                    if (!isset($presentSkus[$sku])) {
-                        $post_title = get_the_title($post_id);
-
-                        if ($post_type === 'product') {
-                            // Enviar producto padre a la papelera (no permanente)
-                            $res = wp_delete_post($post_id, false);
-
-                            // Eliminar variaciones permanentemente (si quedan)
-                            $variations = get_children(array(
-                                'post_parent' => $post_id,
-                                'post_type' => 'product_variation',
-                                'fields' => 'ids'
-                            ));
-                            if (!empty($variations)) {
-                                foreach ($variations as $var_id) {
-                                    wp_delete_post($var_id, true);
-                                    $deleted_items[] = [
-                                        'post_id' => $var_id,
-                                        'sku' => get_post_meta($var_id, '_sku', true),
-                                        'title' => get_the_title($var_id),
-                                        'type' => 'product_variation'
-                                    ];
-                                    $deleted++;
-                                }
-                            }
-
-                            if ($res) {
-                                $deleted_items[] = [
-                                    'post_id' => $post_id,
-                                    'sku' => $sku,
-                                    'title' => $post_title,
-                                    'type' => 'product'
-                                ];
-                                $deleted++;
-                            }
-                        } elseif ($post_type === 'product_variation') {
-                            // Eliminar variación permanentemente
-                            $res = wp_delete_post($post_id, true);
-                            if ($res) {
-                                $deleted_items[] = [
-                                    'post_id' => $post_id,
-                                    'sku' => $sku,
-                                    'title' => $post_title,
-                                    'type' => 'product_variation'
-                                ];
-                                $deleted++;
-                            }
-                        } else {
-                            // Otros tipos (no esperado) — eliminar permanentemente por seguridad
-                            $res = wp_delete_post($post_id, true);
-                            if ($res) {
-                                $deleted_items[] = [
-                                    'post_id' => $post_id,
-                                    'sku' => $sku,
-                                    'title' => $post_title,
-                                    'type' => $post_type
-                                ];
-                                $deleted++;
-                            }
-                        }
+                    if (!empty($gallery_ids)) {
+                        error_log("[MultiCatalogo] " . count($gallery_ids) . " imágenes de galería eliminadas para producto ID: $post_id");
                     }
                 }
             }
+        }
+
+        $deleted_count = 0;
+        $processed_count = 0;
+        $current_max_id = $last_id;
+
+        try {
+            /**
+             * CONSULTA MEJORADA: 
+             * Usamos ID > %d para no perdernos al borrar.
+             */
+            $query = $wpdb->prepare(
+                "SELECT p.ID, p.post_type, pm.meta_value as sku 
+                FROM {$wpdb->posts} p
+                INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
+                WHERE p.ID > %d 
+                AND p.post_type IN ('product', 'product_variation') 
+                AND p.post_status = 'publish'
+                AND pm.meta_key = '_sku'
+                AND (pm.meta_value REGEXP '^(ZT0|SS|PI0)')
+                ORDER BY p.ID ASC LIMIT %d", 
+                $last_id,
+                $batch_size
+            );
+
+            $rows = $wpdb->get_results($query);
+            $total_in_batch = count($rows);
+
+            if (!empty($rows)) {
+                foreach ($rows as $row) {
+                    $processed_count++;
+                    $post_id = intval($row->ID);
+                    $sku = strtoupper(trim($row->sku));
+                    $post_type = $row->post_type;
+                    $current_max_id = $post_id; // Actualizamos el puntero al último ID real
+
+                    if (!isset($presentSkus[$sku])) {
+                        // Eliminar imágenes antes de eliminar el post
+                        delete_post_images($post_id, $post_type);
+                        
+                        if ($post_type === 'product') {
+                            // Para productos variables, eliminar imágenes de variaciones primero
+                            $variations = get_children(['post_parent' => $post_id, 'post_type' => 'product_variation', 'fields' => 'ids']);
+                            foreach ($variations as $v_id) {
+                                // Eliminar imágenes de la variación
+                                delete_post_images($v_id, 'product_variation');
+                                // Eliminar la variación permanentemente
+                                wp_delete_post($v_id, true);
+                                error_log("[MultiCatalogo] Variación eliminada: ID $v_id");
+                            }
+                            // Eliminar producto principal (a la papelera)
+                            wp_delete_post($post_id, false);
+                        } else {
+                            // Para variaciones, eliminar permanentemente
+                            wp_delete_post($post_id, true);
+                        }
+                        
+                        $deleted_count++;
+                        error_log("[MultiCatalogo] ELIMINADO: ID $post_id (SKU: $sku) tipo: $post_type");
+                    }
+                }
+            }
+
+            error_log(sprintf(
+                "[MultiCatalogo] Lote ID > %d finalizado. Analizados: %d, Borrados: %d, Último ID: %d",
+                $last_id, $processed_count, $deleted_count, $current_max_id
+            ));
+
         } finally {
-            // liberar lock siempre
             self::release_lock($lock_name);
         }
 
-        if ($deleted > 0) {
-            error_log('[MultiCatalogo Reverse Sync] Productos eliminados en este lote: ' . $deleted);
-            foreach ($deleted_items as $it) {
-                error_log(sprintf("[MultiCatalogo Reverse Sync] Eliminado - PostID: %d - Type: %s - SKU: %s - Title: %s", $it['post_id'], $it['type'], $it['sku'], $it['title']));
-            }
-        } else {
-            error_log('[MultiCatalogo Reverse Sync (Tienda → JSON)] Lote procesado sin eliminaciones. offset=' . $offset . ' batch_size=' . $batch_size);
-        }
-
-        // Si hay más filas, programar siguiente lote
-        $next_offset = $offset + $batch_size;
-        if ($next_offset < $total_rows) {
+        // RE-PROGRAMACIÓN
+        // Si el número de filas recibidas es igual al batch_size, es probable que queden más
+        if ($total_in_batch >= $batch_size) {
             $cron_hook = 'multicatalogo_hourly_reverse_sync';
-            $next_time = time() + 5; // delay corto
-            if (!wp_next_scheduled($cron_hook, array($next_offset, $batch_size))) {
-                wp_schedule_single_event($next_time, $cron_hook, array($next_offset, $batch_size));
-                error_log(sprintf('[MultiCatalogo Reverse Sync (Tienda → JSON)] Programado siguiente lote offset=%d batch_size=%d', $next_offset, $batch_size));
-            } else {
-                error_log(sprintf('[MultiCatalogo Reverse Sync (Tienda → JSON)] Siguiente lote ya programado offset=%d batch_size=%d', $next_offset, $batch_size));
-            }
+            // Pasamos el $current_max_id como primer argumento para la siguiente vuelta
+            wp_schedule_single_event(time() + 5, $cron_hook, array($current_max_id, $batch_size)); 
+            error_log("[MultiCatalogo] Hay más. Programando siguiente lote desde ID: $current_max_id");
         } else {
-            error_log('[MultiCatalogo Reverse Sync (Tienda → JSON)] Proceso completado. offset=' . $offset . ' total_rows=' . $total_rows);
+            error_log("[MultiCatalogo] Sincronización COMPLETADA. No quedan más productos con esos prefijos.");
         }
 
-        return $deleted_items;
+        return $deleted_count;
     }
 
 }

@@ -1315,6 +1315,32 @@ public static function fDeleteProductsFromCatalogBatch() {
     $skippedCount = 0;
     $errors = [];
 
+    // Función auxiliar para eliminar imágenes asociadas
+    function delete_product_attachments($product_id) {
+        // Eliminar imagen destacada
+        $featured_image_id = get_post_thumbnail_id($product_id);
+        if ($featured_image_id) {
+            wp_delete_attachment($featured_image_id, true);
+        }
+        
+        // Eliminar galería de imágenes
+        $product = wc_get_product($product_id);
+        if ($product) {
+            $gallery_ids = $product->get_gallery_image_ids();
+            foreach ($gallery_ids as $gallery_image_id) {
+                wp_delete_attachment($gallery_image_id, true);
+            }
+        }
+    }
+
+    // Función auxiliar para eliminar imágenes de variaciones
+    function delete_variation_attachments($variation_id) {
+        $featured_image_id = get_post_thumbnail_id($variation_id);
+        if ($featured_image_id) {
+            wp_delete_attachment($featured_image_id, true);
+        }
+    }
+
     foreach ($currentBatch as $product) {
         $sku = isset($product['ID']) ? $product['ID'] : '';
         
@@ -1340,11 +1366,17 @@ public static function fDeleteProductsFromCatalogBatch() {
             continue;
         }
 
-                try {
-            // Si es un producto variable, eliminar todas las variaciones primero (permanente)
+        try {
+            // Eliminar imágenes asociadas del producto principal
+            delete_product_attachments($product_id);
+
+            // Si es un producto variable, eliminar todas las variaciones primero
             if ($wc_product->is_type('variable')) {
                 $variations = $wc_product->get_children();
                 foreach ($variations as $variation_id) {
+                    // Eliminar imágenes de la variación
+                    delete_variation_attachments($variation_id);
+                    // Eliminar la variación permanentemente
                     wp_delete_post($variation_id, true);
                 }
             }
