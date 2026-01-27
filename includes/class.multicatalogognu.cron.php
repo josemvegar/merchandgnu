@@ -203,7 +203,7 @@ class cMulticatalogoGNUCron {
             $infoAttributes = [];
             $variations = [];
 
-            $precioBaseCDO = isset($cdoProduct['variants'][0]['list_price']) ? floatval($cdoProduct['variants'][0]['list_price']) : 0;
+            $precioBaseCDO = isset($cdoProduct['variants'][0]['list_price']) ? (int) $cdoProduct['variants'][0]['list_price'] : 0;
             $precioFinalCDO = cMulticatalogoGNUConfig::calculate_final_price($precioBaseCDO);
 
             foreach ($cdoProduct['variants'] as $variant) {
@@ -211,7 +211,7 @@ class cMulticatalogoGNUCron {
                 $images[] = $variant['detail_picture']['original'];
                 $images[] = $variant['other_pictures'][0]['original'];
 
-                $precioVariante = isset($variant['list_price']) ? floatval($variant['list_price']) : 0;
+                $precioVariante = isset($variant['list_price']) ? (int) $variant['list_price'] : 0;
                 $precioFinalVariante = cMulticatalogoGNUConfig::calculate_final_price($precioVariante);
 
                 if (isset($variant['color'])) {
@@ -292,7 +292,7 @@ class cMulticatalogoGNUCron {
                 $images[] = $image['src'];
             }
 
-            $precioBasePromo = isset($promoProduct['precio']) ? floatval($promoProduct['precio']) : 0;
+            $precioBasePromo = isset($promoProduct['precio']) ? (int) $promoProduct['precio'] : 0;
             $precioFinalPromo = cMulticatalogoGNUConfig::calculate_final_price($precioBasePromo);
 
             $variableAttributes = [];
