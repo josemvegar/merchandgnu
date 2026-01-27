@@ -213,4 +213,204 @@ jQuery(document).ready(function () {
 
     eliminarLote(0)
   })
-})
+
+  // Función unificada para todos los proveedores
+  function actualizarStockProveedor(provider) {
+    var totalProductos = 0;
+    var productosActualizados = 0;
+    var offsetActual = 0;
+    var tamanoLote = 10;
+
+    function actualizarLote(offset) {
+      jQuery.ajax({
+        url: fUpdateStockGlobo.ajax_url,
+        type: 'POST',
+        data: {
+          action: fUpdateStockGlobo.action,
+          provider: provider,
+          offset: offset,
+          tamano_lote: tamanoLote,
+          nonce: getNonceByProvider(provider)
+        },
+        beforeSend: function () {
+          jQuery(".loadermerchan").show();
+          jQuery('.popup-overlay-merchan').fadeIn('slow');
+          jQuery('#providerName').text(provider.toUpperCase());
+        },
+        success: function (response) {
+          if (response.success) {
+            totalProductos = response.data.total;
+            productosActualizados += response.data.actualizados;
+            offsetActual = response.data.offset;
+
+            console.log('Proveedor: ' + provider);
+            console.log('Total productos: ' + totalProductos);
+            console.log('Actualizados en este lote: ' + response.data.actualizados);
+            console.log('Total actualizados: ' + productosActualizados);
+            console.log('Siguiente offset: ' + offsetActual);
+
+            // Actualizar DOM
+            jQuery('#totalProducts').text(totalProductos);
+            jQuery('#publishedProducts').text(productosActualizados);
+
+            // Calcular porcentaje
+            var porcentaje = Math.min((offsetActual / totalProductos) * 100, 100);
+            jQuery('#progress').css('width', porcentaje + '%');
+            jQuery('#progress').text(Math.round(porcentaje) + '%');
+
+            // Continuar si hay más productos
+            if (offsetActual < totalProductos) {
+              console.log('Continuando con siguiente lote...');
+              actualizarLote(offsetActual);
+            } else {
+              console.log('Proceso completado para ' + provider);
+              jQuery(".loadermerchan").hide();
+              jQuery('.popup-overlay-merchan').fadeOut('slow');
+              alert('Actualización de stock completada para ' + provider.toUpperCase() + '. Productos actualizados: ' + productosActualizados);
+            }
+          } else {
+            console.log('Error en respuesta:', response.data);
+            alert('Error en la actualización: ' + (response.data || 'Error desconocido'));
+            jQuery(".loadermerchan").hide();
+            jQuery('.popup-overlay-merchan').fadeOut('slow');
+          }
+        },
+        error: function (xhr, status, error) {
+          console.log('Error AJAX:', error);
+          alert('Error en la comunicación con el servidor.');
+          jQuery(".loadermerchan").hide();
+          jQuery('.popup-overlay-merchan').fadeOut('slow');
+        }
+      });
+    }
+
+    // Helper para obtener nonce según proveedor
+    function getNonceByProvider(provider) {
+      var nonces = {
+        'promoimport': fUpdateStockGlobo.nonce_promoimport,
+        'zecat': fUpdateStockGlobo.nonce_zecat,
+        'cdo': fUpdateStockGlobo.nonce_cdo
+      };
+      return nonces[provider];
+    }
+
+    // Iniciar el proceso
+    actualizarLote(0);
+  }
+
+  jQuery("#ActualizarStockPromoImport").click(function (e) {
+    e.preventDefault();
+    actualizarStockProveedor('promoimport');
+  });
+
+  jQuery("#ActualizarStockZecat").click(function (e) {
+    e.preventDefault();
+    actualizarStockProveedor('zecat');
+  });
+
+  jQuery("#ActualizarStockCDO").click(function (e) {
+    e.preventDefault();
+    actualizarStockProveedor('cdo');
+  });
+
+  // Función unificada para actualización de precios de todos los proveedores
+  function actualizarPrecioProveedor(provider) {
+    var totalProductos = 0;
+    var productosActualizados = 0;
+    var offsetActual = 0;
+    var tamanoLote = 10;
+
+    function actualizarLote(offset) {
+      jQuery.ajax({
+        url: fUpdatePriceGlobo.ajax_url,
+        type: 'POST',
+        data: {
+          action: fUpdatePriceGlobo.action,
+          provider: provider,
+          offset: offset,
+          tamano_lote: tamanoLote,
+          nonce: getNonceByProvider(provider)
+        },
+        beforeSend: function () {
+          jQuery(".loadermerchan").show();
+          jQuery('.popup-overlay-merchan').fadeIn('slow');
+          jQuery('#providerName').text(provider.toUpperCase() + ' - PRECIOS');
+        },
+        success: function (response) {
+          if (response.success) {
+            totalProductos = response.data.total;
+            productosActualizados += response.data.actualizados;
+            offsetActual = response.data.offset;
+
+            console.log('Proveedor Precios: ' + provider);
+            console.log('Total productos: ' + totalProductos);
+            console.log('Actualizados en este lote: ' + response.data.actualizados);
+            console.log('Total actualizados: ' + productosActualizados);
+            console.log('Siguiente offset: ' + offsetActual);
+
+            // Actualizar DOM
+            jQuery('#totalProducts').text(totalProductos);
+            jQuery('#publishedProducts').text(productosActualizados);
+
+            // Calcular porcentaje
+            var porcentaje = Math.min((offsetActual / totalProductos) * 100, 100);
+            jQuery('#progress').css('width', porcentaje + '%');
+            jQuery('#progress').text(Math.round(porcentaje) + '%');
+
+            // Continuar si hay más productos
+            if (offsetActual < totalProductos) {
+              console.log('Continuando con siguiente lote de precios...');
+              actualizarLote(offsetActual);
+            } else {
+              console.log('Proceso de precios completado para ' + provider);
+              jQuery(".loadermerchan").hide();
+              jQuery('.popup-overlay-merchan').fadeOut('slow');
+              alert('Actualización de precios completada para ' + provider.toUpperCase() + '. Productos actualizados: ' + productosActualizados);
+            }
+          } else {
+            console.log('Error en respuesta precios:', response.data);
+            alert('Error en la actualización de precios: ' + (response.data || 'Error desconocido'));
+            jQuery(".loadermerchan").hide();
+            jQuery('.popup-overlay-merchan').fadeOut('slow');
+          }
+        },
+        error: function (xhr, status, error) {
+          console.log('Error AJAX precios:', error);
+          alert('Error en la comunicación con el servidor.');
+          jQuery(".loadermerchan").hide();
+          jQuery('.popup-overlay-merchan').fadeOut('slow');
+        }
+      });
+    }
+
+    // Helper para obtener nonce según proveedor
+    function getNonceByProvider(provider) {
+      var nonces = {
+        'promoimport': fUpdatePriceGlobo.nonce_promoimport,
+        'zecat': fUpdatePriceGlobo.nonce_zecat,
+        'cdo': fUpdatePriceGlobo.nonce_cdo
+      };
+      return nonces[provider];
+    }
+
+    // Iniciar el proceso
+    actualizarLote(0);
+  }
+
+  // Event handlers para precios
+  jQuery("#ActualizarPrecioPromoImport").click(function (e) {
+    e.preventDefault();
+    actualizarPrecioProveedor('promoimport');
+  });
+
+  jQuery("#ActualizarPrecioZecat").click(function (e) {
+    e.preventDefault();
+    actualizarPrecioProveedor('zecat');
+  });
+
+  jQuery("#ActualizarPrecioCDO").click(function (e) {
+    e.preventDefault();
+    actualizarPrecioProveedor('cdo');
+  });
+  
+});
