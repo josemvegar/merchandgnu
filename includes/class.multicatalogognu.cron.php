@@ -142,7 +142,7 @@ class cMulticatalogoGNUCron {
             $infoAttributes = [];
             $variations = [];
 
-            $precioFinalZecat = cMulticatalogoGNUConfig::calculate_final_price($zecatProduct['price']);
+            $precioFinalZecat = cMulticatalogoGNUConfig::calculate_final_price($zecatProduct['discountPrice']);
 
             foreach ($zecatProduct['families'] as $family) {
                 $families[] = mb_convert_case(trim($family['description']), MB_CASE_TITLE, "UTF-8");
@@ -203,7 +203,7 @@ class cMulticatalogoGNUCron {
             $infoAttributes = [];
             $variations = [];
 
-            $precioBaseCDO = isset($cdoProduct['variants'][0]['list_price']) ? (int) $cdoProduct['variants'][0]['list_price'] : 0;
+            $precioBaseCDO = isset($cdoProduct['variants'][0]['net_price']) ? (int) $cdoProduct['variants'][0]['net_price'] : 0;
             $precioFinalCDO = cMulticatalogoGNUConfig::calculate_final_price($precioBaseCDO);
 
             foreach ($cdoProduct['variants'] as $variant) {
@@ -211,7 +211,7 @@ class cMulticatalogoGNUCron {
                 $images[] = $variant['detail_picture']['original'];
                 $images[] = $variant['other_pictures'][0]['original'];
 
-                $precioVariante = isset($variant['list_price']) ? (int) $variant['list_price'] : 0;
+                $precioVariante = isset($variant['net_price']) ? (int) $variant['net_price'] : 0;
                 $precioFinalVariante = cMulticatalogoGNUConfig::calculate_final_price($precioVariante);
 
                 if (isset($variant['color'])) {
