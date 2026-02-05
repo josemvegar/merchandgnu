@@ -133,6 +133,7 @@ class cMulticatalogoGNUCron {
         }
 
         $mergedProducts = [];
+        $max_images = 25;
 
         // --- Zecat ---
         foreach ($productsZecat as $zecatProduct) {
@@ -148,6 +149,9 @@ class cMulticatalogoGNUCron {
                 $families[] = mb_convert_case(trim($family['description']), MB_CASE_TITLE, "UTF-8");
             }
             foreach ($zecatProduct['images'] as $image) {
+                if (count($images) >= $max_images) {
+                    break; // Detener el bucle después de 30 imágenes
+                }
                 $images[] = $image['image_url'];
             }
             foreach ($zecatProduct['products'] as $index => $varAttr) {
@@ -207,9 +211,15 @@ class cMulticatalogoGNUCron {
             $precioFinalCDO = cMulticatalogoGNUConfig::calculate_final_price($precioBaseCDO);
 
             foreach ($cdoProduct['variants'] as $variant) {
-                $images[] = $variant['picture']['original'];
-                $images[] = $variant['detail_picture']['original'];
-                $images[] = $variant['other_pictures'][0]['original'];
+                if (count($images) < $max_images) {
+                    $images[] = $variant['picture']['original'];
+                }
+                if (count($images) < $max_images) {
+                    $images[] = $variant['detail_picture']['original'];
+                }
+                if (count($images) < $max_images) {
+                    $images[] = $variant['other_pictures'][0]['original'];
+                }
 
                 $precioVariante = isset($variant['net_price']) ? (int) $variant['net_price'] : 0;
                 $precioFinalVariante = cMulticatalogoGNUConfig::calculate_final_price($precioVariante);
@@ -289,11 +299,16 @@ class cMulticatalogoGNUCron {
         foreach ($productsPromo as $promoProduct) {
             $images = [$promoProduct['fotoPrincipal']];
             foreach ($promoProduct['images'] as $image) {
+                if (count($images) >= $max_images) {
+                    break; // Detener el bucle después de 30 imágenes
+                }
                 $images[] = $image['src'];
             }
 
             $precioBasePromo = isset($promoProduct['precio']) ? (int) $promoProduct['precio'] : 0;
-            $precioFinalPromo = cMulticatalogoGNUConfig::calculate_final_price($precioBasePromo);
+            // Aplicar descuento del 22% al precio base
+            $precioBaseConDescuento = $precioBasePromo * 0.78; // 100% - 22% = 78% = 0.78
+            $precioFinalPromo = cMulticatalogoGNUConfig::calculate_final_price($precioBaseConDescuento);
 
             $variableAttributes = [];
             $variations = [];
