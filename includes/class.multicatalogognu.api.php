@@ -47,7 +47,8 @@ class cMultiCatalogoGNUApiRequest {
                     break; // Salir si no hay productos
                 }
             } else {
-                break; // Salir en caso de error de HTTP
+                //break; // Salir en caso de error de HTTP
+                return []; // error API
             }
         }
     
@@ -61,7 +62,11 @@ class cMultiCatalogoGNUApiRequest {
         }
     
         // Guardar los datos en un archivo JSON
-        file_put_contents($filePath, $jsonData);
+        if (!empty($data) && is_array($data)) {
+
+            file_put_contents($filePath, $jsonData);
+
+        }
     
         return $allProducts;
     }
@@ -96,7 +101,8 @@ class cMultiCatalogoGNUApiRequest {
                     break; // Salir si no hay productos
                 }
             } else {
-                break; // Salir en caso de error de HTTP
+                //break; // Salir en caso de error de HTTP
+                return []; // error API
             }
         } while ($currentPage <= $totalPages);
     
@@ -111,7 +117,11 @@ class cMultiCatalogoGNUApiRequest {
             }
     
             // Guardar los datos en un archivo JSON
-            file_put_contents($filePath, $jsonData);
+            if (!empty($data) && is_array($data)) {
+
+                file_put_contents($filePath, $jsonData);
+
+            }
     
         return $allProducts;
     }
@@ -164,7 +174,8 @@ class cMultiCatalogoGNUApiRequest {
                 $allProducts = $data;
             }
         } else {
-            error_log("Error HTTP $httpCode al obtener productos de PromoImport");
+            //error_log("Error HTTP $httpCode al obtener productos de PromoImport");
+            return []; // error API
         }
         
         // Convertir el array de todos los productos a JSON
@@ -177,7 +188,11 @@ class cMultiCatalogoGNUApiRequest {
         }
         
         // Guardar en archivo
-        file_put_contents($filePath, $jsonData);
+        if (!empty($data) && is_array($data)) {
+
+            file_put_contents($filePath, $jsonData);
+
+        }
         
         return $allProducts;
     }
