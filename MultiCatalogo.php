@@ -5,9 +5,9 @@
  * Plugin Name: Multicatalogo Merchandising
  * Plugin URI:  https://josecortesia.cl
  * Description: Integración de proveedor externos para Woocommerce.
- * Version:     2.0.0
- * Author:      Jose Cortesia
- * Author URI:  https://www.josecortesia.cl
+ * Version:     3.0.0
+ * Author:      José Vega
+ * Author URI:  https://dotdevsolutions.com/
  * License:     GPLv2 or later
  * License URI: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * Text Domain: MultiCatalogoGNU
