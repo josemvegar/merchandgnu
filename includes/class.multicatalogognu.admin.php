@@ -874,6 +874,17 @@ class cMulticatalogoGNUAdmin {
             <h1>Gestión de Categorías</h1>
             
             <div class="card" style="padding: 20px; margin-top: 20px;">
+
+                <button id="btnActualizarCategorias" class="button button-primary">
+                    Actualizar Categorías
+                </button>
+
+                <div id="progressCategorias" style="width:100%;background:#eee;margin-top:10px;">
+                    <div id="progressBarCategorias" style="width:0%;height:20px;background:#2271b1;"></div>
+                </div>
+
+                <span id="progressTextCategorias"></span>
+
                 <h2>Mapeo de Categorías</h2>
                 <p>Define cómo se deben reasignar las categorías del catálogo a las categorías de WooCommerce.</p>
                 
@@ -1032,6 +1043,50 @@ class cMulticatalogoGNUAdmin {
                 });
             });
         });
+
+        jQuery(document).on("click", "#btnActualizarCategorias", function () {
+
+            let offset = 0
+            let batch = 20
+
+            //console.log("Iniciando actualización de categorías...")
+
+            function procesar() {
+
+            jQuery.post(ajaxurl, {
+                action: "multicatalogo_update_categories",
+                offset: offset,
+                tamano_lote: batch,
+                nonce: '<?php echo wp_create_nonce('multicatalogo_category_nonce'); ?>'
+            }, function (response) {
+
+                if (!response.success) {
+                alert("Error: " + response.data)
+                return
+                }
+
+                let total = response.data.total
+                offset = response.data.offset
+                let procesados = offset
+
+                let porcentaje = Math.floor((procesados / total) * 100)
+
+                jQuery("#progressBarCategorias").css("width", porcentaje + "%")
+                jQuery("#progressTextCategorias").text(procesados + " / " + total)
+
+                if (offset < total) {
+                procesar()
+                } else {
+                alert("Categorías actualizadas")
+                }
+
+            })
+
+            }
+
+            procesar()
+
+        })
         </script>
         <?php
     }

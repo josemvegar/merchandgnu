@@ -241,4 +241,94 @@ class cMulticatalogoGNUCategories {
             wp_send_json_error(array('message' => 'Error al eliminar la redirección.'));
         }
     }
+
+    /**
+     * AJAX: Actualizar Categorías
+     */
+    public static function update_product_categories() {
+
+        check_ajax_referer('multicatalogo_category_nonce', 'nonce');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error('Permisos insuficientes');
+        }
+
+        $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
+        $tamano_lote = isset($_POST['tamano_lote']) ? intval($_POST['tamano_lote']) : 20;
+
+        $filePath = MUTICATALOGOGNU__PLUGIN_DIR . '/admin/dataMulticatalogoGNU/dataMerchan.json';
+
+        if (!file_exists($filePath)) {
+            wp_send_json_error('JSON no encontrado');
+        }
+
+        $json = file_get_contents($filePath);
+        $data = json_decode($json, true);
+
+        if (!$data) {
+            wp_send_json_error('JSON inválido');
+        }
+
+        /*
+        Detectar dónde están los productos
+        */
+        if (isset($data['productos'])) {
+            $productos = $data['productos'];
+        } elseif (isset($data['data'])) {
+            $productos = $data['data'];
+        } else {
+            $productos = $data;
+        }
+
+        $total = count($productos);
+        $batch = array_slice($productos, $offset, $tamano_lote);
+
+        foreach ($batch as $productData) {
+
+            if (empty($productData['ID'])) {
+                continue;
+            }
+
+            $sku = trim($productData['ID']);
+
+            $product_id = wc_get_product_id_by_sku($sku);
+
+            if (!$product_id) {
+                continue;
+            }
+
+            $product = wc_get_product($product_id);
+
+            if (!$product || $product->is_type('variation')) {
+                continue;
+            }
+
+            if (empty($productData['categorias'])) {
+                continue;
+            }
+
+            $category_ids = [];
+
+            foreach ($productData['categorias'] as $categoria_nombre) {
+
+                $term = get_term_by('name', trim($categoria_nombre), 'product_cat');
+
+                if ($term && !is_wp_error($term)) {
+                    $category_ids[] = intval($term->term_id);
+                }
+
+            }
+
+            // reemplazar sólo si existe al menos una válida
+            if (!empty($category_ids)) {
+                wp_set_object_terms($product_id, $category_ids, 'product_cat', false);
+            }
+
+        }
+
+        wp_send_json_success([
+            'total'  => $total,
+            'offset' => min($offset + $tamano_lote, $total)
+        ]);
+    }
 }
