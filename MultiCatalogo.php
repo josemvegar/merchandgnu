@@ -79,7 +79,7 @@ function multicatalogognu_activate() {
         created_at datetime DEFAULT CURRENT_TIMESTAMP,
         updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         PRIMARY KEY  (id),
-        UNIQUE KEY source_category (source_category)
+        KEY source_category (source_category)  -- Cambiado de UNIQUE KEY a KEY
     ) $charset_collate;";
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );

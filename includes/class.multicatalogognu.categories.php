@@ -76,26 +76,27 @@ class cMulticatalogoGNUCategories {
         global $wpdb;
         $table = $wpdb->prefix . 'multicatalogo_category_mapping';
         
-        // Verificar si ya existe un mapeo para esta categoría
+        // Verificar si ya existe exactamente este mismo mapeo
+        $exact_match = $wpdb->get_var($wpdb->prepare(
+            "SELECT id FROM $table WHERE source_category = %s AND target_category = %d",
+            $source_category,
+            $target_category_id
+        ));
+        
+        if ($exact_match) {
+            // Ya existe exactamente este mapeo, no hacer nada
+            return 'exists';
+        }
+        
+        // Verificar si existe la misma source_category con diferente target
         $existing = $wpdb->get_var($wpdb->prepare(
             "SELECT id FROM $table WHERE source_category = %s",
             $source_category
         ));
         
         if ($existing) {
-            // Actualizar
-            $result = $wpdb->update(
-                $table,
-                array(
-                    'target_category' => $target_category_id,
-                    'updated_at' => current_time('mysql')
-                ),
-                array('source_category' => $source_category),
-                array('%d', '%s'),
-                array('%s')
-            );
-        } else {
-            // Insertar
+            // Como ahora permitimos múltiples sources iguales, insertamos uno nuevo
+            // en lugar de actualizar el existente
             $result = $wpdb->insert(
                 $table,
                 array(
@@ -106,9 +107,23 @@ class cMulticatalogoGNUCategories {
                 ),
                 array('%s', '%d', '%s', '%s')
             );
+            
+            return $result !== false ? 'inserted' : false;
+        } else {
+            // No existe ninguna entrada con esta source_category, insertar nueva
+            $result = $wpdb->insert(
+                $table,
+                array(
+                    'source_category' => $source_category,
+                    'target_category' => $target_category_id,
+                    'created_at' => current_time('mysql'),
+                    'updated_at' => current_time('mysql')
+                ),
+                array('%s', '%d', '%s', '%s')
+            );
+            
+            return $result !== false ? 'inserted' : false;
         }
-        
-        return $result !== false;
     }
 
     /**
@@ -134,22 +149,33 @@ class cMulticatalogoGNUCategories {
         global $wpdb;
         $table = $wpdb->prefix . 'multicatalogo_category_mapping';
         
+        // Obtener todos los mapeos
         $mappings = array();
         $results = $wpdb->get_results("
             SELECT m.source_category, t.name as target_name, t.term_id
             FROM $table m
             LEFT JOIN {$wpdb->terms} t ON m.target_category = t.term_id
+            ORDER BY m.source_category, m.id
         ", ARRAY_A);
         
+        // Organizar mapeos por source_category (ahora cada source puede tener múltiples targets)
+        $mappings_by_source = array();
         foreach ($results as $row) {
-            $mappings[$row['source_category']] = $row['target_name'];
+            if (!isset($mappings_by_source[$row['source_category']])) {
+                $mappings_by_source[$row['source_category']] = array();
+            }
+            $mappings_by_source[$row['source_category']][] = $row['target_name'];
         }
         
         $categorias_finales = array();
         foreach ($categorias as $categoria) {
-            if (isset($mappings[$categoria])) {
-                // Existe mapeo: usar categoría destino
-                $categorias_finales[] = $mappings[$categoria];
+            if (isset($mappings_by_source[$categoria])) {
+                // Existe mapeo: agregar TODAS las categorías destino
+                foreach ($mappings_by_source[$categoria] as $target) {
+                    if (!empty($target)) { // Asegurarse que el target no esté vacío
+                        $categorias_finales[] = $target;
+                    }
+                }
             } else {
                 // No existe mapeo: usar categoría original
                 $categorias_finales[] = $categoria;
@@ -210,8 +236,12 @@ class cMulticatalogoGNUCategories {
 
         $result = self::save_mapping($source_category, $target_category);
 
-        if ($result) {
+        if ($result === 'exists') {
+            wp_send_json_success(array('message' => 'El mapeo ya existe exactamente igual. No se realizaron cambios.'));
+        } elseif ($result === 'inserted') {
             wp_send_json_success(array('message' => 'Redirección guardada exitosamente.'));
+        } elseif ($result === 'updated') {
+            wp_send_json_success(array('message' => 'Redirección actualizada exitosamente.'));
         } else {
             wp_send_json_error(array('message' => 'Error al guardar la redirección.'));
         }
